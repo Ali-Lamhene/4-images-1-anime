@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import { RANKS } from '../constants/game';
 
-export default function GameHeader({ user }) {
+export default function GameHeader({ user, showBackButton = false }) {
+  const router = useRouter();
   const currentRank = RANKS.find(rank => rank.level === user.level) || RANKS[0];
   const nextRank = RANKS.find(rank => rank.level === user.level + 1);
   
@@ -12,6 +14,16 @@ export default function GameHeader({ user }) {
 
   return (
     <View style={styles.container}>
+      {showBackButton && (
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <Text style={styles.backIcon}>←</Text>
+          <Text style={styles.backText}>Retour</Text>
+        </TouchableOpacity>
+      )}
+
       <View style={styles.topRow}>
         <View style={styles.coinsContainer}>
           <Text style={styles.coinIcon}>🪙</Text>
@@ -41,6 +53,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingHorizontal: 20,
     paddingVertical: 15,
+    paddingTop: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
     shadowColor: '#000',
@@ -48,6 +61,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  backIcon: {
+    fontSize: 24,
+    color: '#4A90E2',
+    marginRight: 5,
+  },
+  backText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#4A90E2',
   },
   topRow: {
     flexDirection: 'row',

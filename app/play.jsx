@@ -141,7 +141,7 @@ export default function PlayScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <GameHeader user={user} />
+      <GameHeader user={user} showBackButton={true} />
       
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <Images images={gameState.currentAnime.images} />
