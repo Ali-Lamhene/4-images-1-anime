@@ -1,6 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Share } from 'react-native';
 import { HINT_COST } from '../constants/game';
+import { COLORS } from '../constants/colors';
+import { SPACING } from '../constants/spacing';
+import { TYPOGRAPHY } from '../constants/typography';
+import { SHADOWS } from '../constants/shadows';
 
 export default function LetterGame({
   animeName,
@@ -23,50 +27,103 @@ export default function LetterGame({
     onHintRequest();
   };
 
+  const handleShare = async () => {
+    try {
+      await Share.share({
+        message: `🎮 Devinez cet anime avec moi ! "${animeName}" - 4 Images 1 Anime 🎬\n\nTéléchargez l'app et jouez maintenant !`,
+        title: '4 Images 1 Anime',
+        url: 'https://yourapp.com', // Remplace par ton lien d'app
+      });
+    } catch (error) {
+      Alert.alert('Erreur', 'Impossible de partager');
+    }
+  };
+
   return (
     <View style={styles.container}>
-      {/* Zone de réponse */}
+      {/* Remplace le rendu de la zone de réponse pour ne pas créer de placeholder d'espace
+          (on applique une marge au conteneur du mot sauf pour le dernier mot) */}
       <View style={styles.answerContainer}>
-        {selectedLetters.map((letter, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.answerBox}
-            onPress={() => letter && onLetterRemove(index)}
-          >
-            <Text style={styles.answerLetter}>{letter || ''}</Text>
-          </TouchableOpacity>
-        ))}
+        {(() => {
+          const words = animeName.toUpperCase().split(' ');
+          let cursor = 0;
+          const nodes = [];
+
+          words.forEach((word, wIdx) => {
+            const isLast = wIdx === words.length - 1;
+
+            nodes.push(
+              <View
+                key={`word-${wIdx}`}
+                style={styles.answerWord}
+              >
+                {word.split('').map((_, j) => {
+                  const idx = cursor + j;
+                  const letter = selectedLetters[idx];
+
+                  return (
+                    <TouchableOpacity
+                      key={`ans-${wIdx}-${j}`}
+                      style={styles.answerBox}
+                      onPress={() => letter && onLetterRemove(idx)}
+                    >
+                      <Text style={styles.answerLetter}>{letter || ''}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            );
+
+            cursor += word.length;
+          });
+
+          return nodes;
+        })()}
       </View>
 
-      {/* Bouton Indice */}
-      <TouchableOpacity
-        style={[
-          styles.hintButton,
-          userCoins < HINT_COST && styles.hintButtonDisabled,
-        ]}
-        onPress={handleHint}
-        disabled={userCoins < HINT_COST}
-      >
-        <Text style={styles.hintIcon}>💡</Text>
-        <Text style={styles.hintText}>Indice</Text>
-        <Text style={styles.hintCost}>{HINT_COST} 🪙</Text>
-      </TouchableOpacity>
+      {/* Lettres disponibles et Boutons d'action */}
+      <View style={styles.bottomSection}>
+        {/* Lettres disponibles */}
+        {/* // Remplace le mapping des lettres disponibles pour ne PAS créer de cases vides (lettres utilisées ou espaces) */}
+        <View style={styles.lettersContainer}>
+          {availableLetters.map((letter, index) => {
+            if (!letter) return null; // ne pas rendre de TouchableOpacity vide
+            return (
+              <TouchableOpacity
+                key={index}
+                style={styles.letterBox}
+                onPress={() => onLetterSelect(letter, index)}
+              >
+                <Text style={styles.letterText}>{letter}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
 
-      {/* Lettres disponibles */}
-      <View style={styles.lettersContainer}>
-        {availableLetters.map((letter, index) => (
+        {/* Boutons d'action (Indice et Partager) */}
+        <View style={styles.actionButtonsContainer}>
+          {/* Bouton Indice - compact (48x48) */}
           <TouchableOpacity
-            key={index}
             style={[
-              styles.letterBox,
-              !letter && styles.letterBoxUsed,
+              styles.actionButton,
+              styles.actionButtonCompact,
+              styles.hintButton,
+              userCoins < HINT_COST && styles.actionButtonDisabled,
             ]}
-            onPress={() => letter && onLetterSelect(letter, index)}
-            disabled={!letter}
+            onPress={handleHint}
+            disabled={userCoins < HINT_COST}
           >
-            <Text style={styles.letterText}>{letter}</Text>
+            <Text style={[styles.actionButtonIcon, styles.actionButtonIconCompact]}>💡</Text>
           </TouchableOpacity>
-        ))}
+
+          {/* Bouton Partager - compact (48x48) */}
+          <TouchableOpacity
+            style={[styles.actionButton, styles.actionButtonCompact, styles.shareButton]}
+            onPress={handleShare}
+          >
+            <Text style={[styles.actionButtonIcon, styles.actionButtonIconCompact]}>📤</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -74,95 +131,133 @@ export default function LetterGame({
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.lg,
   },
   answerContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: 8,
-    marginBottom: 20,
+    alignItems: 'center',
+    justifyContent: "center",
+    flexWrap: 'wrap', // autorise le retour à la ligne
+    columnGap: SPACING.xl, // espace horizontal entre mots (pas ajouté en fin de ligne)
+    rowGap: SPACING.gapSm, // espace vertical entre les lignes
+    marginBottom: SPACING.lg,
+  },
+  answerWord: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.gapSm,
+  },
+  answerWordWithSpace: {
+    marginRight: SPACING.xl,
+  },
+  answerSpace: {
+    width: SPACING.xl, // espace visible entre les mots
+    height: 50,        // même hauteur que answerBox pour un alignement propre
   },
   answerBox: {
-    width: 45,
-    height: 50,
-    backgroundColor: '#fff',
-    borderWidth: 2,
-    borderColor: '#4A90E2',
-    borderRadius: 8,
+    width: 35,
+    height: 40,
+    backgroundColor: COLORS.accent,
+    borderWidth: SPACING.borderMedium,
+    borderColor: COLORS.border,
+    borderRadius: SPACING.radiusSm,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    ...SHADOWS.small,
   },
   answerLetter: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: TYPOGRAPHY.xxl,
+    fontWeight: TYPOGRAPHY.bold,
+    color: COLORS.textPrimary,
   },
-  hintButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FF9800',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 25,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  hintButtonDisabled: {
-    backgroundColor: '#ccc',
-    opacity: 0.6,
-  },
-  hintIcon: {
-    fontSize: 20,
-    marginRight: 8,
-  },
-  hintText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginRight: 8,
-  },
-  hintCost: {
-    fontSize: 14,
-    color: '#fff',
+  // Place les lettres et les boutons d'action côte à côte
+  bottomSection: {
+    position: 'relative',
   },
   lettersContainer: {
+    flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  letterBox: {
-    width: 50,
-    height: 55,
-    backgroundColor: '#4CAF50',
-    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
+    flexWrap: 'wrap',
+    gap: SPACING.gapMd, // utilise le même gap que les images
+    paddingRight: 48 + SPACING.gapMd,
+  },
+  letterBox: {
+    width: 48,
+    height: 48,
+    backgroundColor: COLORS.success,
+    borderRadius: SPACING.radiusMd,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...SHADOWS.medium,
   },
   letterBoxUsed: {
-    backgroundColor: '#E0E0E0',
-    opacity: 0.5,
+    backgroundColor: COLORS.lightGray,
+    opacity: 0.4,
   },
   letterText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontSize: TYPOGRAPHY.xl,
+    fontWeight: TYPOGRAPHY.bold,
+    color: COLORS.textPrimary,
+  },
+  // Colonne à droite pour les boutons d'action (compact)
+  actionButtonsContainer: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: 48,
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: SPACING.gapMd, // cohérent avec la grille
+  },
+  actionButton: {
+    width: '100%',
+    borderRadius: SPACING.radiusMd,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...SHADOWS.medium,
+  },
+  // Taille compacte = taille des lettres disponibles
+  actionButtonCompact: {
+    width: 48,
+    height: 48,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+  },
+  actionButtonDisabled: {
+    opacity: 0.5,
+  },
+  hintButton: {
+    backgroundColor: COLORS.warning,
+  },
+  shareButton: {
+    backgroundColor: COLORS.info || '#3B82F6',
+  },
+  actionButtonIcon: {
+    fontSize: TYPOGRAPHY.xxl,
+    marginBottom: SPACING.sm,
+  },
+  // Icône sans marge pour les boutons compacts
+  actionButtonIconCompact: {
+    marginBottom: 0,
+    fontSize: TYPOGRAPHY.xl,
+  },
+  actionButtonLabel: {
+    fontSize: TYPOGRAPHY.md,
+    fontWeight: TYPOGRAPHY.bold,
+    color: COLORS.textPrimary,
+    textAlign: 'center',
+  },
+  actionButtonCost: {
+    fontSize: TYPOGRAPHY.xs,
+    color: COLORS.textSecondary,
+    marginTop: SPACING.sm,
+    fontWeight: TYPOGRAPHY.semibold,
+  },
+  // Masque les libellés/coûts dans la version compacte
+  hidden: {
+    display: 'none',
   },
 });

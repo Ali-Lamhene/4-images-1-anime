@@ -12,7 +12,7 @@ import { SPACING } from '../constants/spacing';
 // Données de test
 const TEST_ANIME = {
   id: '1',
-  name: 'NARUTO',
+  name: 'One Piece',
   images: [
     'https://via.placeholder.com/300/FF6347/FFFFFF?text=Image+1',
     'https://via.placeholder.com/300/4682B4/FFFFFF?text=Image+2',
