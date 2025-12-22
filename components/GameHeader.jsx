@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.goldLight,
     paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.gapSm,
+    paddingVertical: 2,
     borderRadius: SPACING.radiusXl,
     borderWidth: SPACING.borderMedium,
     borderColor: COLORS.gold,

@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Image, StyleSheet, Dimensions } from 'react-native';
+import { COLORS } from '../constants/colors';
+import { SPACING } from '../constants/spacing';
+import { SHADOWS } from '../constants/shadows';
 
 const { width } = Dimensions.get('window');
-const imageSize = (width - 60) / 2;
+const imageSize = (width - (SPACING.lg * 2) - SPACING.gapMd) / 2;
 
 export default function Images({ images }) {
   return (
@@ -24,25 +27,21 @@ export default function Images({ images }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
+    gap: SPACING.gapMd,
   },
   imageContainer: {
     width: imageSize,
     height: imageSize,
-    borderRadius: 12,
+    borderRadius: SPACING.radiusMd,
     overflow: 'hidden',
-    backgroundColor: '#f0f0f0',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
+    backgroundColor: COLORS.secondary,
+    ...SHADOWS.medium,
   },
   image: {
     width: '100%',

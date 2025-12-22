@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Alert, StatusBar, Platform } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GameHeader from '../components/GameHeader';
 import Images from '../components/Images';
 import LetterGame from '../components/LetterGame';
 import { shuffleLetters, normalizeString, checkAnswer } from '../utils/gameUtils';
 import { HINT_COST } from '../constants/game';
+import { COLORS } from '../constants/colors';
+import { SPACING } from '../constants/spacing';
 
 // Données de test
 const TEST_ANIME = {
@@ -167,12 +169,13 @@ export default function PlayScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: COLORS.primary,
   },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 20,
+    paddingBottom: SPACING.xs,
   },
 });
+
