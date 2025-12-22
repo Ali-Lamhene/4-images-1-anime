@@ -33,16 +33,19 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: SPACING.gapMd,
+    gap: SPACING.md
   },
   imageContainer: {
-    width: imageSize,
-    height: imageSize,
+    width: '48%',
+    maxWidth: 200,
+    maxHeight: 200,
+    height: imageSize - 20,
     borderRadius: SPACING.radiusMd,
     overflow: 'hidden',
     backgroundColor: COLORS.secondary,
     ...SHADOWS.medium,
   },
+
   image: {
     width: '100%',
     height: '100%',

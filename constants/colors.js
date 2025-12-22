@@ -1,7 +1,8 @@
 export const COLORS = {
   // Couleurs principales
   primary: '#1A1A2E',        // Bleu-noir sombre (backgrounds principaux)
-  secondary: '#16213E',      // Bleu marine foncé (backgrounds secondaires)
+  secondary: '#16213E',  
+  secondaryOp: 'rgb(22, 33, 62, 0.8)',    // Bleu marine foncé (backgrounds secondaires)
   accent: '#0F3460',         // Bleu profond (éléments interactifs)
   
   // Couleur dorée

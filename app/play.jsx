@@ -1,181 +1,202 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import GameHeader from '../components/GameHeader';
 import Images from '../components/Images';
 import LetterGame from '../components/LetterGame';
+import VictoryPopup from '../components/VictoryPopup';
+
 import { shuffleLetters, normalizeString, checkAnswer } from '../utils/gameUtils';
 import { HINT_COST } from '../constants/game';
 import { COLORS } from '../constants/colors';
-import { SPACING } from '../constants/spacing';
 
 // Données de test
-const TEST_ANIME = {
-  id: '1',
-  name: 'One Piece',
-  images: [
-    'https://via.placeholder.com/300/FF6347/FFFFFF?text=Image+1',
-    'https://via.placeholder.com/300/4682B4/FFFFFF?text=Image+2',
-    'https://via.placeholder.com/300/32CD32/FFFFFF?text=Image+3',
-    'https://via.placeholder.com/300/FFD700/FFFFFF?text=Image+4',
-  ],
-  difficulty: 'easy',
-};
+const ANIME_TEST = [
+  {
+    id: '1',
+    name: 'One Piece',
+    images: [
+      'https://via.placeholder.com/300/FF6347/FFFFFF?text=Image+1',
+      'https://via.placeholder.com/300/4682B4/FFFFFF?text=Image+2',
+      'https://via.placeholder.com/300/32CD32/FFFFFF?text=Image+3',
+      'https://via.placeholder.com/300/FFD700/FFFFFF?text=Image+4',
+    ],
+    rewards: { coins: 100, xp: 50 },
+  },
+  {
+    id: '2',
+    name: 'Naruto',
+    images: [
+      'https://via.placeholder.com/300/FF8C00/FFFFFF?text=Image+1',
+      'https://via.placeholder.com/300/1E90FF/FFFFFF?text=Image+2',
+      'https://via.placeholder.com/300/FFD700/FFFFFF?text=Image+3',
+      'https://via.placeholder.com/300/DC143C/FFFFFF?text=Image+4',
+    ],
+    rewards: { coins: 100, xp: 50 },
+  },
+];
 
 export default function PlayScreen() {
+  const [currentAnimeIndex, setCurrentAnimeIndex] = useState(0);
+  const [showVictoryPopup, setShowVictoryPopup] = useState(false);
+
   const [user, setUser] = useState({
     coins: 500,
     xp: 150,
-    rank: 'Novice',
     level: 2,
   });
 
+  const currentAnime = ANIME_TEST[currentAnimeIndex];
+
   const [gameState, setGameState] = useState({
-    currentAnime: TEST_ANIME,
-    selectedLetters: Array(TEST_ANIME.name.replace(/\s/g, '').length).fill(null),
-    availableLetters: shuffleLetters(TEST_ANIME.name),
-    hintsUsed: 0,
+    currentAnime,
+    selectedLetters: Array(
+      currentAnime.name.replace(/\s/g, '').length
+    ).fill(null),
+    availableLetters: shuffleLetters(currentAnime.name),
   });
 
+  /* -------------------- GAME LOGIC -------------------- */
+
   useEffect(() => {
-    // Vérifier la réponse à chaque changement
     if (gameState.selectedLetters.every(l => l !== null)) {
-      if (checkAnswer(gameState.selectedLetters, gameState.currentAnime.name)) {
-        handleCorrectAnswer();
+      if (
+        checkAnswer(
+          gameState.selectedLetters,
+          gameState.currentAnime.name
+        )
+      ) {
+        setTimeout(() => setShowVictoryPopup(true), 300);
       } else {
-        handleWrongAnswer();
+        resetAnswer();
       }
     }
   }, [gameState.selectedLetters]);
 
-  const handleLetterSelect = (letter, letterIndex) => {
-    const firstEmptyIndex = gameState.selectedLetters.findIndex(l => l === null);
-    
-    if (firstEmptyIndex !== -1) {
-      const newSelectedLetters = [...gameState.selectedLetters];
-      newSelectedLetters[firstEmptyIndex] = letter;
-      
-      const newAvailableLetters = [...gameState.availableLetters];
-      newAvailableLetters[letterIndex] = '';
-      
-      setGameState({
-        ...gameState,
-        selectedLetters: newSelectedLetters,
-        availableLetters: newAvailableLetters,
-      });
-    }
+  const handleLetterSelect = (letter, index) => {
+    const firstEmpty = gameState.selectedLetters.findIndex(l => l === null);
+    if (firstEmpty === -1) return;
+
+    const selectedLetters = [...gameState.selectedLetters];
+    selectedLetters[firstEmpty] = letter;
+
+    const availableLetters = [...gameState.availableLetters];
+    availableLetters[index] = '';
+
+    setGameState({ ...gameState, selectedLetters, availableLetters });
   };
 
-  const handleLetterRemove = (index) => {
+  const handleLetterRemove = index => {
     const letter = gameState.selectedLetters[index];
     if (!letter) return;
 
-    const newSelectedLetters = [...gameState.selectedLetters];
-    newSelectedLetters[index] = null;
+    const selectedLetters = [...gameState.selectedLetters];
+    selectedLetters[index] = null;
 
-    const emptyIndex = gameState.availableLetters.findIndex(l => l === '');
-    const newAvailableLetters = [...gameState.availableLetters];
-    if (emptyIndex !== -1) {
-      newAvailableLetters[emptyIndex] = letter;
-    }
+    const availableLetters = [...gameState.availableLetters];
+    const emptyIndex = availableLetters.findIndex(l => l === '');
+    if (emptyIndex !== -1) availableLetters[emptyIndex] = letter;
 
-    setGameState({
-      ...gameState,
-      selectedLetters: newSelectedLetters,
-      availableLetters: newAvailableLetters,
-    });
+    setGameState({ ...gameState, selectedLetters, availableLetters });
   };
 
   const handleHintRequest = () => {
     if (user.coins < HINT_COST) return;
 
-    const correctAnswer = normalizeString(gameState.currentAnime.name);
-    const firstEmptyIndex = gameState.selectedLetters.findIndex(l => l === null);
-    
-    if (firstEmptyIndex === -1) return;
+    const correct = normalizeString(gameState.currentAnime.name);
+    const index = gameState.selectedLetters.findIndex(l => l === null);
+    if (index === -1) return;
 
-    const correctLetter = correctAnswer[firstEmptyIndex];
-    const letterIndex = gameState.availableLetters.findIndex(l => l === correctLetter);
-    
+    const letter = correct[index];
+    const letterIndex = gameState.availableLetters.findIndex(l => l === letter);
+
     if (letterIndex !== -1) {
-      handleLetterSelect(correctLetter, letterIndex);
+      handleLetterSelect(letter, letterIndex);
       setUser({ ...user, coins: user.coins - HINT_COST });
     }
   };
 
-  const handleCorrectAnswer = () => {
-    Alert.alert(
-      'Bravo ! 🎉',
-      'Vous avez trouvé la bonne réponse !',
-      [
-        {
-          text: 'Continuer',
-          onPress: () => {
-            // Récompenses
-            setUser({
-              ...user,
-              coins: user.coins + 100,
-              xp: user.xp + 50,
-            });
-            // Charger le prochain anime
-          },
-        },
-      ]
-    );
+  const handleContinue = () => {
+    // Récompenses
+    setUser(prev => ({
+      ...prev,
+      coins: prev.coins + currentAnime.rewards.coins,
+      xp: prev.xp + currentAnime.rewards.xp,
+    }));
+
+    setShowVictoryPopup(false);
+
+    const nextIndex = (currentAnimeIndex + 1) % ANIME_TEST.length;
+    const nextAnime = ANIME_TEST[nextIndex];
+
+    setCurrentAnimeIndex(nextIndex);
+    setGameState({
+      currentAnime: nextAnime,
+      selectedLetters: Array(
+        nextAnime.name.replace(/\s/g, '').length
+      ).fill(null),
+      availableLetters: shuffleLetters(nextAnime.name),
+    });
   };
 
-  const handleWrongAnswer = () => {
-    Alert.alert(
-      'Incorrect',
-      'Ce n\'est pas la bonne réponse. Réessayez !',
-      [{ text: 'OK' }]
-    );
-    
-    // Réinitialiser la réponse
+  const resetAnswer = () => {
     setTimeout(() => {
-      setGameState({
-        ...gameState,
-        selectedLetters: Array(gameState.currentAnime.name.replace(/\s/g, '').length).fill(null),
-        availableLetters: shuffleLetters(gameState.currentAnime.name),
-      });
+      setGameState(prev => ({
+        ...prev,
+        selectedLetters: Array(
+          prev.currentAnime.name.replace(/\s/g, '').length
+        ).fill(null),
+        availableLetters: shuffleLetters(prev.currentAnime.name),
+      }));
     }, 500);
   };
 
+  /* -------------------- RENDER -------------------- */
+
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <GameHeader user={user} showBackButton={true} />
-      
-      <ScrollView 
-        style={styles.scrollView} 
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        <Images images={gameState.currentAnime.images} />
-        
-        <LetterGame
-          animeName={gameState.currentAnime.name}
-          selectedLetters={gameState.selectedLetters}
-          availableLetters={gameState.availableLetters}
-          userCoins={user.coins}
-          onLetterSelect={handleLetterSelect}
-          onLetterRemove={handleLetterRemove}
-          onHintRequest={handleHintRequest}
-        />
-      </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <GameHeader
+        user={user}
+        showBackButton={!showVictoryPopup}
+        variant={showVictoryPopup ? 'overlay' : 'default'}
+      />
+
+      <View style={styles.content}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Images images={gameState.currentAnime.images} />
+
+          <LetterGame
+            animeName={gameState.currentAnime.name}
+            selectedLetters={gameState.selectedLetters}
+            availableLetters={gameState.availableLetters}
+            userCoins={user.coins}
+            onLetterSelect={handleLetterSelect}
+            onLetterRemove={handleLetterRemove}
+            onHintRequest={handleHintRequest}
+          />
+        </ScrollView>
+
+        {showVictoryPopup && (
+          <VictoryPopup
+            rewards={currentAnime.rewards}
+            onContinue={handleContinue}
+          />
+        )}
+      </View>
     </SafeAreaView>
   );
 }
+
+/* -------------------- STYLES -------------------- */
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.primary,
   },
-  scrollView: {
+  content: {
     flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: SPACING.xs,
+    position: 'relative',
   },
 });
-

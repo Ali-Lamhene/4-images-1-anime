@@ -1,57 +1,79 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+
 import { RANKS } from '../constants/game';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 import { TYPOGRAPHY } from '../constants/typography';
 import { SHADOWS } from '../constants/shadows';
 
-export default function GameHeader({ user, showBackButton = false }) {
+export default function GameHeader({
+  user,
+  showBackButton = false,
+  variant = 'default',
+}) {
   const router = useRouter();
-  const currentRank = RANKS.find(rank => rank.level === user.level) || RANKS[0];
-  const nextRank = RANKS.find(rank => rank.level === user.level + 1);
-  
-  const xpProgress = nextRank 
-    ? ((user.xp - currentRank.minXP) / (nextRank.minXP - currentRank.minXP)) * 100
+
+  const currentRank = RANKS.find(r => r.level === user.level) || RANKS[0];
+  const nextRank = RANKS.find(r => r.level === user.level + 1);
+
+  const xpProgress = nextRank
+    ? ((user.xp - currentRank.minXP) /
+      (nextRank.minXP - currentRank.minXP)) * 100
     : 100;
 
+  const isOverlay = variant === 'overlay';
+
   return (
-    <View style={styles.container}>
+    <View
+      pointerEvents={isOverlay ? 'none' : 'auto'}
+      style={[
+        styles.container,
+        isOverlay && styles.overlayContainer,
+      ]}
+    >
       <View style={styles.mainRow}>
-        {/* Left side: Back button, Rank & XP */}
+        {/* LEFT — TOUJOURS VISIBLE */}
         <View style={styles.leftSection}>
-          {showBackButton && (
-            <TouchableOpacity 
+          {/* BACK BUTTON — MASQUÉ EN OVERLAY */}
+          {showBackButton && !isOverlay && (
+            <TouchableOpacity
               style={styles.backButton}
               onPress={() => router.back()}
             >
               <Text style={styles.backIcon}>←</Text>
             </TouchableOpacity>
           )}
-          
+
+          {/* RANK + XP */}
           <View style={styles.rankXpContainer}>
-            <View style={styles.rankRow}>
-              <Text style={styles.rankIcon}>⭐</Text>
+            <View style={styles.xpWrapper}>
               <Text style={styles.rankText}>{currentRank.name}</Text>
-              
-              <View style={styles.xpBarContainer}>
-                <View style={styles.xpBarBackground}>
-                  <View style={[styles.xpBarFill, { width: `${xpProgress}%` }]} />
-                </View>
+
+              <View style={styles.xpCompact}>
+                <Text style={styles.xpValue}>{user.xp}</Text>
+                <Text style={styles.xpLabel}>XP</Text>
               </View>
-              
-              <Text style={styles.xpText}>
-                {user.xp}/{nextRank ? nextRank.minXP : currentRank.minXP}
-              </Text>
+            </View>
+
+            <View style={styles.xpBarBackground}>
+              <View
+                style={[
+                  styles.xpBarFill,
+                  { width: `${xpProgress}%` },
+                ]}
+              />
             </View>
           </View>
         </View>
 
-        {/* Right side: Coins */}
-        <View style={styles.coinsContainer}>
-          <Text style={styles.coinIcon}>🪙</Text>
-          <Text style={styles.coinsText}>{user.coins}</Text>
+        {/* RIGHT — TOUJOURS VISIBLE */}
+        <View style={styles.rightSection}>
+          <View style={styles.coinsContainer}>
+            <Text style={styles.coinIcon}>🪙</Text>
+            <Text style={styles.coinsText}>{user.coins}</Text>
+          </View>
         </View>
       </View>
     </View>
@@ -65,19 +87,35 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.md,
     borderBottomWidth: SPACING.borderThin,
     borderBottomColor: COLORS.border,
-    ...SHADOWS.medium,
   },
+
+  overlayContainer: {
+    backgroundColor: 'transparent',
+    borderBottomWidth: 0,
+    shadowColor: 'transparent',
+    elevation: 0,
+
+    position: 'absolute',
+    top: 20,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+  },
+
+
   mainRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+
   leftSection: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
     marginRight: SPACING.md,
   },
+
   backButton: {
     width: 36,
     height: 36,
@@ -85,50 +123,67 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: SPACING.sm,
     backgroundColor: COLORS.accent,
-    borderRadius: SPACING.radiusFull,
+    borderRadius: 18,
   },
+
   backIcon: {
     fontSize: TYPOGRAPHY.xl,
     color: COLORS.textPrimary,
   },
+
   rankXpContainer: {
     flex: 1,
+    maxWidth: 180,
   },
-  rankRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.gapSm,
-  },
-  rankIcon: {
-    fontSize: TYPOGRAPHY.lg,
-  },
+
   rankText: {
-    fontSize: TYPOGRAPHY.md,
+    fontSize: TYPOGRAPHY.sm,
     fontWeight: TYPOGRAPHY.bold,
     color: COLORS.gold,
+    marginBottom: 4,
   },
-  xpBarContainer: {
-    flex: 1,
-    marginHorizontal: SPACING.sm,
+
+  xpWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
+
   xpBarBackground: {
-    height: 12,
-    backgroundColor: COLORS.primary,
-    borderRadius: SPACING.radiusXs,
+    height: 8,
+    backgroundColor: COLORS.accent,
+    borderRadius: 4,
     overflow: 'hidden',
-    borderWidth: SPACING.borderThin,
-    borderColor: COLORS.border,
   },
+
   xpBarFill: {
     height: '100%',
     backgroundColor: COLORS.success,
-    borderRadius: SPACING.radiusXs,
   },
-  xpText: {
+
+  rightSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.md,
+  },
+
+  xpCompact: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+
+  xpLabel: {
     fontSize: TYPOGRAPHY.xs,
-    fontWeight: TYPOGRAPHY.semiBold,
     color: COLORS.textSecondary,
   },
+
+  xpValue: {
+    fontSize: TYPOGRAPHY.xs,
+    fontWeight: TYPOGRAPHY.bold,
+    color: COLORS.success,
+  },
+
   coinsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -136,14 +191,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     paddingVertical: 2,
     borderRadius: SPACING.radiusXl,
-    borderWidth: SPACING.borderMedium,
+    borderWidth: SPACING.borderThin,
     borderColor: COLORS.gold,
-    ...SHADOWS.gold,
   },
+
   coinIcon: {
-    fontSize: TYPOGRAPHY.xl,
-    marginRight: SPACING.gapSm,
+    fontSize: TYPOGRAPHY.lg,
+    marginRight: 4,
   },
+
   coinsText: {
     fontSize: TYPOGRAPHY.lg,
     fontWeight: TYPOGRAPHY.bold,

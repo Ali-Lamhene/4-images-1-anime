@@ -132,7 +132,7 @@ export default function LetterGame({
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.lg,
+    paddingVertical: SPACING.md,
   },
   answerContainer: {
     flexDirection: 'row',
@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
   // Place les lettres et les boutons d'action côte à côte
   bottomSection: {
     position: 'relative',
+    paddingVertical: SPACING.md
   },
   lettersContainer: {
     flex: 1,
@@ -211,6 +212,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     gap: SPACING.gapMd, // cohérent avec la grille
+    paddingVertical: SPACING.md
   },
   actionButton: {
     width: '100%',
