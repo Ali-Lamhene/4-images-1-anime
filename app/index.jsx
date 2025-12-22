@@ -1,30 +1,36 @@
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 
 export default function Index() {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>4 Images 1 Anime</Text>
-      <Text style={styles.subtitle}>Devinez l'anime à partir de 4 images !</Text>
-      
-      <TouchableOpacity 
-        style={styles.playButton}
-        onPress={() => router.push('/play')}
-      >
-        <Text style={styles.playButtonText}>Jouer</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      <View style={styles.content}>
+        <Text style={styles.title}>4 Images 1 Anime</Text>
+        <Text style={styles.subtitle}>Devinez l'anime à partir de 4 images !</Text>
+        
+        <TouchableOpacity 
+          style={styles.playButton}
+          onPress={() => router.push('/play')}
+        >
+          <Text style={styles.playButtonText}>Jouer</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#4A90E2',
+  },
+  content: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#4A90E2',
     padding: 20,
   },
   title: {
