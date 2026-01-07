@@ -1,12 +1,13 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import React from 'react';
+import { Animated, Easing, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { RANKS } from '../constants/game';
 import { COLORS } from '../constants/colors';
+import { RANKS } from '../constants/game';
 import { SPACING } from '../constants/spacing';
 import { TYPOGRAPHY } from '../constants/typography';
-import { SHADOWS } from '../constants/shadows';
+import GoldCoinIcon from './icons/GoldCoinIcon';
+import PotionIcon from './icons/PotionIcon';
 
 export default function GameHeader({
   user,
@@ -52,7 +53,8 @@ export default function GameHeader({
               <Text style={styles.rankText}>{currentRank.name}</Text>
 
               <View style={styles.xpCompact}>
-                <Text style={styles.xpValue}>{user.xp}</Text>
+                <PotionIcon width={14} height={14} style={{ marginRight: 2 }} />
+                <AnimatedCounter value={user.xp} style={styles.xpValue} />
                 <Text style={styles.xpLabel}>XP</Text>
               </View>
             </View>
@@ -71,14 +73,38 @@ export default function GameHeader({
         {/* RIGHT — TOUJOURS VISIBLE */}
         <View style={styles.rightSection}>
           <View style={styles.coinsContainer}>
-            <Text style={styles.coinIcon}>🪙</Text>
-            <Text style={styles.coinsText}>{user.coins}</Text>
+            <GoldCoinIcon width={24} height={24} style={{ marginRight: 2 }} />
+            <AnimatedCounter value={user.coins} style={styles.coinsText} />
           </View>
         </View>
       </View>
     </View>
   );
 }
+
+const AnimatedCounter = ({ value, style }) => {
+  const animatedValue = React.useRef(new Animated.Value(value)).current;
+  const [displayValue, setDisplayValue] = React.useState(value);
+
+  React.useEffect(() => {
+    const listener = animatedValue.addListener(({ value: v }) => {
+      setDisplayValue(Math.floor(v));
+    });
+
+    Animated.timing(animatedValue, {
+      toValue: value,
+      duration: 1000,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: false,
+    }).start();
+
+    return () => {
+      animatedValue.removeListener(listener);
+    };
+  }, [value]);
+
+  return <Text style={style}>{displayValue}</Text>;
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -170,7 +196,7 @@ const styles = StyleSheet.create({
   xpCompact: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 2, // Slightly tighter for icon
   },
 
   xpLabel: {
@@ -188,16 +214,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.goldLight,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: 2,
+    paddingHorizontal: SPACING.xs,
+    paddingRight: SPACING.xs + 3,
+    paddingVertical: 1,
     borderRadius: SPACING.radiusXl,
     borderWidth: SPACING.borderThin,
     borderColor: COLORS.gold,
-  },
-
-  coinIcon: {
-    fontSize: TYPOGRAPHY.lg,
-    marginRight: 4,
   },
 
   coinsText: {

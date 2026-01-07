@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import GameHeader from '../components/GameHeader';
@@ -7,9 +7,9 @@ import Images from '../components/Images';
 import LetterGame from '../components/LetterGame';
 import VictoryPopup from '../components/VictoryPopup';
 
-import { shuffleLetters, normalizeString, checkAnswer } from '../utils/gameUtils';
-import { HINT_COST } from '../constants/game';
 import { COLORS } from '../constants/colors';
+import { HINT_COST } from '../constants/game';
+import { checkAnswer, normalizeString, shuffleLetters } from '../utils/gameUtils';
 
 // Données de test
 const ANIME_TEST = [
@@ -54,7 +54,10 @@ export default function PlayScreen() {
     selectedLetters: Array(
       currentAnime.name.replace(/\s/g, '').length
     ).fill(null),
-    availableLetters: shuffleLetters(currentAnime.name),
+    availableLetters: shuffleLetters(currentAnime.name).map(char => ({
+      char,
+      used: false,
+    })),
   });
 
   /* -------------------- GAME LOGIC -------------------- */
@@ -82,7 +85,7 @@ export default function PlayScreen() {
     selectedLetters[firstEmpty] = letter;
 
     const availableLetters = [...gameState.availableLetters];
-    availableLetters[index] = '';
+    availableLetters[index] = { ...availableLetters[index], used: true };
 
     setGameState({ ...gameState, selectedLetters, availableLetters });
   };
@@ -95,8 +98,16 @@ export default function PlayScreen() {
     selectedLetters[index] = null;
 
     const availableLetters = [...gameState.availableLetters];
-    const emptyIndex = availableLetters.findIndex(l => l === '');
-    if (emptyIndex !== -1) availableLetters[emptyIndex] = letter;
+    // Retrouver la première occurrence de cette lettre qui est marquée 'used'
+    const restoreIndex = availableLetters.findIndex(
+      item => item.char === letter && item.used
+    );
+    if (restoreIndex !== -1) {
+      availableLetters[restoreIndex] = {
+        ...availableLetters[restoreIndex],
+        used: false,
+      };
+    }
 
     setGameState({ ...gameState, selectedLetters, availableLetters });
   };
@@ -109,7 +120,9 @@ export default function PlayScreen() {
     if (index === -1) return;
 
     const letter = correct[index];
-    const letterIndex = gameState.availableLetters.findIndex(l => l === letter);
+    const letterIndex = gameState.availableLetters.findIndex(
+      item => item.char === letter && !item.used
+    );
 
     if (letterIndex !== -1) {
       handleLetterSelect(letter, letterIndex);
@@ -136,7 +149,10 @@ export default function PlayScreen() {
       selectedLetters: Array(
         nextAnime.name.replace(/\s/g, '').length
       ).fill(null),
-      availableLetters: shuffleLetters(nextAnime.name),
+      availableLetters: shuffleLetters(nextAnime.name).map(char => ({
+        char,
+        used: false,
+      })),
     });
   };
 
@@ -147,7 +163,10 @@ export default function PlayScreen() {
         selectedLetters: Array(
           prev.currentAnime.name.replace(/\s/g, '').length
         ).fill(null),
-        availableLetters: shuffleLetters(prev.currentAnime.name),
+        availableLetters: shuffleLetters(prev.currentAnime.name).map(char => ({
+          char,
+          used: false,
+        })),
       }));
     }, 500);
   };

@@ -1,10 +1,9 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Share } from 'react-native';
-import { HINT_COST } from '../constants/game';
+import { Alert, Share, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants/colors';
+import { HINT_COST } from '../constants/game';
+import { SHADOWS } from '../constants/shadows';
 import { SPACING } from '../constants/spacing';
 import { TYPOGRAPHY } from '../constants/typography';
-import { SHADOWS } from '../constants/shadows';
 
 export default function LetterGame({
   animeName,
@@ -86,15 +85,18 @@ export default function LetterGame({
         {/* Lettres disponibles */}
         {/* // Remplace le mapping des lettres disponibles pour ne PAS créer de cases vides (lettres utilisées ou espaces) */}
         <View style={styles.lettersContainer}>
-          {availableLetters.map((letter, index) => {
-            if (!letter) return null; // ne pas rendre de TouchableOpacity vide
+          {availableLetters.map((item, index) => {
             return (
               <TouchableOpacity
                 key={index}
-                style={styles.letterBox}
-                onPress={() => onLetterSelect(letter, index)}
+                style={[
+                  styles.letterBox,
+                  item.used && styles.letterBoxUsed,
+                ]}
+                onPress={() => !item.used && onLetterSelect(item.char, index)}
+                disabled={item.used}
               >
-                <Text style={styles.letterText}>{letter}</Text>
+                <Text style={styles.letterText}>{item.char}</Text>
               </TouchableOpacity>
             );
           })}
