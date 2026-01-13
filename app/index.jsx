@@ -1,22 +1,43 @@
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS } from '../constants/colors';
+import { SPACING } from '../constants/spacing';
 
 export default function Index() {
   const router = useRouter();
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>4 Images 1 Anime</Text>
-        <Text style={styles.subtitle}>Devinez l'anime à partir de 4 images !</Text>
-        
-        <TouchableOpacity 
-          style={styles.playButton}
-          onPress={() => router.push('/play')}
-        >
-          <Text style={styles.playButtonText}>Jouer</Text>
-        </TouchableOpacity>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>4 IMAGES</Text>
+          <Text style={styles.subtitle}>UN ANIME</Text>
+        </View>
+
+        <View style={styles.divider} />
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.playButton}
+            onPress={() => router.push('/play')}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.playButtonText}>COMMENCER L'EXPÉRIENCE</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            onPress={() => { }}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.secondaryButtonText}>COLLECTIONS</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>FOUR IMAGES • ONE ANIME</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -25,41 +46,75 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#4A90E2',
+    backgroundColor: COLORS.primary,
   },
   content: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    paddingHorizontal: SPACING.xxl,
+  },
+  textContainer: {
+    alignItems: 'center',
+    marginBottom: 40,
   },
   title: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 10,
+    fontSize: 42,
+    fontWeight: '600',
+    color: COLORS.textPrimary,
+    letterSpacing: 8,
     textAlign: 'center',
   },
   subtitle: {
-    fontSize: 18,
-    color: '#fff',
-    marginBottom: 40,
+    fontSize: 16,
+    color: COLORS.textSecondary,
+    marginTop: 4,
+    letterSpacing: 12,
     textAlign: 'center',
+    fontWeight: '300',
+  },
+  divider: {
+    height: 1,
+    width: 30,
+    backgroundColor: COLORS.accent,
+    marginBottom: 60,
+    opacity: 0.5,
+  },
+  buttonContainer: {
+    width: '100%',
+    maxWidth: 320,
+    gap: 8,
   },
   playButton: {
-    backgroundColor: '#FF9800',
-    paddingHorizontal: 60,
+    backgroundColor: COLORS.secondary,
     paddingVertical: 20,
-    borderRadius: 30,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
+    alignItems: 'center',
+    borderRadius: 2,
   },
   playButtonText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontSize: 12,
+    fontWeight: '500',
+    color: COLORS.textPrimary,
+    letterSpacing: 2,
   },
+  secondaryButton: {
+    paddingVertical: 16,
+    alignItems: 'center',
+  },
+  secondaryButtonText: {
+    fontSize: 10,
+    fontWeight: '400',
+    color: COLORS.textSecondary,
+    letterSpacing: 1,
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 50,
+  },
+  footerText: {
+    fontSize: 9,
+    color: COLORS.textSecondary,
+    letterSpacing: 4,
+    fontWeight: '300',
+  }
 });

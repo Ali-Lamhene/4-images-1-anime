@@ -11,15 +11,14 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 
 import { COLORS } from '../constants/colors';
 import { RANKS } from '../constants/game';
-import { SPACING } from '../constants/spacing';
-import { TYPOGRAPHY } from '../constants/typography';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function RankUpPopup({ level, onClose }) {
     const [showConfetti, setShowConfetti] = useState(false);
-    const scaleAnim = useState(new Animated.Value(0.8))[0];
+    const scaleAnim = useState(new Animated.Value(1))[0];
     const opacityAnim = useState(new Animated.Value(0))[0];
+    const slideAnim = useState(new Animated.Value(10))[0];
 
     const rank = RANKS.find(r => r.level === level) || RANKS[0];
 
@@ -27,13 +26,13 @@ export default function RankUpPopup({ level, onClose }) {
         Animated.parallel([
             Animated.timing(opacityAnim, {
                 toValue: 1,
-                duration: 300,
+                duration: 1000,
                 useNativeDriver: true,
             }),
-            Animated.spring(scaleAnim, {
-                toValue: 1,
-                friction: 6,
-                tension: 40,
+            Animated.timing(slideAnim, {
+                toValue: 0,
+                duration: 1000,
+                easing: Easing.out(Easing.cubic),
                 useNativeDriver: true,
             }),
         ]).start(() => {
@@ -45,28 +44,30 @@ export default function RankUpPopup({ level, onClose }) {
         <Animated.View style={[styles.overlay, { opacity: opacityAnim }]}>
             {showConfetti && (
                 <ConfettiCannon
-                    count={200}
+                    count={150}
                     origin={{ x: SCREEN_WIDTH / 2, y: -20 }}
                     fadeOut={true}
-                    fallSpeed={3000}
+                    fallSpeed={4000}
+                    colors={[COLORS.textPrimary, COLORS.accent, COLORS.secondary]}
                 />
             )}
 
             <Animated.View
                 style={[
                     styles.popupContainer,
-                    { transform: [{ scale: scaleAnim }] },
+                    { transform: [{ translateY: slideAnim }] },
                 ]}
             >
-                <Text style={styles.congratsText}>FÉLICITATIONS !</Text>
-                <View style={styles.rankIconContainer}>
-                    <Text style={styles.rankBadge}>🏆</Text>
-                </View>
-                <Text style={styles.levelText}>NIVEAU {level}</Text>
-                <Text style={styles.rankNameText}>{rank.name}</Text>
+                <Text style={styles.rankLabel}>NOUVEAU RANG DISPONIBLE</Text>
+
+                <Text style={styles.rankName}>{rank.name.toUpperCase()}</Text>
+
+                <View style={styles.divider} />
+
+                <Text style={styles.levelText}>NIVEAU {level} ATTEINT</Text>
 
                 <Text style={styles.subtitle}>
-                    Vous avez atteint un nouveau rang ! Continuez comme ça pour devenir une Légende.
+                    Votre progression continue de s'élever. Explorez de nouveaux horizons.
                 </Text>
 
                 <TouchableOpacity
@@ -74,12 +75,15 @@ export default function RankUpPopup({ level, onClose }) {
                     onPress={onClose}
                     activeOpacity={0.8}
                 >
-                    <Text style={styles.closeButtonText}>Génial !</Text>
+                    <Text style={styles.closeButtonText}>CONTINUER</Text>
                 </TouchableOpacity>
             </Animated.View>
         </Animated.View>
     );
 }
+
+// Simple easing import for the animation
+const Easing = require('react-native').Easing;
 
 const styles = StyleSheet.create({
     overlay: {
@@ -88,72 +92,67 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+        backgroundColor: 'rgba(15, 15, 20, 0.98)',
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 1000,
     },
     popupContainer: {
         backgroundColor: COLORS.secondary,
-        borderRadius: SPACING.radiusXl,
-        padding: SPACING.xxl,
+        borderRadius: 2,
+        padding: 40,
         width: '85%',
-        maxWidth: 400,
+        maxWidth: 340,
         alignItems: 'center',
-        borderWidth: 2,
-        borderColor: COLORS.gold,
     },
-    congratsText: {
-        fontSize: 24,
-        fontWeight: TYPOGRAPHY.bold,
-        color: COLORS.gold,
-        marginBottom: SPACING.md,
-        letterSpacing: 2,
+    rankLabel: {
+        fontSize: 9,
+        fontWeight: '400',
+        color: COLORS.textSecondary,
+        letterSpacing: 4,
+        marginBottom: 20,
     },
-    rankIconContainer: {
-        width: 100,
-        height: 100,
+    rankName: {
+        fontSize: 32,
+        fontWeight: '600',
+        color: COLORS.textPrimary,
+        textAlign: 'center',
+        letterSpacing: 6,
+        marginBottom: 20,
+    },
+    divider: {
+        width: 15,
+        height: 1,
         backgroundColor: COLORS.accent,
-        borderRadius: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: SPACING.lg,
-        borderWidth: 3,
-        borderColor: COLORS.gold,
-    },
-    rankBadge: {
-        fontSize: 50,
+        marginBottom: 20,
     },
     levelText: {
-        fontSize: TYPOGRAPHY.xl,
-        color: COLORS.textSecondary,
-        marginBottom: 4,
-    },
-    rankNameText: {
-        fontSize: 32,
-        fontWeight: TYPOGRAPHY.bold,
+        fontSize: 12,
         color: COLORS.textPrimary,
-        marginBottom: SPACING.lg,
-        textAlign: 'center',
+        fontWeight: '500',
+        letterSpacing: 2,
+        marginBottom: 15,
     },
     subtitle: {
-        fontSize: TYPOGRAPHY.md,
+        fontSize: 11,
         color: COLORS.textSecondary,
         textAlign: 'center',
-        marginBottom: SPACING.xxl,
-        lineHeight: 22,
+        marginBottom: 40,
+        lineHeight: 18,
+        fontWeight: '300',
+        letterSpacing: 0.5,
     },
     closeButton: {
-        backgroundColor: COLORS.gold,
-        paddingVertical: SPACING.md,
-        paddingHorizontal: SPACING.xxl,
-        borderRadius: SPACING.radiusLg,
+        backgroundColor: COLORS.accent,
+        paddingVertical: 18,
         width: '100%',
+        borderRadius: 2,
     },
     closeButtonText: {
-        fontSize: TYPOGRAPHY.lg,
-        fontWeight: TYPOGRAPHY.bold,
+        fontSize: 10,
+        fontWeight: '700',
         color: COLORS.primary,
         textAlign: 'center',
+        letterSpacing: 3,
     },
 });

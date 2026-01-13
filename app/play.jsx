@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import GameHeader from '../components/GameHeader';
@@ -20,6 +20,7 @@ import {
   saveUserData
 } from '../utils/storage';
 
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function PlayScreen() {
   const [currentAnimeIndex, setCurrentAnimeIndex] = useState(0);
@@ -51,7 +52,6 @@ export default function PlayScreen() {
       setUser(savedUser);
       setCurrentAnimeIndex(savedIndex);
 
-      // Re-initialize gameState with the loaded index
       const anime = ANIME_DATA[savedIndex] || ANIME_DATA[0];
       setGameState({
         currentAnime: anime,
@@ -121,7 +121,6 @@ export default function PlayScreen() {
     selectedLetters[index] = null;
 
     const availableLetters = [...gameState.availableLetters];
-    // Retrouver la première occurrence de cette lettre qui est marquée 'used'
     const restoreIndex = availableLetters.findIndex(
       item => item.char === letter && item.used
     );
@@ -154,7 +153,6 @@ export default function PlayScreen() {
   };
 
   const handleContinue = () => {
-    // Récompenses
     setUser(prev => {
       const newXP = prev.xp + DEFAULT_REWARDS.xp;
       const newLevel = calculateLevel(newXP);
@@ -204,9 +202,7 @@ export default function PlayScreen() {
     }, 500);
   };
 
-  /* -------------------- RENDER -------------------- */
-
-  if (!isReady) return null; // Or a loading spinner
+  if (!isReady) return null;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -217,18 +213,23 @@ export default function PlayScreen() {
       />
 
       <View style={styles.content}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Images images={gameState.currentAnime.images} />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          <View style={styles.gameWrapper}>
+            <Images images={gameState.currentAnime.images} />
 
-          <LetterGame
-            animeName={gameState.currentAnime.name}
-            selectedLetters={gameState.selectedLetters}
-            availableLetters={gameState.availableLetters}
-            userCoins={user.coins}
-            onLetterSelect={handleLetterSelect}
-            onLetterRemove={handleLetterRemove}
-            onHintRequest={handleHintRequest}
-          />
+            <LetterGame
+              animeName={gameState.currentAnime.name}
+              selectedLetters={gameState.selectedLetters}
+              availableLetters={gameState.availableLetters}
+              userCoins={user.coins}
+              onLetterSelect={handleLetterSelect}
+              onLetterRemove={handleLetterRemove}
+              onHintRequest={handleHintRequest}
+            />
+          </View>
         </ScrollView>
 
         {showVictoryPopup && (
@@ -249,8 +250,6 @@ export default function PlayScreen() {
   );
 }
 
-/* -------------------- STYLES -------------------- */
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -258,6 +257,16 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    position: 'relative',
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 20,
+  },
+  gameWrapper: {
+    maxWidth: 600,
+    width: '100%',
+    alignSelf: 'center',
+    flex: 1,
+    justifyContent: 'center', // Helps center everything if space allows
   },
 });

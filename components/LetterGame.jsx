@@ -1,9 +1,7 @@
-import { Alert, Share, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants/colors';
 import { HINT_COST } from '../constants/game';
-import { SHADOWS } from '../constants/shadows';
 import { SPACING } from '../constants/spacing';
-import { TYPOGRAPHY } from '../constants/typography';
 
 export default function LetterGame({
   animeName,
@@ -16,32 +14,15 @@ export default function LetterGame({
 }) {
   const handleHint = () => {
     if (userCoins < HINT_COST) {
-      Alert.alert(
-        'Pièces insuffisantes',
-        `Vous avez besoin de ${HINT_COST} pièces pour obtenir un indice.`,
-        [{ text: 'OK' }]
-      );
+      Alert.alert('INFO', `Besoin de ${HINT_COST} crédits.`);
       return;
     }
     onHintRequest();
   };
 
-  const handleShare = async () => {
-    try {
-      await Share.share({
-        message: `🎮 Devinez cet anime avec moi ! "${animeName}" - 4 Images 1 Anime 🎬\n\nTéléchargez l'app et jouez maintenant !`,
-        title: '4 Images 1 Anime',
-        url: 'https://yourapp.com', // Remplace par ton lien d'app
-      });
-    } catch (error) {
-      Alert.alert('Erreur', 'Impossible de partager');
-    }
-  };
-
   return (
     <View style={styles.container}>
-      {/* Remplace le rendu de la zone de réponse pour ne pas créer de placeholder d'espace
-          (on applique une marge au conteneur du mot sauf pour le dernier mot) */}
+      {/* Answer Area - Compacted */}
       <View style={styles.answerContainer}>
         {(() => {
           const words = animeName.toUpperCase().split(' ');
@@ -49,30 +30,28 @@ export default function LetterGame({
           const nodes = [];
 
           words.forEach((word, wIdx) => {
-            const isLast = wIdx === words.length - 1;
-
             nodes.push(
-              <View
-                key={`word-${wIdx}`}
-                style={styles.answerWord}
-              >
+              <View key={`word-${wIdx}`} style={styles.answerWord}>
                 {word.split('').map((_, j) => {
                   const idx = cursor + j;
                   const letter = selectedLetters[idx];
 
                   return (
                     <TouchableOpacity
-                      key={`ans-${wIdx}-${j}`}
-                      style={styles.answerBox}
+                      key={`ans-${idx}`}
+                      style={[
+                        styles.answerBox,
+                        letter && styles.answerBoxFilled
+                      ]}
                       onPress={() => letter && onLetterRemove(idx)}
+                      activeOpacity={0.8}
                     >
-                      <Text style={styles.answerLetter}>{letter || ''}</Text>
+                      <Text style={styles.answerText}>{letter || ''}</Text>
                     </TouchableOpacity>
                   );
                 })}
               </View>
             );
-
             cursor += word.length;
           });
 
@@ -80,52 +59,30 @@ export default function LetterGame({
         })()}
       </View>
 
-      {/* Lettres disponibles et Boutons d'action */}
-      <View style={styles.bottomSection}>
-        {/* Lettres disponibles */}
-        {/* // Remplace le mapping des lettres disponibles pour ne PAS créer de cases vides (lettres utilisées ou espaces) */}
-        <View style={styles.lettersContainer}>
-          {availableLetters.map((item, index) => {
-            return (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.letterBox,
-                  item.used && styles.letterBoxUsed,
-                ]}
-                onPress={() => !item.used && onLetterSelect(item.char, index)}
-                disabled={item.used}
-              >
-                <Text style={styles.letterText}>{item.char}</Text>
-              </TouchableOpacity>
-            );
-          })}
+      <View style={styles.keyboardSection}>
+        <View style={styles.lettersGrid}>
+          {availableLetters.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.letterBtn,
+                item.used && styles.letterBtnUsed
+              ]}
+              onPress={() => !item.used && onLetterSelect(item.char, index)}
+              disabled={item.used}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.letterText}>{item.char}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
 
-        {/* Boutons d'action (Indice et Partager) */}
-        <View style={styles.actionButtonsContainer}>
-          {/* Bouton Indice - compact (48x48) */}
-          <TouchableOpacity
-            style={[
-              styles.actionButton,
-              styles.actionButtonCompact,
-              styles.hintButton,
-              userCoins < HINT_COST && styles.actionButtonDisabled,
-            ]}
-            onPress={handleHint}
-            disabled={userCoins < HINT_COST}
-          >
-            <Text style={[styles.actionButtonIcon, styles.actionButtonIconCompact]}>💡</Text>
-          </TouchableOpacity>
-
-          {/* Bouton Partager - compact (48x48) */}
-          <TouchableOpacity
-            style={[styles.actionButton, styles.actionButtonCompact, styles.shareButton]}
-            onPress={handleShare}
-          >
-            <Text style={[styles.actionButtonIcon, styles.actionButtonIconCompact]}>📤</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={[styles.hintBtn, userCoins < HINT_COST && { opacity: 0.3 }]}
+          onPress={handleHint}
+        >
+          <Text style={styles.hintText}>INDICE ({HINT_COST}C)</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -135,133 +92,74 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.md,
+    maxWidth: 600,
+    alignSelf: 'center',
+    width: '100%',
   },
   answerContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: "center",
-    flexWrap: 'wrap', // autorise le retour à la ligne
-    columnGap: SPACING.xl, // espace horizontal entre mots (pas ajouté en fin de ligne)
-    rowGap: SPACING.gapSm, // espace vertical entre les lignes
-    marginBottom: SPACING.lg,
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 20,
   },
   answerWord: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.gapSm,
-  },
-  answerWordWithSpace: {
-    marginRight: SPACING.xl,
-  },
-  answerSpace: {
-    width: SPACING.xl, // espace visible entre les mots
-    height: 50,        // même hauteur que answerBox pour un alignement propre
+    gap: 4,
   },
   answerBox: {
-    width: 35,
-    height: 40,
-    backgroundColor: COLORS.accent,
-    borderWidth: SPACING.borderMedium,
-    borderColor: COLORS.border,
-    borderRadius: SPACING.radiusSm,
+    width: 28,
+    height: 38,
+    backgroundColor: COLORS.secondary,
     justifyContent: 'center',
     alignItems: 'center',
-    ...SHADOWS.small,
+    borderRadius: 2,
   },
-  answerLetter: {
-    fontSize: TYPOGRAPHY.xxl,
-    fontWeight: TYPOGRAPHY.bold,
-    color: COLORS.textPrimary,
+  answerBoxFilled: {
+    backgroundColor: COLORS.accent, // Lavande discret pour les lettres ajoutées
   },
-  // Place les lettres et les boutons d'action côte à côte
-  bottomSection: {
-    position: 'relative',
-    paddingVertical: SPACING.md
+  answerText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.primary, // Texte sombre sur fond lavande pour contraste
   },
-  lettersContainer: {
-    flex: 1,
+  keyboardSection: {
+    marginTop: 10,
+  },
+  lettersGrid: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
     flexWrap: 'wrap',
-    gap: SPACING.gapMd, // utilise le même gap que les images
-    paddingRight: 48 + SPACING.gapMd,
+    justifyContent: 'center',
+    gap: 6,
+    marginBottom: 20,
   },
-  letterBox: {
-    width: 48,
-    height: 48,
-    backgroundColor: COLORS.success,
-    borderRadius: SPACING.radiusMd,
+  letterBtn: {
+    width: 42,
+    height: 42,
+    backgroundColor: COLORS.secondary,
     justifyContent: 'center',
     alignItems: 'center',
-    ...SHADOWS.medium,
+    borderRadius: 4,
   },
-  letterBoxUsed: {
-    backgroundColor: COLORS.lightGray,
-    opacity: 0.4,
+  letterBtnUsed: {
+    opacity: 0.05,
   },
   letterText: {
-    fontSize: TYPOGRAPHY.xl,
-    fontWeight: TYPOGRAPHY.bold,
+    fontSize: 16,
+    fontWeight: '400',
     color: COLORS.textPrimary,
   },
-  // Colonne à droite pour les boutons d'action (compact)
-  actionButtonsContainer: {
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    width: 48,
-    flexDirection: 'column',
+  hintBtn: {
     alignItems: 'center',
-    gap: SPACING.gapMd, // cohérent avec la grille
-    paddingVertical: SPACING.md
+    paddingVertical: 14,
+    backgroundColor: COLORS.secondary,
+    borderRadius: 4,
+    marginTop: 10,
   },
-  actionButton: {
-    width: '100%',
-    borderRadius: SPACING.radiusMd,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...SHADOWS.medium,
-  },
-  // Taille compacte = taille des lettres disponibles
-  actionButtonCompact: {
-    width: 48,
-    height: 48,
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-  },
-  actionButtonDisabled: {
-    opacity: 0.5,
-  },
-  hintButton: {
-    backgroundColor: COLORS.warning,
-  },
-  shareButton: {
-    backgroundColor: COLORS.info || '#3B82F6',
-  },
-  actionButtonIcon: {
-    fontSize: TYPOGRAPHY.xxl,
-    marginBottom: SPACING.sm,
-  },
-  // Icône sans marge pour les boutons compacts
-  actionButtonIconCompact: {
-    marginBottom: 0,
-    fontSize: TYPOGRAPHY.xl,
-  },
-  actionButtonLabel: {
-    fontSize: TYPOGRAPHY.md,
-    fontWeight: TYPOGRAPHY.bold,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
-  },
-  actionButtonCost: {
-    fontSize: TYPOGRAPHY.xs,
-    color: COLORS.textSecondary,
-    marginTop: SPACING.sm,
-    fontWeight: TYPOGRAPHY.semibold,
-  },
-  // Masque les libellés/coûts dans la version compacte
-  hidden: {
-    display: 'none',
-  },
+  hintText: {
+    fontSize: 10,
+    color: COLORS.accent, // Accent Lavande pour le bouton indice
+    letterSpacing: 2,
+    fontWeight: '700',
+  }
 });

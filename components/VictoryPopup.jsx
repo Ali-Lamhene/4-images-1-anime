@@ -11,84 +11,64 @@ import {
 
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
-import { TYPOGRAPHY } from '../constants/typography';
 import GoldCoinIcon from './icons/GoldCoinIcon';
 import PotionIcon from './icons/PotionIcon';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function VictoryPopup({ rewards, onContinue }) {
-  const scaleAnim = useState(new Animated.Value(0.85))[0];
-  const opacityAnim = useState(new Animated.Value(0))[0];
-  const coinsAnim = useState(new Animated.Value(0))[0];
-  const xpAnim = useState(new Animated.Value(0))[0];
-
-  // State for active flying icons - fresh instances every time!
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [slideAnim] = useState(new Animated.Value(20));
   const [activeIcons, setActiveIcons] = useState(null);
 
   useEffect(() => {
     Animated.parallel([
-      Animated.timing(opacityAnim, {
+      Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 220,
-        easing: Easing.out(Easing.quad),
+        duration: 800,
         useNativeDriver: true,
       }),
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        friction: 7,
-        tension: 60,
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 800,
+        easing: Easing.out(Easing.cubic),
         useNativeDriver: true,
-      }),
-      Animated.spring(coinsAnim, {
-        toValue: 1,
-        friction: 8,
-        useNativeDriver: true,
-      }),
-      Animated.spring(xpAnim, {
-        toValue: 1,
-        friction: 8,
-        useNativeDriver: true,
-      }),
+      })
     ]).start();
   }, []);
 
   const handleContinue = () => {
-    // 1. Clear previous icons first to ensure a clean slate
     setActiveIcons(null);
 
-    // 2. Short delay to ensure React has unmounted previous icons
     setTimeout(() => {
       const runId = Date.now();
-
-      const coins = [...Array(15)].map((_, i) => ({
+      const coins = [...Array(10)].map((_, i) => ({
         id: `coin-${runId}-${i}`,
         progress: new Animated.Value(0),
         scatter: {
-          x: 70 + (Math.random() * 80 - 40),
-          y: 40 - (Math.random() * 40 + 40),
+          x: 60 + (Math.random() * 60 - 30),
+          y: 30 - (Math.random() * 30 + 30),
         }
       }));
 
-      const xp = [...Array(10)].map((_, i) => ({
+      const xp = [...Array(6)].map((_, i) => ({
         id: `xp-${runId}-${i}`,
         progress: new Animated.Value(0),
         scatter: {
-          x: -70 + (Math.random() * 80 - 40),
-          y: 40 - (Math.random() * 40 + 40),
+          x: -60 + (Math.random() * 60 - 30),
+          y: 30 - (Math.random() * 30 + 30),
         }
       }));
 
       setActiveIcons({ coins, xp });
 
-      // 3. Start animations - MATCHING XP behavior for coins (added +100 delay)
       const coinAnimations = coins.map((coin, index) => {
         return Animated.sequence([
-          Animated.delay(index * 20 + 100), // Added 100ms base delay like XP
+          Animated.delay(index * 40),
           Animated.timing(coin.progress, {
             toValue: 1,
-            duration: 1200,
-            easing: Easing.bezier(0.2, 0, 0.2, 1),
+            duration: 1500,
+            easing: Easing.bezier(0.4, 0, 0.2, 1),
             useNativeDriver: true,
           }),
         ]);
@@ -96,139 +76,98 @@ export default function VictoryPopup({ rewards, onContinue }) {
 
       const xpAnimations = xp.map((item, index) => {
         return Animated.sequence([
-          Animated.delay(index * 30 + 120), // Slightly offset from coins
+          Animated.delay(index * 50),
           Animated.timing(item.progress, {
             toValue: 1,
-            duration: 1300,
-            easing: Easing.bezier(0.2, 0, 0.2, 1),
+            duration: 1600,
+            easing: Easing.bezier(0.4, 0, 0.2, 1),
             useNativeDriver: true,
           }),
         ]);
       });
 
       Animated.parallel([...coinAnimations, ...xpAnimations]).start();
-    }, 50);
+    }, 20);
 
-    // 4. Move to next level after a delay
     setTimeout(() => {
       onContinue();
-    }, 1850);
+    }, 2000);
   };
 
   return (
-    <Animated.View style={[styles.overlay, { opacity: opacityAnim }]}>
+    <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
       <Animated.View
         style={[
-          styles.popupContainer,
-          { transform: [{ scale: scaleAnim }] },
+          styles.container,
+          { transform: [{ translateY: slideAnim }] }
         ]}
       >
-        <Text style={styles.popupTitle}>Bravo ! </Text>
-        <Text style={styles.popupSubtitle}>
-          Vous avez trouvé la bonne réponse !
-        </Text>
+        <Text style={styles.title}>SUCCÈS</Text>
+        <View style={styles.divider} />
 
-        <View style={styles.rewardsContainer}>
-
-          <Animated.View style={[styles.rewardItem, animatedItem(xpAnim)]}>
-            <View style={styles.iconContainer}>
-              <PotionIcon width={48} height={48} />
-            </View>
-            <Text style={styles.rewardValue}>+{rewards.xp}</Text>
-            <Text style={styles.rewardLabel}>XP</Text>
-          </Animated.View>
-
-          <Animated.View style={[styles.rewardItem, animatedItem(coinsAnim)]}>
-            <View style={styles.iconContainer}>
-              <GoldCoinIcon width={48} height={48} />
-            </View>
-            <Text style={styles.rewardValue}>+{rewards.coins}</Text>
-            <Text style={styles.rewardLabel}>Pièces d'or</Text>
-          </Animated.View>
+        <View style={styles.rewardsRow}>
+          <View style={styles.rewardItem}>
+            <PotionIcon width={24} height={24} />
+            <Text style={styles.rewardVal}>+{rewards.xp}</Text>
+            <Text style={styles.rewardLab}>EXPÉRIENCE</Text>
+          </View>
+          <View style={[styles.rewardItem, styles.rewardBorder]}>
+            <GoldCoinIcon width={24} height={24} />
+            <Text style={styles.rewardVal}>+{rewards.coins}</Text>
+            <Text style={styles.rewardLab}>CRÉDITS</Text>
+          </View>
         </View>
 
-        <TouchableOpacity
-          style={styles.continueButton}
-          onPress={handleContinue}
-          activeOpacity={0.85}
-        >
-          <Text style={styles.continueButtonText}>Continuer</Text>
+        <TouchableOpacity style={styles.button} onPress={handleContinue} activeOpacity={0.8}>
+          <Text style={styles.buttonText}>CONTINUER</Text>
         </TouchableOpacity>
       </Animated.View>
 
-      {/* Flying icons overlay */}
       {activeIcons && (
         <View style={styles.flyingIconsContainer} pointerEvents="none">
-          {/* Flying coins */}
           {activeIcons.coins.map((coin) => {
             const translateX = coin.progress.interpolate({
-              inputRange: [0, 0.25, 1],
-              outputRange: [70, coin.scatter.x, SCREEN_WIDTH / 2 - 45],
+              inputRange: [0, 0.3, 1],
+              outputRange: [60, coin.scatter.x, SCREEN_WIDTH / 2 - 40],
             });
             const translateY = coin.progress.interpolate({
-              inputRange: [0, 0.25, 1],
-              outputRange: [40, coin.scatter.y, -SCREEN_HEIGHT / 2 + 55],
+              inputRange: [0, 0.3, 1],
+              outputRange: [30, coin.scatter.y, -SCREEN_HEIGHT / 2 + 50],
             });
             const scale = coin.progress.interpolate({
-              inputRange: [0, 0.1, 0.25, 1],
-              outputRange: [0, 1.4, 1.2, 0.4],
+              inputRange: [0, 1],
+              outputRange: [1, 0.3],
             });
             const opacity = coin.progress.interpolate({
-              inputRange: [0, 0.05, 0.9, 1],
+              inputRange: [0, 0.1, 0.9, 1],
               outputRange: [0, 1, 1, 0],
             });
-            const rotate = coin.progress.interpolate({
-              inputRange: [0, 1],
-              outputRange: ['0deg', '1440deg'],
-            });
-
             return (
-              <Animated.View
-                key={coin.id}
-                style={[
-                  styles.flyingIcon,
-                  {
-                    transform: [{ translateX }, { translateY }, { scale }, { rotate }],
-                    opacity,
-                  },
-                ]}
-              >
-                <GoldCoinIcon width={32} height={32} />
+              <Animated.View key={coin.id} style={[styles.flyingIcon, { transform: [{ translateX }, { translateY }, { scale }], opacity }]}>
+                <GoldCoinIcon width={24} height={24} />
               </Animated.View>
             );
           })}
-
-          {/* Flying XP potions */}
           {activeIcons.xp.map((xp) => {
             const translateX = xp.progress.interpolate({
-              inputRange: [0, 0.25, 1],
-              outputRange: [-70, xp.scatter.x, -SCREEN_WIDTH / 2 + 60],
+              inputRange: [0, 0.3, 1],
+              outputRange: [-60, xp.scatter.x, -SCREEN_WIDTH / 2 + 80],
             });
             const translateY = xp.progress.interpolate({
-              inputRange: [0, 0.25, 1],
-              outputRange: [40, xp.scatter.y, -SCREEN_HEIGHT / 2 + 55],
+              inputRange: [0, 0.3, 1],
+              outputRange: [30, xp.scatter.y, -SCREEN_HEIGHT / 2 + 50],
             });
             const scale = xp.progress.interpolate({
-              inputRange: [0, 0.1, 0.25, 1],
-              outputRange: [0, 1.4, 1.2, 0.4],
+              inputRange: [0, 1],
+              outputRange: [1, 0.3],
             });
             const opacity = xp.progress.interpolate({
-              inputRange: [0, 0.05, 0.9, 1],
+              inputRange: [0, 0.1, 0.9, 1],
               outputRange: [0, 1, 1, 0],
             });
-
             return (
-              <Animated.View
-                key={xp.id}
-                style={[
-                  styles.flyingIcon,
-                  {
-                    transform: [{ translateX }, { translateY }, { scale }],
-                    opacity,
-                  },
-                ]}
-              >
-                <PotionIcon width={32} height={32} />
+              <Animated.View key={xp.id} style={[styles.flyingIcon, { transform: [{ translateX }, { translateY }, { scale }], opacity }]}>
+                <PotionIcon width={24} height={24} />
               </Animated.View>
             );
           })}
@@ -238,109 +177,79 @@ export default function VictoryPopup({ rewards, onContinue }) {
   );
 }
 
-const animatedItem = anim => ({
-  opacity: anim,
-  transform: [
-    {
-      translateY: anim.interpolate({
-        inputRange: [0, 1],
-        outputRange: [16, 0],
-      }),
-    },
-  ],
-});
-
 const styles = StyleSheet.create({
   overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: COLORS.secondaryOp,
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(15, 15, 20, 0.98)',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  popupContainer: {
     padding: SPACING.xxl,
+  },
+  container: {
     width: '100%',
-    maxWidth: 400,
-    marginHorizontal: SPACING.xl,
+    maxWidth: 320,
+    backgroundColor: COLORS.secondary,
+    padding: 40,
     alignItems: 'center',
+    borderRadius: 2,
   },
-
-  popupTitle: {
-    fontSize: 32,
-    fontWeight: TYPOGRAPHY.bold,
+  title: {
+    fontSize: 24,
+    fontWeight: '600',
     color: COLORS.textPrimary,
-    marginBottom: SPACING.sm,
+    letterSpacing: 8,
+    marginBottom: 20,
   },
-
-  popupSubtitle: {
-    fontSize: TYPOGRAPHY.lg,
-    color: COLORS.textSecondary,
-    marginBottom: SPACING.xxl,
-    textAlign: 'center',
+  divider: {
+    width: 20,
+    height: 1,
+    backgroundColor: COLORS.accent,
+    marginBottom: 40,
   },
-
-  rewardsContainer: {
+  rewardsRow: {
     flexDirection: 'row',
-    gap: SPACING.lg,
+    marginBottom: 60,
     width: '100%',
-    marginBottom: SPACING.xxl,
   },
-
   rewardItem: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: COLORS.accent,
-    padding: SPACING.lg,
-    borderRadius: SPACING.radiusLg,
+    gap: 8,
   },
-
-
-
-  rewardIcon: {
-    fontSize: 38,
+  rewardBorder: {
+    borderLeftWidth: 1,
+    borderLeftColor: COLORS.border,
   },
-
-  rewardValue: {
-    fontSize: 28,
-    fontWeight: TYPOGRAPHY.bold,
-    color: COLORS.gold,
-  },
-
-  rewardLabel: {
-    fontSize: TYPOGRAPHY.sm,
-    color: COLORS.textSecondary,
-  },
-
-  continueButton: {
-    backgroundColor: COLORS.success,
-    paddingVertical: SPACING.md,
-    borderRadius: SPACING.radiusLg,
-    width: '100%',
-  },
-
-  continueButtonText: {
-    fontSize: TYPOGRAPHY.xl,
-    fontWeight: TYPOGRAPHY.bold,
+  rewardVal: {
+    fontSize: 20,
+    fontWeight: '500',
     color: COLORS.textPrimary,
-    textAlign: 'center',
   },
-
+  rewardLab: {
+    fontSize: 9,
+    fontWeight: '400',
+    color: COLORS.textSecondary,
+    letterSpacing: 2,
+  },
+  button: {
+    width: '100%',
+    backgroundColor: COLORS.accent, // Lavande pour le bouton Continuer
+    paddingVertical: 18,
+    borderRadius: 2,
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: COLORS.primary, // Texte sombre pour contraste
+    letterSpacing: 4,
+  },
   flyingIconsContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   flyingIcon: {
     position: 'absolute',
-  },
+  }
 });

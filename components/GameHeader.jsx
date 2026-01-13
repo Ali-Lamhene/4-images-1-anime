@@ -1,11 +1,9 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { Animated, Easing, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
 import { COLORS } from '../constants/colors';
 import { RANKS } from '../constants/game';
 import { SPACING } from '../constants/spacing';
-import { TYPOGRAPHY } from '../constants/typography';
 import GoldCoinIcon from './icons/GoldCoinIcon';
 import PotionIcon from './icons/PotionIcon';
 
@@ -15,66 +13,41 @@ export default function GameHeader({
   variant = 'default',
 }) {
   const router = useRouter();
-
   const currentRank = RANKS.find(r => r.level === user.level) || RANKS[0];
   const nextRank = RANKS.find(r => r.level === user.level + 1);
-
   const xpProgress = nextRank
-    ? ((user.xp - currentRank.minXP) /
-      (nextRank.minXP - currentRank.minXP)) * 100
+    ? ((user.xp - currentRank.minXP) / (nextRank.minXP - currentRank.minXP)) * 100
     : 100;
 
   const isOverlay = variant === 'overlay';
 
   return (
-    <View
-      pointerEvents={isOverlay ? 'none' : 'auto'}
-      style={[
-        styles.container,
-        isOverlay && styles.overlayContainer,
-      ]}
-    >
+    <View style={[styles.container, isOverlay && styles.overlayContainer]}>
       <View style={styles.mainRow}>
-        {/* LEFT — TOUJOURS VISIBLE */}
-        <View style={styles.leftSection}>
-          {/* BACK BUTTON — MASQUÉ EN OVERLAY */}
+        <View style={styles.left}>
           {showBackButton && !isOverlay && (
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => router.back()}
-            >
-              <Text style={styles.backIcon}>←</Text>
+            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+              <Text style={styles.backText}>←</Text>
             </TouchableOpacity>
           )}
-
-          {/* RANK + XP */}
-          <View style={styles.rankXpContainer}>
-            <View style={styles.xpWrapper}>
-              <Text style={styles.rankText}>{currentRank.name}</Text>
-
-              <View style={styles.xpCompact}>
-                <PotionIcon width={14} height={14} style={{ marginRight: 2 }} />
-                <AnimatedCounter value={user.xp} style={styles.xpValue} />
-                <Text style={styles.xpLabel}>XP</Text>
+          <View style={styles.rankInfo}>
+            <Text style={styles.rankName}>{currentRank.name.toUpperCase()}</Text>
+            <View style={styles.progressRow}>
+              <View style={styles.progressBar}>
+                <View style={[styles.progressFill, { width: `${xpProgress}%` }]} />
               </View>
-            </View>
-
-            <View style={styles.xpBarBackground}>
-              <View
-                style={[
-                  styles.xpBarFill,
-                  { width: `${xpProgress}%` },
-                ]}
-              />
+              <View style={styles.xpWrapper}>
+                <PotionIcon width={8} height={8} />
+                <AnimatedCounter value={user.xp} style={styles.xpText} />
+              </View>
             </View>
           </View>
         </View>
 
-        {/* RIGHT — TOUJOURS VISIBLE */}
-        <View style={styles.rightSection}>
-          <View style={styles.coinsContainer}>
-            <GoldCoinIcon width={24} height={24} style={{ marginRight: 2 }} />
-            <AnimatedCounter value={user.coins} style={styles.coinsText} />
+        <View style={styles.right}>
+          <View style={styles.creditValueRow}>
+            <GoldCoinIcon width={14} height={14} />
+            <AnimatedCounter value={user.coins} style={styles.creditValue} />
           </View>
         </View>
       </View>
@@ -94,7 +67,7 @@ const AnimatedCounter = ({ value, style }) => {
     Animated.timing(animatedValue, {
       toValue: value,
       duration: 1000,
-      easing: Easing.out(Easing.cubic),
+      easing: Easing.out(Easing.quad),
       useNativeDriver: false,
     }).start();
 
@@ -108,123 +81,98 @@ const AnimatedCounter = ({ value, style }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.secondary,
+    backgroundColor: COLORS.primary,
     paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.md,
-    borderBottomWidth: SPACING.borderThin,
+    paddingVertical: 10, // More compact
+    borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
   },
-
   overlayContainer: {
     backgroundColor: 'transparent',
     borderBottomWidth: 0,
-    shadowColor: 'transparent',
-    elevation: 0,
-
     position: 'absolute',
-    top: 20,
+    top: 5,
     left: 0,
     right: 0,
     zIndex: 10,
   },
-
-
   mainRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-end',
+    maxWidth: 600,
+    alignSelf: 'center',
+    width: '100%',
   },
-
-  leftSection: {
+  left: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: 15,
+  },
+  backButton: {
+    paddingBottom: 4,
+  },
+  backText: {
+    color: COLORS.textPrimary,
+    fontSize: 24,
+    fontWeight: '300',
+  },
+  rankInfo: {
+    gap: 3,
+  },
+  rankName: {
+    fontSize: 8,
+    fontWeight: '700',
+    color: COLORS.textSecondary,
+    letterSpacing: 1.5,
+  },
+  progressRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
-    marginRight: SPACING.md,
+    gap: 8,
   },
-
-  backButton: {
-    width: 36,
-    height: 36,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: SPACING.sm,
+  progressBar: {
+    width: 70,
+    height: 3,
+    backgroundColor: COLORS.secondary,
+    borderRadius: 1.5,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
     backgroundColor: COLORS.accent,
-    borderRadius: 18,
   },
-
-  backIcon: {
-    fontSize: TYPOGRAPHY.xl,
-    color: COLORS.textPrimary,
-  },
-
-  rankXpContainer: {
-    flex: 1,
-    maxWidth: 180,
-  },
-
-  rankText: {
-    fontSize: TYPOGRAPHY.sm,
-    fontWeight: TYPOGRAPHY.bold,
-    color: COLORS.gold,
-    marginBottom: 4,
-  },
-
   xpWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: 3,
   },
-
-  xpBarBackground: {
-    height: 8,
-    backgroundColor: COLORS.accent,
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-
-  xpBarFill: {
-    height: '100%',
-    backgroundColor: COLORS.success,
-  },
-
-  rightSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.md,
-  },
-
-  xpCompact: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 2, // Slightly tighter for icon
-  },
-
-  xpLabel: {
-    fontSize: TYPOGRAPHY.xs,
+  xpText: {
+    fontSize: 9,
     color: COLORS.textSecondary,
+    fontWeight: '400',
   },
-
-  xpValue: {
-    fontSize: TYPOGRAPHY.xs,
-    fontWeight: TYPOGRAPHY.bold,
-    color: COLORS.success,
+  right: {
+    alignItems: 'flex-end',
   },
-
-  coinsContainer: {
+  creditBox: {
+    gap: 2,
+    alignItems: 'flex-end',
+  },
+  creditLabel: {
+    fontSize: 8,
+    color: COLORS.textSecondary,
+    letterSpacing: 1,
+    fontWeight: '500',
+  },
+  creditValueRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.goldLight,
-    paddingHorizontal: SPACING.xs,
-    paddingRight: SPACING.xs + 3,
-    paddingVertical: 1,
-    borderRadius: SPACING.radiusXl,
-    borderWidth: SPACING.borderThin,
-    borderColor: COLORS.gold,
+    gap: 4,
   },
-
-  coinsText: {
-    fontSize: TYPOGRAPHY.lg,
-    fontWeight: TYPOGRAPHY.bold,
-    color: COLORS.goldDark,
-  },
+  creditValue: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: COLORS.textPrimary,
+  }
 });

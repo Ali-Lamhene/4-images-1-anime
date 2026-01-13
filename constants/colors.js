@@ -1,37 +1,27 @@
 export const COLORS = {
-  // Couleurs principales
-  primary: '#1A1A2E',        // Bleu-noir sombre (backgrounds principaux)
-  secondary: '#16213E',
-  secondaryOp: 'rgba(22, 33, 62, 0.85)',    // Bleu marine foncé (backgrounds secondaires)
-  accent: '#0F3460',         // Bleu profond (éléments interactifs)
+  // Fond principal (Noir cinématique)
+  primary: '#0F0F14',
 
-  // Couleur dorée
-  gold: '#FFD700',           // Or principal
-  goldLight: '#FFF9E6',      // Or très clair (backgrounds)
-  goldDark: '#FF8C00',       // Orange doré (textes)
+  // Surfaces secondaires (Gris sombre et mature)
+  secondary: '#1A1A22',
+  secondaryOp: 'rgba(26, 26, 34, 0.95)',
 
-  // Couleurs de succès/progression
-  success: '#4CAF50',        // Vert pour XP
-  successLight: '#81C784',   // Vert clair
-
-  // Couleurs neutres
-  white: '#FFFFFF',
-  lightGray: '#E0E0E0',
-  gray: '#666666',
-  darkGray: '#333333',
+  // Accent unique très discret (Lavande pâle / Blanc cassé violet)
+  accent: '#B8A1FF',
 
   // Couleurs de texte
-  textPrimary: '#FFFFFF',    // Texte sur fond sombre
-  textSecondary: '#B0B0B0',  // Texte secondaire
-  textDark: '#1A1A2E',       // Texte sur fond clair
+  textPrimary: '#EDEDED',    // Blanc cassé
+  textSecondary: '#8B8B9E',
 
-  // Couleurs d'interface
-  border: '#2C2C3E',         // Bordures sur fond sombre
-  borderLight: '#E0E0E0',    // Bordures sur fond clair
-  shadow: '#000000',
+  // Interface
+  border: '#2A2A35',
+  white: '#FFFFFF',
 
-  // Couleurs de statut
-  error: '#F44336',
-  warning: '#FF9800',
-  info: '#2196F3',
+  // Statuts (gardés sobres)
+  success: '#EDEDED',
+  error: '#FF5E5E',
+
+  // Spécifiques
+  gold: '#B8A1FF', // On harmonise l'or avec l'accent lavande pour le monochrome
+  imageOverlay: 'rgba(0,0,0,0.1)', // Très léger pour adoucir le contraste
 };
