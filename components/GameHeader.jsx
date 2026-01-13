@@ -4,6 +4,7 @@ import { Animated, Easing, StyleSheet, Text, TouchableOpacity, View } from 'reac
 import { COLORS } from '../constants/colors';
 import { RANKS } from '../constants/game';
 import { SPACING } from '../constants/spacing';
+import { useTranslation } from '../context/LanguageContext';
 import GoldCoinIcon from './icons/GoldCoinIcon';
 import PotionIcon from './icons/PotionIcon';
 
@@ -13,6 +14,7 @@ export default function GameHeader({
   variant = 'default',
 }) {
   const router = useRouter();
+  const { t } = useTranslation();
   const currentRank = RANKS.find(r => r.level === user.level) || RANKS[0];
   const nextRank = RANKS.find(r => r.level === user.level + 1);
   const xpProgress = nextRank
@@ -31,7 +33,7 @@ export default function GameHeader({
             </TouchableOpacity>
           )}
           <View style={styles.rankInfo}>
-            <Text style={styles.rankName}>{currentRank.name.toUpperCase()}</Text>
+            <Text style={styles.rankName}>{t(`rank_${currentRank.name.toLowerCase()}`)}</Text>
             <View style={styles.progressRow}>
               <View style={styles.progressBar}>
                 <View style={[styles.progressFill, { width: `${xpProgress}%` }]} />
@@ -154,16 +156,6 @@ const styles = StyleSheet.create({
   },
   right: {
     alignItems: 'flex-end',
-  },
-  creditBox: {
-    gap: 2,
-    alignItems: 'flex-end',
-  },
-  creditLabel: {
-    fontSize: 8,
-    color: COLORS.textSecondary,
-    letterSpacing: 1,
-    fontWeight: '500',
   },
   creditValueRow: {
     flexDirection: 'row',

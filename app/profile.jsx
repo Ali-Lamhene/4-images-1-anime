@@ -8,10 +8,12 @@ import GoldCoinIcon from '../components/icons/GoldCoinIcon';
 import { COLORS } from '../constants/colors';
 import { RANKS } from '../constants/game';
 import { SPACING } from '../constants/spacing';
+import { useTranslation } from '../context/LanguageContext';
 import { clearAllData, getCurrentAnimeIndex, getUserData, INITIAL_USER } from '../utils/storage';
 
 export default function ProfileScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
     const [user, setUser] = useState(INITIAL_USER);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isReady, setIsReady] = useState(false);
@@ -49,17 +51,17 @@ export default function ProfileScreen() {
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>PROFIL</Text>
+                    <Text style={styles.title}>{t('profile')}</Text>
                     <View style={styles.divider} />
                 </View>
 
                 <View style={styles.mainStats}>
-                    <Text style={styles.rankLabel}>{currentRank.name.toUpperCase()}</Text>
-                    <Text style={styles.levelValue}>NIVEAU {user.level}</Text>
+                    <Text style={styles.rankLabel}>{t(`rank_${currentRank.name.toLowerCase()}`)}</Text>
+                    <Text style={styles.levelValue}>{t('level')} {user.level}</Text>
 
                     <View style={styles.xpBox}>
                         <View style={styles.xpInfo}>
-                            <Text style={styles.xpLabel}>EXPÉRIENCE</Text>
+                            <Text style={styles.xpLabel}>{t('experience')}</Text>
                             <Text style={styles.xpValue}>{user.xp} XP</Text>
                         </View>
                         <View style={styles.progressBar}>
@@ -72,42 +74,41 @@ export default function ProfileScreen() {
                     <View style={styles.statCard}>
                         <GoldCoinIcon width={24} height={24} />
                         <Text style={styles.statVal}>{user.coins}</Text>
-                        <Text style={styles.statLab}>CRÉDITS</Text>
+                        <Text style={styles.statLab}>{t('credits')}</Text>
                     </View>
                     <View style={styles.statCard}>
                         <View style={styles.iconCircle}>
                             <Text style={styles.iconText}>🎬</Text>
                         </View>
                         <Text style={styles.statVal}>{currentIndex}</Text>
-                        <Text style={styles.statLab}>ANIMES TROUVÉS</Text>
+                        <Text style={styles.statLab}>{t('animes_found')}</Text>
                     </View>
                 </View>
 
                 <View style={styles.progressSection}>
-                    <Text style={styles.sectionTitle}>AVANCEMENT GLOBAL</Text>
+                    <Text style={styles.sectionTitle}>{t('global_progress')}</Text>
                     <View style={styles.globalBar}>
                         <View style={[styles.globalFill, { width: `${(currentIndex / ANIME_DATA.length) * 100}%` }]} />
                     </View>
                     <Text style={styles.progressText}>
-                        {currentIndex} sur {ANIME_DATA.length} animes complétés
+                        {t('animes_completed', { current: currentIndex, total: ANIME_DATA.length })}
                     </Text>
                 </View>
 
                 <View style={styles.dangerZone}>
-                    <Text style={styles.sectionTitle}>ZONE DE DANGER</Text>
+                    <Text style={styles.sectionTitle}>{t('danger_zone')}</Text>
                     <TouchableOpacity
                         style={styles.resetButton}
                         onPress={() => setShowResetModal(true)}
                         activeOpacity={0.8}
                     >
-                        <Text style={styles.resetButtonText}>RÉINITIALISER TOUTE LA PROGRESSION</Text>
+                        <Text style={styles.resetButtonText}>{t('reset_progress')}</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
 
             <BottomNavBar />
 
-            {/* Custom Reset Modal */}
             <Modal
                 transparent={true}
                 visible={showResetModal}
@@ -116,10 +117,10 @@ export default function ProfileScreen() {
             >
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
-                        <Text style={styles.modalTitle}>CONFIRMATION</Text>
+                        <Text style={styles.modalTitle}>{t('confirmation')}</Text>
                         <View style={styles.modalDivider} />
                         <Text style={styles.modalText}>
-                            Toute votre expérience, vos crédits et votre rang seront définitivement supprimés.
+                            {t('reset_warning')}
                         </Text>
 
                         <View style={styles.modalButtons}>
@@ -127,13 +128,13 @@ export default function ProfileScreen() {
                                 style={styles.cancelBtn}
                                 onPress={() => setShowResetModal(false)}
                             >
-                                <Text style={styles.cancelBtnText}>ANNULER</Text>
+                                <Text style={styles.cancelBtnText}>{t('cancel')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.confirmBtn}
                                 onPress={confirmReset}
                             >
-                                <Text style={styles.confirmBtnText}>CONFIRMER</Text>
+                                <Text style={styles.confirmBtnText}>{t('confirm')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -298,7 +299,6 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         letterSpacing: 2,
     },
-    // Modal Styles
     modalOverlay: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.9)',

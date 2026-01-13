@@ -11,12 +11,14 @@ import {
 
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
+import { useTranslation } from '../context/LanguageContext';
 import GoldCoinIcon from './icons/GoldCoinIcon';
 import PotionIcon from './icons/PotionIcon';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function VictoryPopup({ rewards, onContinue }) {
+  const { t } = useTranslation();
   const [fadeAnim] = useState(new Animated.Value(0));
   const [slideAnim] = useState(new Animated.Value(20));
   const [activeIcons, setActiveIcons] = useState(null);
@@ -102,24 +104,24 @@ export default function VictoryPopup({ rewards, onContinue }) {
           { transform: [{ translateY: slideAnim }] }
         ]}
       >
-        <Text style={styles.title}>SUCCÈS</Text>
+        <Text style={styles.title}>{t('success')}</Text>
         <View style={styles.divider} />
 
         <View style={styles.rewardsRow}>
           <View style={styles.rewardItem}>
             <PotionIcon width={24} height={24} />
             <Text style={styles.rewardVal}>+{rewards.xp}</Text>
-            <Text style={styles.rewardLab}>EXPÉRIENCE</Text>
+            <Text style={styles.rewardLab}>{t('experience')}</Text>
           </View>
           <View style={[styles.rewardItem, styles.rewardBorder]}>
             <GoldCoinIcon width={24} height={24} />
             <Text style={styles.rewardVal}>+{rewards.coins}</Text>
-            <Text style={styles.rewardLab}>CRÉDITS</Text>
+            <Text style={styles.rewardLab}>{t('credits')}</Text>
           </View>
         </View>
 
         <TouchableOpacity style={styles.button} onPress={handleContinue} activeOpacity={0.8}>
-          <Text style={styles.buttonText}>CONTINUER</Text>
+          <Text style={styles.buttonText}>{t('continue')}</Text>
         </TouchableOpacity>
       </Animated.View>
 
@@ -233,7 +235,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    backgroundColor: COLORS.accent, // Lavande pour le bouton Continuer
+    backgroundColor: COLORS.accent,
     paddingVertical: 18,
     borderRadius: 2,
     alignItems: 'center',
@@ -241,7 +243,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 11,
     fontWeight: '700',
-    color: COLORS.primary, // Texte sombre pour contraste
+    color: COLORS.primary,
     letterSpacing: 4,
   },
   flyingIconsContainer: {

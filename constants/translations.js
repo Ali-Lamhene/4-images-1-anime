@@ -1,0 +1,156 @@
+export const TRANSLATIONS = {
+    en: {
+        // General
+        back: "BACK",
+        continue: "CONTINUE",
+        next_level: "NEXT LEVEL",
+        credits: "CREDITS",
+        experience: "EXPERIENCE",
+        level: "LEVEL",
+        lvl: "LVL",
+
+        // Index Screen
+        start_experience: "START EXPERIENCE",
+        collections: "COLLECTIONS",
+        title_top: "4 IMAGES",
+        title_bottom: "ONE ANIME",
+        footer_text: "FOUR IMAGES • ONE ANIME",
+
+        // Play Screen
+        victory: "VICTORY",
+        success: "SUCCESS",
+        streak_unlocked: "STREAK UNLOCKED",
+        hint: "HINT",
+        hint_cost: "HINT ({{cost}}C)",
+        hint_need_credits: "Need {{cost}} credits.",
+        congratulations: "CONGRATULATIONS",
+        all_completed: "You have identified all the animes currently available.",
+        more_coming: "New challenges will be added very soon.",
+        back_home: "BACK HOME",
+
+        // Profile Screen
+        profile: "PROFILE",
+        rank: "RANK",
+        animes_found: "ANIMES FOUND",
+        global_progress: "GLOBAL PROGRESS",
+        animes_completed: "{{current}} out of {{total}} animes completed",
+        danger_zone: "DANGER ZONE",
+        reset_progress: "RESET ALL PROGRESS",
+        confirmation: "CONFIRMATION",
+        reset_warning: "All your experience, credits and rank will be permanently deleted.",
+        cancel: "CANCEL",
+        confirm: "CONFIRM",
+        reset_success: "Progress reset.",
+        system: "SYSTEM",
+
+        // Settings Screen
+        settings: "SETTINGS",
+        system_section: "SYSTEM",
+        sounds: "Sounds",
+        sounds_sub: "Sound effects during gameplay",
+        notifications: "Notifications",
+        notifications_sub: "Alerts and game reminders",
+        language: "Language",
+        language_sub: "Select application language",
+        about_section: "ABOUT",
+        version: "Version",
+        developer: "Developer",
+
+        // Ranks
+        rank_débutant: "BEGINNER",
+        rank_novice: "ROOKIE",
+        rank_amateur: "AMATEUR",
+        rank_connaisseur: "CONNOISSEUR",
+        rank_expert: "EXPERT",
+        rank_maître: "MASTER",
+        rank_légende: "LEGEND",
+
+        // Popups
+        new_rank: "NEW RANK AVAILABLE",
+        level_reached: "LEVEL {{level}} REACHED",
+        rank_up_sub: "Your progress continues to rise. Explore new horizons.",
+        acknowledge: "ACKNOWLEDGE",
+
+        // Nav
+        nav_home: "HOME",
+        nav_profile: "PROFILE",
+        nav_settings: "SETTINGS",
+    },
+    fr: {
+        // General
+        back: "RETOUR",
+        continue: "CONTINUER",
+        next_level: "NIVEAU SUIVANT",
+        credits: "CRÉDITS",
+        experience: "EXPÉRIENCE",
+        level: "NIVEAU",
+        lvl: "NV",
+
+        // Index Screen
+        start_experience: "COMMENCER L'EXPÉRIENCE",
+        collections: "COLLECTIONS",
+        title_top: "4 IMAGES",
+        title_bottom: "UN ANIME",
+        footer_text: "QUATRE IMAGES • UN ANIME",
+
+        // Play Screen
+        victory: "VICTOIRE",
+        success: "SUCCÈS",
+        streak_unlocked: "SÉRIE DÉBLOQUÉE",
+        hint: "INDICE",
+        hint_cost: "INDICE ({{cost}}C)",
+        hint_need_credits: "Besoin de {{cost}} crédits.",
+        congratulations: "FÉLICITATIONS",
+        all_completed: "Vous avez identifié tous les animes disponibles pour le moment.",
+        more_coming: "De nouveaux défis seront ajoutés très prochainement.",
+        back_home: "RETOUR À L'ACCUEIL",
+
+        // Profile Screen
+        profile: "PROFIL",
+        rank: "RANG",
+        animes_found: "ANIMES TROUVÉS",
+        global_progress: "AVANCEMENT GLOBAL",
+        animes_completed: "{{current}} sur {{total}} animes complétés",
+        danger_zone: "ZONE DE DANGER",
+        reset_progress: "RÉINITIALISER TOUTE LA PROGRESSION",
+        confirmation: "CONFIRMATION",
+        reset_warning: "Toute votre expérience, vos crédits et votre rang seront définitivement supprimés.",
+        cancel: "ANNULER",
+        confirm: "CONFIRMER",
+        reset_success: "Progression réinitialisée.",
+        system: "SYSTÈME",
+
+        // Settings Screen
+        settings: "PARAMÈTRES",
+        system_section: "SYSTÈME",
+        sounds: "Sons",
+        sounds_sub: "Effets sonores durant le jeu",
+        notifications: "Notifications",
+        notifications_sub: "Alertes et rappels de jeu",
+        language: "Langue",
+        language_sub: "Changer la langue de l'application",
+        about_section: "À PROPOS",
+        version: "Version",
+        developer: "Développeur",
+
+        // Ranks
+        rank_débutant: "DÉBUTANT",
+        rank_novice: "NOVICE",
+        rank_amateur: "AMATEUR",
+        rank_connaisseur: "CONNAISSEUR",
+        rank_expert: "EXPERT",
+        rank_maître: "MAÎTRE",
+        rank_légende: "LÉGENDE",
+
+        // Popups
+        new_rank: "NOUVEAU RANG DISPONIBLE",
+        level_reached: "NIVEAU {{level}} ATTEINT",
+        rank_up_sub: "Votre progression continue de s'élever. Explorez de nouveaux horizons.",
+        acknowledge: "CONTINUER",
+
+        // Nav
+        nav_home: "ACCUEIL",
+        nav_profile: "PROFIL",
+        nav_settings: "PARAMÈTRES",
+    }
+};

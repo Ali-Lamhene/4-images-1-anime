@@ -1,14 +1,22 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomNavBar from '../components/BottomNavBar';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
+import { useTranslation } from '../context/LanguageContext';
 import { getSettings, INITIAL_SETTINGS, saveSettings } from '../utils/storage';
+
+const LANGUAGES = [
+    { code: 'en', label: 'ENGLISH' },
+    { code: 'fr', label: 'FRANÇAIS' },
+    // Future languages can be added here
+];
 
 export default function SettingsScreen() {
     const router = useRouter();
+    const { t, language, changeLanguage, isReady: isLangReady } = useTranslation();
     const [settings, setSettings] = useState(INITIAL_SETTINGS);
     const [isReady, setIsReady] = useState(false);
 
@@ -27,7 +35,12 @@ export default function SettingsScreen() {
         await saveSettings(newSettings);
     };
 
-    if (!isReady) return null;
+    const handleLanguageChange = async (newLang) => {
+        await changeLanguage(newLang);
+        setSettings(prev => ({ ...prev, language: newLang }));
+    };
+
+    if (!isReady || !isLangReady) return null;
 
     return (
         <SafeAreaView style={styles.container}>
@@ -35,17 +48,17 @@ export default function SettingsScreen() {
                 <TouchableOpacity onPress={() => router.back()}>
                     <Text style={styles.backText}>←</Text>
                 </TouchableOpacity>
-                <Text style={styles.title}>PARAMÈTRES</Text>
+                <Text style={styles.title}>{t('settings')}</Text>
             </View>
 
-            <View style={styles.content}>
+            <ScrollView style={styles.content}>
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>SYSTÈME</Text>
+                    <Text style={styles.sectionTitle}>{t('system_section')}</Text>
 
                     <View style={styles.option}>
                         <View>
-                            <Text style={styles.optionText}>Sons</Text>
-                            <Text style={styles.optionSubtext}>Effets sonores durant le jeu</Text>
+                            <Text style={styles.optionText}>{t('sounds')}</Text>
+                            <Text style={styles.optionSubtext}>{t('sounds_sub')}</Text>
                         </View>
                         <Switch
                             trackColor={{ false: COLORS.secondary, true: COLORS.accent }}
@@ -58,8 +71,8 @@ export default function SettingsScreen() {
 
                     <View style={styles.option}>
                         <View>
-                            <Text style={styles.optionText}>Notifications</Text>
-                            <Text style={styles.optionSubtext}>Alertes et rappels de jeu</Text>
+                            <Text style={styles.optionText}>{t('notifications')}</Text>
+                            <Text style={styles.optionSubtext}>{t('notifications_sub')}</Text>
                         </View>
                         <Switch
                             trackColor={{ false: COLORS.secondary, true: COLORS.accent }}
@@ -72,17 +85,46 @@ export default function SettingsScreen() {
                 </View>
 
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>À PROPOS</Text>
+                    <Text style={styles.sectionTitle}>{t('language')}</Text>
+                    <Text style={[styles.optionSubtext, { marginBottom: 15 }]}>{t('language_sub')}</Text>
+
+                    <View style={styles.languageContainer}>
+                        {LANGUAGES.map((lang) => (
+                            <TouchableOpacity
+                                key={lang.code}
+                                style={[
+                                    styles.languageOption,
+                                    language === lang.code && styles.languageOptionActive
+                                ]}
+                                onPress={() => handleLanguageChange(lang.code)}
+                                activeOpacity={0.7}
+                            >
+                                <Text style={[
+                                    styles.languageLabel,
+                                    language === lang.code && styles.languageLabelActive
+                                ]}>
+                                    {lang.label}
+                                </Text>
+                                {language === lang.code && (
+                                    <View style={styles.activeDot} />
+                                )}
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                </View>
+
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>{t('about_section')}</Text>
                     <View style={styles.infoRow}>
-                        <Text style={styles.infoLabel}>Version</Text>
+                        <Text style={styles.infoLabel}>{t('version')}</Text>
                         <Text style={styles.infoValue}>1.0.0</Text>
                     </View>
                     <View style={styles.infoRow}>
-                        <Text style={styles.infoLabel}>Développeur</Text>
+                        <Text style={styles.infoLabel}>{t('developer')}</Text>
                         <Text style={styles.infoValue}>Ali Lamhene</Text>
                     </View>
                 </View>
-            </View>
+            </ScrollView>
 
             <BottomNavBar />
         </SafeAreaView>
@@ -115,7 +157,6 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         paddingHorizontal: SPACING.lg,
-        paddingTop: 20,
     },
     section: {
         marginBottom: 40,
@@ -125,7 +166,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: COLORS.accent,
         letterSpacing: 2,
-        marginBottom: 20,
+        marginBottom: 15,
     },
     option: {
         flexDirection: 'row',
@@ -145,6 +186,39 @@ const styles = StyleSheet.create({
         fontSize: 11,
         color: COLORS.textSecondary,
         fontWeight: '300',
+    },
+    languageContainer: {
+        backgroundColor: COLORS.secondary,
+        borderRadius: 2,
+        overflow: 'hidden',
+    },
+    languageOption: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 18,
+        paddingHorizontal: 20,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(255,255,255,0.05)',
+    },
+    languageOptionActive: {
+        backgroundColor: 'rgba(184, 161, 255, 0.05)',
+    },
+    languageLabel: {
+        fontSize: 12,
+        color: COLORS.textSecondary,
+        fontWeight: '500',
+        letterSpacing: 1.5,
+    },
+    languageLabelActive: {
+        color: COLORS.accent,
+        fontWeight: '700',
+    },
+    activeDot: {
+        width: 6,
+        height: 6,
+        borderRadius: 3,
+        backgroundColor: COLORS.accent,
     },
     infoRow: {
         flexDirection: 'row',

@@ -1,6 +1,7 @@
 import { usePathname, useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants/colors';
+import { useTranslation } from '../context/LanguageContext';
 import HomeIcon from './icons/HomeIcon';
 import ProfileIcon from './icons/ProfileIcon';
 import SettingsIcon from './icons/SettingsIcon';
@@ -8,6 +9,7 @@ import SettingsIcon from './icons/SettingsIcon';
 export default function BottomNavBar() {
     const router = useRouter();
     const pathname = usePathname();
+    const { t } = useTranslation();
 
     const isHome = pathname === '/' || pathname === '/index';
     const isProfile = pathname === '/profile';
@@ -25,7 +27,7 @@ export default function BottomNavBar() {
                     width={22}
                     height={22}
                 />
-                <Text style={[styles.navText, isHome && styles.activeNavText]}>ACCUEIL</Text>
+                <Text style={[styles.navText, isHome && styles.activeNavText]}>{t('nav_home')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -38,7 +40,7 @@ export default function BottomNavBar() {
                     width={22}
                     height={22}
                 />
-                <Text style={[styles.navText, isProfile && styles.activeNavText]}>PROFIL</Text>
+                <Text style={[styles.navText, isProfile && styles.activeNavText]}>{t('nav_profile')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -51,7 +53,7 @@ export default function BottomNavBar() {
                     width={22}
                     height={22}
                 />
-                <Text style={[styles.navText, isSettings && styles.activeNavText]}>PARAMÈTRES</Text>
+                <Text style={[styles.navText, isSettings && styles.activeNavText]}>{t('nav_settings')}</Text>
             </TouchableOpacity>
         </View>
     );
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     navText: {
-        fontSize: 8, // Smaller for 3 items
+        fontSize: 8,
         fontWeight: '500',
         color: COLORS.textSecondary,
         letterSpacing: 1.2,

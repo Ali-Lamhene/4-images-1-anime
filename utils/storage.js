@@ -9,6 +9,7 @@ const STORAGE_KEYS = {
 export const INITIAL_SETTINGS = {
     sounds: true,
     notifications: false,
+    language: 'en',
 };
 
 export const INITIAL_USER = {

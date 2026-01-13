@@ -12,6 +12,7 @@ import VictoryPopup from '../components/VictoryPopup';
 import { ANIME_DATA } from '../assets/data/data';
 import { COLORS } from '../constants/colors';
 import { DEFAULT_REWARDS, HINT_COST } from '../constants/game';
+import { useTranslation } from '../context/LanguageContext';
 import { calculateLevel, checkAnswer, normalizeString, shuffleLetters } from '../utils/gameUtils';
 import {
   INITIAL_USER,
@@ -25,15 +26,15 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function PlayScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [currentAnimeIndex, setCurrentAnimeIndex] = useState(0);
   const [showVictoryPopup, setShowVictoryPopup] = useState(false);
   const [rankUpLevel, setRankUpLevel] = useState(null);
   const [isReady, setIsReady] = useState(false);
-  const [isAllCompleted, setIsAllCompleted] = useState(false);
 
   const [user, setUser] = useState(INITIAL_USER);
+  const [gameState, setGameState] = useState(null);
 
-  // 1. Load data on mount
   useEffect(() => {
     const loadData = async () => {
       const savedUser = await getUserData();
@@ -42,9 +43,7 @@ export default function PlayScreen() {
       setUser(savedUser);
       setCurrentAnimeIndex(savedIndex);
 
-      if (savedIndex >= ANIME_DATA.length) {
-        setIsAllCompleted(true);
-      } else {
+      if (savedIndex < ANIME_DATA.length) {
         const anime = ANIME_DATA[savedIndex];
         setGameState({
           currentAnime: anime,
@@ -64,9 +63,6 @@ export default function PlayScreen() {
     loadData();
   }, []);
 
-  const [gameState, setGameState] = useState(null);
-
-  // 2. Save data whenever it changes
   useEffect(() => {
     if (isReady) {
       saveUserData(user);
@@ -78,8 +74,6 @@ export default function PlayScreen() {
       saveCurrentAnimeIndex(currentAnimeIndex);
     }
   }, [currentAnimeIndex, isReady]);
-
-  /* -------------------- GAME LOGIC -------------------- */
 
   useEffect(() => {
     if (gameState && gameState.selectedLetters.every(l => l !== null)) {
@@ -170,9 +164,7 @@ export default function PlayScreen() {
     const nextIndex = currentAnimeIndex + 1;
     setCurrentAnimeIndex(nextIndex);
 
-    if (nextIndex >= ANIME_DATA.length) {
-      // Don't set setIsAllCompleted(true) here yet, wait for possible rankup
-    } else {
+    if (nextIndex < ANIME_DATA.length) {
       const nextAnime = ANIME_DATA[nextIndex];
       setGameState({
         currentAnime: nextAnime,
@@ -204,7 +196,6 @@ export default function PlayScreen() {
 
   if (!isReady) return null;
 
-  // Priorité aux popups sur l'écran final
   const isActuallyCompleted = currentAnimeIndex >= ANIME_DATA.length && !showVictoryPopup && !rankUpLevel;
 
   if (isActuallyCompleted) {
@@ -212,26 +203,25 @@ export default function PlayScreen() {
       <SafeAreaView style={styles.container}>
         <GameHeader user={user} showBackButton={true} />
         <View style={styles.completedContent}>
-          <Text style={styles.completedTitle}>FÉLICITATIONS</Text>
+          <Text style={styles.completedTitle}>{t('congratulations')}</Text>
           <View style={styles.completedDivider} />
           <Text style={styles.completedText}>
-            Vous avez identifié tous les animes disponibles pour le moment.
+            {t('all_completed')}
           </Text>
           <Text style={styles.completedSubtext}>
-            De nouveaux défis seront ajoutés très prochainement.
+            {t('more_coming')}
           </Text>
           <TouchableOpacity
             style={styles.homeButton}
             onPress={() => router.replace('/')}
           >
-            <Text style={styles.homeButtonText}>RETOUR À L'ACCUEIL</Text>
+            <Text style={styles.homeButtonText}>{t('back_home')}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
   }
 
-  // Precaution if gameState is loading
   if (!gameState && currentAnimeIndex < ANIME_DATA.length) return null;
 
   return (
@@ -299,7 +289,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  // Completed Styles
   completedContent: {
     flex: 1,
     justifyContent: 'center',

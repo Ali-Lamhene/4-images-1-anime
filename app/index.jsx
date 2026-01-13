@@ -4,16 +4,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomNavBar from '../components/BottomNavBar';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
+import { useTranslation } from '../context/LanguageContext';
 
 export default function Index() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.textContainer}>
-          <Text style={styles.title}>4 IMAGES</Text>
-          <Text style={styles.subtitle}>UN ANIME</Text>
+          <Text style={styles.title}>{t('title_top')}</Text>
+          <Text style={styles.subtitle}>{t('title_bottom')}</Text>
         </View>
 
         <View style={styles.divider} />
@@ -24,7 +26,7 @@ export default function Index() {
             onPress={() => router.push('/play')}
             activeOpacity={0.8}
           >
-            <Text style={styles.playButtonText}>COMMENCER L'EXPÉRIENCE</Text>
+            <Text style={styles.playButtonText}>{t('start_experience')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -32,14 +34,15 @@ export default function Index() {
             onPress={() => { }}
             activeOpacity={0.7}
           >
-            <Text style={styles.secondaryButtonText}>COLLECTIONS</Text>
+            <Text style={styles.secondaryButtonText}>{t('collections')}</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>FOUR IMAGES • ONE ANIME</Text>
+          <Text style={styles.footerText}>{t('footer_text')}</Text>
         </View>
       </View>
+
       <BottomNavBar />
     </SafeAreaView>
   );

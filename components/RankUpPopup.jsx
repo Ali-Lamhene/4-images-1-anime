@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
     Animated,
     Dimensions,
+    Easing,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -11,12 +12,13 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 
 import { COLORS } from '../constants/colors';
 import { RANKS } from '../constants/game';
+import { useTranslation } from '../context/LanguageContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function RankUpPopup({ level, onClose }) {
+    const { t } = useTranslation();
     const [showConfetti, setShowConfetti] = useState(false);
-    const scaleAnim = useState(new Animated.Value(1))[0];
     const opacityAnim = useState(new Animated.Value(0))[0];
     const slideAnim = useState(new Animated.Value(10))[0];
 
@@ -58,16 +60,16 @@ export default function RankUpPopup({ level, onClose }) {
                     { transform: [{ translateY: slideAnim }] },
                 ]}
             >
-                <Text style={styles.rankLabel}>NOUVEAU RANG DISPONIBLE</Text>
+                <Text style={styles.rankLabel}>{t('new_rank')}</Text>
 
-                <Text style={styles.rankName}>{rank.name.toUpperCase()}</Text>
+                <Text style={styles.rankName}>{t(`rank_${rank.name.toLowerCase()}`)}</Text>
 
                 <View style={styles.divider} />
 
-                <Text style={styles.levelText}>NIVEAU {level} ATTEINT</Text>
+                <Text style={styles.levelText}>{t('level_reached', { level })}</Text>
 
                 <Text style={styles.subtitle}>
-                    Votre progression continue de s'élever. Explorez de nouveaux horizons.
+                    {t('rank_up_sub')}
                 </Text>
 
                 <TouchableOpacity
@@ -75,15 +77,12 @@ export default function RankUpPopup({ level, onClose }) {
                     onPress={onClose}
                     activeOpacity={0.8}
                 >
-                    <Text style={styles.closeButtonText}>CONTINUER</Text>
+                    <Text style={styles.closeButtonText}>{t('acknowledge')}</Text>
                 </TouchableOpacity>
             </Animated.View>
         </Animated.View>
     );
 }
-
-// Simple easing import for the animation
-const Easing = require('react-native').Easing;
 
 const styles = StyleSheet.create({
     overlay: {

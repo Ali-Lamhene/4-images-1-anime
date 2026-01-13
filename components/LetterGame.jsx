@@ -2,6 +2,7 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants/colors';
 import { HINT_COST } from '../constants/game';
 import { SPACING } from '../constants/spacing';
+import { useTranslation } from '../context/LanguageContext';
 
 export default function LetterGame({
   animeName,
@@ -12,9 +13,11 @@ export default function LetterGame({
   onLetterRemove,
   onHintRequest,
 }) {
+  const { t } = useTranslation();
+
   const handleHint = () => {
     if (userCoins < HINT_COST) {
-      Alert.alert('INFO', `Besoin de ${HINT_COST} crédits.`);
+      Alert.alert('INFO', t('hint_need_credits', { cost: HINT_COST }));
       return;
     }
     onHintRequest();
@@ -81,7 +84,7 @@ export default function LetterGame({
           style={[styles.hintBtn, userCoins < HINT_COST && { opacity: 0.3 }]}
           onPress={handleHint}
         >
-          <Text style={styles.hintText}>INDICE ({HINT_COST}C)</Text>
+          <Text style={styles.hintText}>{t('hint_cost', { cost: HINT_COST })}</Text>
         </TouchableOpacity>
       </View>
     </View>
