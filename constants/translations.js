@@ -41,6 +41,9 @@ export const TRANSLATIONS = {
         cancel: "CANCEL",
         confirm: "CONFIRM",
         reset_success: "Progress reset.",
+        my_collection: "MY COLLECTION",
+        episodes: "episodes",
+        year: "year",
         system: "SYSTEM",
 
         // Settings Screen
@@ -123,6 +126,9 @@ export const TRANSLATIONS = {
         cancel: "ANNULER",
         confirm: "CONFIRMER",
         reset_success: "Progression réinitialisée.",
+        my_collection: "MA COLLECTION",
+        episodes: "épisodes",
+        year: "année",
         system: "SYSTÈME",
 
         // Settings Screen

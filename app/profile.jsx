@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ANIME_DATA } from '../assets/data/data';
 import BottomNavBar from '../components/BottomNavBar';
@@ -9,15 +9,18 @@ import { COLORS } from '../constants/colors';
 import { RANKS } from '../constants/game';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
-import { clearAllData, getCurrentAnimeIndex, getUserData, INITIAL_USER } from '../utils/storage';
+import { clearAllData, getCurrentAnimeIndex, getSettings, getUserData, INITIAL_USER } from '../utils/storage';
+
+const { width } = Dimensions.get('window');
 
 export default function ProfileScreen() {
     const router = useRouter();
-    const { t } = useTranslation();
+    const { t, language } = useTranslation();
     const [user, setUser] = useState(INITIAL_USER);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isReady, setIsReady] = useState(false);
     const [showResetModal, setShowResetModal] = useState(false);
+    const [settings, setSettings] = useState(null);
 
     useEffect(() => {
         loadStats();
@@ -26,8 +29,10 @@ export default function ProfileScreen() {
     const loadStats = async () => {
         const data = await getUserData();
         const index = await getCurrentAnimeIndex();
+        const savedSettings = await getSettings();
         setUser(data);
         setCurrentIndex(index);
+        setSettings(savedSettings);
         setIsReady(true);
     };
 
@@ -44,6 +49,8 @@ export default function ProfileScreen() {
     const xpProgress = nextRank
         ? ((user.xp - currentRank.minXP) / (nextRank.minXP - currentRank.minXP)) * 100
         : 100;
+
+    const unlockedAnimes = ANIME_DATA.slice(0, currentIndex);
 
     if (!isReady) return null;
 
@@ -85,15 +92,45 @@ export default function ProfileScreen() {
                     </View>
                 </View>
 
-                <View style={styles.progressSection}>
-                    <Text style={styles.sectionTitle}>{t('global_progress')}</Text>
-                    <View style={styles.globalBar}>
-                        <View style={[styles.globalFill, { width: `${(currentIndex / ANIME_DATA.length) * 100}%` }]} />
+                {/* Collection Section */}
+                {unlockedAnimes.length > 0 && (
+                    <View style={styles.progressSection}>
+                        <Text style={styles.sectionTitle}>{t('my_collection')}</Text>
+                        <View style={styles.collectionContainer}>
+                            <ScrollView
+                                style={styles.collectionScroll}
+                                showsVerticalScrollIndicator={true}
+                                nestedScrollEnabled={true}
+                            >
+                                {unlockedAnimes.map((anime) => {
+                                    const namingType = settings?.namingType || 'original';
+                                    const displayName = anime.names[namingType] || anime.names.original;
+                                    const synopsis = anime.info.synopsis[language] || anime.info.synopsis.en;
+
+                                    return (
+                                        <View key={anime.id} style={styles.collectionItem}>
+                                            <Image
+                                                source={{ uri: anime.images[0] }}
+                                                style={styles.collectionThumb}
+                                            />
+                                            <View style={styles.collectionInfo}>
+                                                <Text style={styles.collectionName}>{displayName}</Text>
+                                                <View style={styles.collectionMeta}>
+                                                    <Text style={styles.metaText}>{anime.info.year}</Text>
+                                                    <Text style={styles.metaDivider}>•</Text>
+                                                    <Text style={styles.metaText}>{anime.info.episodes} {t('episodes')}</Text>
+                                                </View>
+                                                <Text style={styles.collectionSynopsis} numberOfLines={2}>
+                                                    {synopsis}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    );
+                                })}
+                            </ScrollView>
+                        </View>
                     </View>
-                    <Text style={styles.progressText}>
-                        {t('animes_completed', { current: currentIndex, total: ANIME_DATA.length })}
-                    </Text>
-                </View>
+                )}
 
                 <View style={styles.dangerZone}>
                     <Text style={styles.sectionTitle}>{t('danger_zone')}</Text>
@@ -250,6 +287,73 @@ const styles = StyleSheet.create({
     },
     iconText: {
         fontSize: 16,
+    },
+    // Collection Styles
+    collectionContainer: {
+        maxHeight: 250, // Limited height, but fits content if smaller
+        backgroundColor: COLORS.secondary,
+        borderRadius: 4,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: 'rgba(184, 161, 255, 0.1)',
+        marginBottom: 5,
+    },
+    collectionScroll: {
+        flex: 1,
+    },
+    collectionItem: {
+        flexDirection: 'row',
+        paddingVertical: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(255,255,255,0.05)',
+        gap: 15,
+    },
+    collectionThumb: {
+        width: 60,
+        height: 80,
+        borderRadius: 2,
+        backgroundColor: COLORS.primary,
+    },
+    collectionInfo: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    collectionName: {
+        fontSize: 13,
+        fontWeight: '700',
+        color: COLORS.textPrimary,
+        marginBottom: 4,
+        letterSpacing: 0.5,
+    },
+    collectionMeta: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        marginBottom: 6,
+    },
+    metaText: {
+        fontSize: 10,
+        color: COLORS.accent,
+        fontWeight: '500',
+    },
+    metaDivider: {
+        fontSize: 10,
+        color: COLORS.textSecondary,
+    },
+    collectionSynopsis: {
+        fontSize: 10,
+        color: COLORS.textSecondary,
+        lineHeight: 14,
+        fontWeight: '300',
+    },
+    emptyCollection: {
+        gap: 10,
+        opacity: 0.2,
+    },
+    emptySlot: {
+        height: 80,
+        backgroundColor: COLORS.primary,
+        borderRadius: 2,
     },
     progressSection: {
         paddingVertical: 20,

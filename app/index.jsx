@@ -1,10 +1,12 @@
 import { useRouter } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomNavBar from '../components/BottomNavBar';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
+
+const { width } = Dimensions.get('window');
 
 export default function Index() {
   const router = useRouter();
@@ -13,28 +15,27 @@ export default function Index() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
+
+        {/* Background Decorative Glow */}
+        <View style={styles.glow} />
+
         <View style={styles.textContainer}>
           <Text style={styles.title}>{t('title_top')}</Text>
-          <Text style={styles.subtitle}>{t('title_bottom')}</Text>
+          <View style={styles.subtitleRow}>
+            <View style={styles.subtitleLine} />
+            <Text style={styles.subtitle}>{t('title_bottom')}</Text>
+            <View style={styles.subtitleLine} />
+          </View>
         </View>
-
-        <View style={styles.divider} />
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.playButton}
             onPress={() => router.push('/play')}
-            activeOpacity={0.8}
+            activeOpacity={0.9}
           >
             <Text style={styles.playButtonText}>{t('start_experience')}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={() => { }}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.secondaryButtonText}>{t('collections')}</Text>
+            <View style={styles.buttonGlow} />
           </TouchableOpacity>
         </View>
 
@@ -58,60 +59,74 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: SPACING.xxl,
-    paddingBottom: 80, // Space for BottomNavBar
+    paddingBottom: 80,
+  },
+  glow: {
+    position: 'absolute',
+    width: width * 0.8,
+    height: width * 0.8,
+    backgroundColor: COLORS.accent,
+    opacity: 0.03,
+    borderRadius: width,
+    top: '15%',
   },
   textContainer: {
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 80,
   },
   title: {
-    fontSize: 42,
-    fontWeight: '600',
+    fontSize: 48,
+    fontWeight: '700',
     color: COLORS.textPrimary,
-    letterSpacing: 8,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: COLORS.textSecondary,
-    marginTop: 4,
     letterSpacing: 12,
     textAlign: 'center',
-    fontWeight: '300',
+    textShadowColor: 'rgba(184, 161, 255, 0.3)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 20,
   },
-  divider: {
+  subtitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    gap: 15,
+  },
+  subtitleLine: {
+    width: 20,
     height: 1,
-    width: 30,
     backgroundColor: COLORS.accent,
-    marginBottom: 60,
-    opacity: 0.5,
+    opacity: 0.3,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: COLORS.accent,
+    letterSpacing: 8,
+    textAlign: 'center',
+    fontWeight: '400',
+    textTransform: 'uppercase',
   },
   buttonContainer: {
     width: '100%',
     maxWidth: 320,
-    gap: 8,
+    gap: 15,
   },
   playButton: {
-    backgroundColor: COLORS.secondary,
-    paddingVertical: 20,
+    backgroundColor: COLORS.accent,
+    paddingVertical: 22,
     alignItems: 'center',
-    borderRadius: 2,
+    borderRadius: 4,
+    shadowColor: COLORS.accent,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 15,
+    elevation: 8,
+    position: 'relative',
+    overflow: 'hidden',
   },
   playButtonText: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: COLORS.textPrimary,
-    letterSpacing: 2,
-  },
-  secondaryButton: {
-    paddingVertical: 16,
-    alignItems: 'center',
-  },
-  secondaryButtonText: {
-    fontSize: 10,
-    fontWeight: '400',
-    color: COLORS.textSecondary,
-    letterSpacing: 1,
+    fontSize: 13,
+    fontWeight: '800',
+    color: COLORS.primary,
+    letterSpacing: 3,
   },
   footer: {
     position: 'absolute',
