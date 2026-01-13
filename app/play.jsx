@@ -5,17 +5,19 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import GameHeader from '../components/GameHeader';
 import Images from '../components/Images';
 import LetterGame from '../components/LetterGame';
+import RankUpPopup from '../components/RankUpPopup';
 import VictoryPopup from '../components/VictoryPopup';
 
 import { ANIME_DATA } from '../assets/data/data';
 import { COLORS } from '../constants/colors';
 import { DEFAULT_REWARDS, HINT_COST } from '../constants/game';
-import { checkAnswer, normalizeString, shuffleLetters } from '../utils/gameUtils';
+import { calculateLevel, checkAnswer, normalizeString, shuffleLetters } from '../utils/gameUtils';
 
 
 export default function PlayScreen() {
   const [currentAnimeIndex, setCurrentAnimeIndex] = useState(0);
   const [showVictoryPopup, setShowVictoryPopup] = useState(false);
+  const [rankUpLevel, setRankUpLevel] = useState(null);
 
   const [user, setUser] = useState({
     coins: 500,
@@ -108,11 +110,21 @@ export default function PlayScreen() {
 
   const handleContinue = () => {
     // Récompenses
-    setUser(prev => ({
-      ...prev,
-      coins: prev.coins + DEFAULT_REWARDS.coins,
-      xp: prev.xp + DEFAULT_REWARDS.xp,
-    }));
+    setUser(prev => {
+      const newXP = prev.xp + DEFAULT_REWARDS.xp;
+      const newLevel = calculateLevel(newXP);
+
+      if (newLevel > prev.level) {
+        setRankUpLevel(newLevel);
+      }
+
+      return {
+        ...prev,
+        coins: prev.coins + DEFAULT_REWARDS.coins,
+        xp: newXP,
+        level: newLevel,
+      };
+    });
 
     setShowVictoryPopup(false);
 
@@ -176,6 +188,13 @@ export default function PlayScreen() {
           <VictoryPopup
             rewards={DEFAULT_REWARDS}
             onContinue={handleContinue}
+          />
+        )}
+
+        {rankUpLevel && (
+          <RankUpPopup
+            level={rankUpLevel}
+            onClose={() => setRankUpLevel(null)}
           />
         )}
       </View>
