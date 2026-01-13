@@ -17,7 +17,7 @@ import PotionIcon from './icons/PotionIcon';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-export default function VictoryPopup({ rewards, onContinue }) {
+export default function VictoryPopup({ rewards, animeName, onContinue }) {
   const { t } = useTranslation();
   const [fadeAnim] = useState(new Animated.Value(0));
   const [slideAnim] = useState(new Animated.Value(20));
@@ -105,6 +105,7 @@ export default function VictoryPopup({ rewards, onContinue }) {
         ]}
       >
         <Text style={styles.title}>{t('success')}</Text>
+        <Text style={styles.animeResult}>{animeName.toUpperCase()}</Text>
         <View style={styles.divider} />
 
         <View style={styles.rewardsRow}>
@@ -200,7 +201,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: COLORS.textPrimary,
     letterSpacing: 8,
+    marginBottom: 5,
+  },
+  animeResult: {
+    fontSize: 12,
+    fontWeight: '400',
+    color: COLORS.accent,
+    letterSpacing: 2,
     marginBottom: 20,
+    textAlign: 'center',
   },
   divider: {
     width: 20,

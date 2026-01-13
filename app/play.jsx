@@ -17,6 +17,7 @@ import { calculateLevel, checkAnswer, normalizeString, shuffleLetters } from '..
 import {
   INITIAL_USER,
   getCurrentAnimeIndex,
+  getSettings,
   getUserData,
   saveCurrentAnimeIndex,
   saveUserData
@@ -31,6 +32,7 @@ export default function PlayScreen() {
   const [showVictoryPopup, setShowVictoryPopup] = useState(false);
   const [rankUpLevel, setRankUpLevel] = useState(null);
   const [isReady, setIsReady] = useState(false);
+  const [settings, setSettings] = useState(null);
 
   const [user, setUser] = useState(INITIAL_USER);
   const [gameState, setGameState] = useState(null);
@@ -39,18 +41,25 @@ export default function PlayScreen() {
     const loadData = async () => {
       const savedUser = await getUserData();
       const savedIndex = await getCurrentAnimeIndex();
+      const savedSettings = await getSettings();
 
       setUser(savedUser);
       setCurrentAnimeIndex(savedIndex);
+      setSettings(savedSettings);
 
       if (savedIndex < ANIME_DATA.length) {
         const anime = ANIME_DATA[savedIndex];
+        // Use preferred name based on namingType
+        const namingType = savedSettings.namingType || 'original';
+        const preferredName = anime.names[namingType] || anime.names.original;
+
         setGameState({
           currentAnime: anime,
+          preferredName,
           selectedLetters: Array(
-            anime.name.replace(/\s/g, '').length
+            preferredName.replace(/\s/g, '').length
           ).fill(null),
-          availableLetters: shuffleLetters(anime.name).map(char => ({
+          availableLetters: shuffleLetters(preferredName).map(char => ({
             char,
             used: false,
           })),
@@ -80,7 +89,7 @@ export default function PlayScreen() {
       if (
         checkAnswer(
           gameState.selectedLetters,
-          gameState.currentAnime.name
+          gameState.preferredName
         )
       ) {
         setTimeout(() => setShowVictoryPopup(true), 300);
@@ -127,7 +136,7 @@ export default function PlayScreen() {
   const handleHintRequest = () => {
     if (user.coins < HINT_COST) return;
 
-    const correct = normalizeString(gameState.currentAnime.name);
+    const correct = normalizeString(gameState.preferredName);
     const index = gameState.selectedLetters.findIndex(l => l === null);
     if (index === -1) return;
 
@@ -166,12 +175,16 @@ export default function PlayScreen() {
 
     if (nextIndex < ANIME_DATA.length) {
       const nextAnime = ANIME_DATA[nextIndex];
+      const namingType = settings.namingType || 'original';
+      const preferredName = nextAnime.names[namingType] || nextAnime.names.original;
+
       setGameState({
         currentAnime: nextAnime,
+        preferredName,
         selectedLetters: Array(
-          nextAnime.name.replace(/\s/g, '').length
+          preferredName.replace(/\s/g, '').length
         ).fill(null),
-        availableLetters: shuffleLetters(nextAnime.name).map(char => ({
+        availableLetters: shuffleLetters(preferredName).map(char => ({
           char,
           used: false,
         })),
@@ -184,9 +197,9 @@ export default function PlayScreen() {
       setGameState(prev => ({
         ...prev,
         selectedLetters: Array(
-          prev.currentAnime.name.replace(/\s/g, '').length
+          prev.preferredName.replace(/\s/g, '').length
         ).fill(null),
-        availableLetters: shuffleLetters(prev.currentAnime.name).map(char => ({
+        availableLetters: shuffleLetters(prev.preferredName).map(char => ({
           char,
           used: false,
         })),
@@ -241,7 +254,7 @@ export default function PlayScreen() {
             <Images images={gameState.currentAnime.images} />
 
             <LetterGame
-              animeName={gameState.currentAnime.name}
+              animeName={gameState.preferredName}
               selectedLetters={gameState.selectedLetters}
               availableLetters={gameState.availableLetters}
               userCoins={user.coins}
@@ -255,6 +268,7 @@ export default function PlayScreen() {
         {showVictoryPopup && (
           <VictoryPopup
             rewards={DEFAULT_REWARDS}
+            animeName={gameState.preferredName}
             onContinue={handleContinue}
           />
         )}

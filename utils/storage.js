@@ -10,6 +10,7 @@ export const INITIAL_SETTINGS = {
     sounds: true,
     notifications: false,
     language: 'en',
+    namingType: 'original',
 };
 
 export const INITIAL_USER = {
