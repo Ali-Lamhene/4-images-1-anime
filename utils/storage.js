@@ -3,6 +3,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const STORAGE_KEYS = {
     USER_DATA: 'user_data',
     CURRENT_ANIME_INDEX: 'current_anime_index',
+    SETTINGS: 'settings',
+};
+
+export const INITIAL_SETTINGS = {
+    sounds: true,
+    notifications: false,
 };
 
 export const INITIAL_USER = {
@@ -52,5 +58,23 @@ export const clearAllData = async () => {
         await AsyncStorage.clear();
     } catch (error) {
         console.error('Error clearing storage:', error);
+    }
+};
+
+export const saveSettings = async (settings) => {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+    } catch (error) {
+        console.error('Error saving settings:', error);
+    }
+};
+
+export const getSettings = async () => {
+    try {
+        const data = await AsyncStorage.getItem(STORAGE_KEYS.SETTINGS);
+        return data ? JSON.parse(data) : INITIAL_SETTINGS;
+    } catch (error) {
+        console.error('Error getting settings:', error);
+        return INITIAL_SETTINGS;
     }
 };

@@ -1,5 +1,6 @@
+import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import GameHeader from '../components/GameHeader';
@@ -23,25 +24,14 @@ import {
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function PlayScreen() {
+  const router = useRouter();
   const [currentAnimeIndex, setCurrentAnimeIndex] = useState(0);
   const [showVictoryPopup, setShowVictoryPopup] = useState(false);
   const [rankUpLevel, setRankUpLevel] = useState(null);
   const [isReady, setIsReady] = useState(false);
+  const [isAllCompleted, setIsAllCompleted] = useState(false);
 
   const [user, setUser] = useState(INITIAL_USER);
-
-  const currentAnime = ANIME_DATA[currentAnimeIndex];
-
-  const [gameState, setGameState] = useState({
-    currentAnime,
-    selectedLetters: Array(
-      currentAnime.name.replace(/\s/g, '').length
-    ).fill(null),
-    availableLetters: shuffleLetters(currentAnime.name).map(char => ({
-      char,
-      used: false,
-    })),
-  });
 
   // 1. Load data on mount
   useEffect(() => {
@@ -52,23 +42,29 @@ export default function PlayScreen() {
       setUser(savedUser);
       setCurrentAnimeIndex(savedIndex);
 
-      const anime = ANIME_DATA[savedIndex] || ANIME_DATA[0];
-      setGameState({
-        currentAnime: anime,
-        selectedLetters: Array(
-          anime.name.replace(/\s/g, '').length
-        ).fill(null),
-        availableLetters: shuffleLetters(anime.name).map(char => ({
-          char,
-          used: false,
-        })),
-      });
+      if (savedIndex >= ANIME_DATA.length) {
+        setIsAllCompleted(true);
+      } else {
+        const anime = ANIME_DATA[savedIndex];
+        setGameState({
+          currentAnime: anime,
+          selectedLetters: Array(
+            anime.name.replace(/\s/g, '').length
+          ).fill(null),
+          availableLetters: shuffleLetters(anime.name).map(char => ({
+            char,
+            used: false,
+          })),
+        });
+      }
 
       setIsReady(true);
     };
 
     loadData();
   }, []);
+
+  const [gameState, setGameState] = useState(null);
 
   // 2. Save data whenever it changes
   useEffect(() => {
@@ -86,7 +82,7 @@ export default function PlayScreen() {
   /* -------------------- GAME LOGIC -------------------- */
 
   useEffect(() => {
-    if (gameState.selectedLetters.every(l => l !== null)) {
+    if (gameState && gameState.selectedLetters.every(l => l !== null)) {
       if (
         checkAnswer(
           gameState.selectedLetters,
@@ -98,7 +94,7 @@ export default function PlayScreen() {
         resetAnswer();
       }
     }
-  }, [gameState.selectedLetters]);
+  }, [gameState?.selectedLetters]);
 
   const handleLetterSelect = (letter, index) => {
     const firstEmpty = gameState.selectedLetters.findIndex(l => l === null);
@@ -171,20 +167,24 @@ export default function PlayScreen() {
 
     setShowVictoryPopup(false);
 
-    const nextIndex = (currentAnimeIndex + 1) % ANIME_DATA.length;
-    const nextAnime = ANIME_DATA[nextIndex];
-
+    const nextIndex = currentAnimeIndex + 1;
     setCurrentAnimeIndex(nextIndex);
-    setGameState({
-      currentAnime: nextAnime,
-      selectedLetters: Array(
-        nextAnime.name.replace(/\s/g, '').length
-      ).fill(null),
-      availableLetters: shuffleLetters(nextAnime.name).map(char => ({
-        char,
-        used: false,
-      })),
-    });
+
+    if (nextIndex >= ANIME_DATA.length) {
+      // Don't set setIsAllCompleted(true) here yet, wait for possible rankup
+    } else {
+      const nextAnime = ANIME_DATA[nextIndex];
+      setGameState({
+        currentAnime: nextAnime,
+        selectedLetters: Array(
+          nextAnime.name.replace(/\s/g, '').length
+        ).fill(null),
+        availableLetters: shuffleLetters(nextAnime.name).map(char => ({
+          char,
+          used: false,
+        })),
+      });
+    }
   };
 
   const resetAnswer = () => {
@@ -203,6 +203,36 @@ export default function PlayScreen() {
   };
 
   if (!isReady) return null;
+
+  // Priorité aux popups sur l'écran final
+  const isActuallyCompleted = currentAnimeIndex >= ANIME_DATA.length && !showVictoryPopup && !rankUpLevel;
+
+  if (isActuallyCompleted) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <GameHeader user={user} showBackButton={true} />
+        <View style={styles.completedContent}>
+          <Text style={styles.completedTitle}>FÉLICITATIONS</Text>
+          <View style={styles.completedDivider} />
+          <Text style={styles.completedText}>
+            Vous avez identifié tous les animes disponibles pour le moment.
+          </Text>
+          <Text style={styles.completedSubtext}>
+            De nouveaux défis seront ajoutés très prochainement.
+          </Text>
+          <TouchableOpacity
+            style={styles.homeButton}
+            onPress={() => router.replace('/')}
+          >
+            <Text style={styles.homeButtonText}>RETOUR À L'ACCUEIL</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // Precaution if gameState is loading
+  if (!gameState && currentAnimeIndex < ANIME_DATA.length) return null;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -267,6 +297,57 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     flex: 1,
-    justifyContent: 'center', // Helps center everything if space allows
+    justifyContent: 'center',
   },
+  // Completed Styles
+  completedContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 40,
+  },
+  completedTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: COLORS.textPrimary,
+    letterSpacing: 8,
+    marginBottom: 20,
+  },
+  completedDivider: {
+    width: 30,
+    height: 1,
+    backgroundColor: COLORS.accent,
+    marginBottom: 40,
+  },
+  completedText: {
+    fontSize: 14,
+    color: COLORS.textPrimary,
+    textAlign: 'center',
+    lineHeight: 22,
+    letterSpacing: 0.5,
+    marginBottom: 10,
+    fontWeight: '500',
+  },
+  completedSubtext: {
+    fontSize: 11,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    letterSpacing: 1,
+    marginBottom: 50,
+    fontWeight: '300',
+  },
+  homeButton: {
+    backgroundColor: COLORS.secondary,
+    paddingVertical: 18,
+    paddingHorizontal: 40,
+    borderRadius: 2,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  homeButtonText: {
+    fontSize: 10,
+    color: COLORS.textPrimary,
+    fontWeight: '600',
+    letterSpacing: 3,
+  }
 });

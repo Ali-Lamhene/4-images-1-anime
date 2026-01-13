@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import BottomNavBar from '../components/BottomNavBar';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 
@@ -39,6 +40,7 @@ export default function Index() {
           <Text style={styles.footerText}>FOUR IMAGES • ONE ANIME</Text>
         </View>
       </View>
+      <BottomNavBar />
     </SafeAreaView>
   );
 }
@@ -53,6 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: SPACING.xxl,
+    paddingBottom: 80, // Space for BottomNavBar
   },
   textContainer: {
     alignItems: 'center',
