@@ -1,51 +1,102 @@
 import { useRouter } from 'expo-router';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from 'react';
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ANIME_DATA } from '../assets/data/data';
+import BackgroundTexture from '../components/BackgroundTexture';
 import BottomNavBar from '../components/BottomNavBar';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
+import { getCurrentAnimeIndex, getSettings } from '../utils/storage';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default function Index() {
   const router = useRouter();
   const { t } = useTranslation();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [settings, setSettings] = useState(null);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const index = await getCurrentAnimeIndex();
+      const savedSettings = await getSettings();
+      setCurrentIndex(index);
+      setSettings(savedSettings);
+      setIsReady(true);
+    };
+    loadData();
+  }, []);
+
+  if (!isReady) return null;
+
+  const lastAnime = currentIndex > 0 ? ANIME_DATA[currentIndex - 1] : null;
+  const namingType = settings?.namingType || 'original';
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+    <View style={styles.container}>
+      <BackgroundTexture />
 
-        {/* Background Decorative Glow */}
-        <View style={styles.glow} />
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.content}>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>{t('title_top')}</Text>
+              <View style={styles.subtitleRow}>
+                <View style={styles.subtitleLine} />
+                <Text style={styles.subtitle}>{t('title_bottom')}</Text>
+                <View style={styles.subtitleLine} />
+              </View>
+            </View>
 
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{t('title_top')}</Text>
-          <View style={styles.subtitleRow}>
-            <View style={styles.subtitleLine} />
-            <Text style={styles.subtitle}>{t('title_bottom')}</Text>
-            <View style={styles.subtitleLine} />
+            {/* Current Stage Indicator */}
+            <View style={styles.stageIndicator}>
+              <Text style={styles.stageText}>
+                {t('current_stage', { n: currentIndex + 1 })}
+              </Text>
+            </View>
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.playButton}
+                onPress={() => router.push('/play')}
+                activeOpacity={0.9}
+              >
+                <Text style={styles.playButtonText}>
+                  {currentIndex === 0 ? t('start_experience') : t('continue').toUpperCase()}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Last Found Vignette */}
+            {lastAnime && (
+              <View style={styles.lastFoundContainer}>
+                <Text style={styles.lastFoundLabel}>{t('last_found')}</Text>
+                <View style={styles.vignette}>
+                  <Image source={{ uri: lastAnime.images[0] }} style={styles.vignetteImage} />
+                  <View style={styles.vignetteOverlay}>
+                    <Text style={styles.vignetteName} numberOfLines={1}>
+                      {lastAnime.names[namingType] || lastAnime.names.original}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            )}
+
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>{t('footer_text')}</Text>
+            </View>
           </View>
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.playButton}
-            onPress={() => router.push('/play')}
-            activeOpacity={0.9}
-          >
-            <Text style={styles.playButtonText}>{t('start_experience')}</Text>
-            <View style={styles.buttonGlow} />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>{t('footer_text')}</Text>
-        </View>
-      </View>
+        </ScrollView>
+      </SafeAreaView>
 
       <BottomNavBar />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -53,26 +104,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.primary,
+    overflow: 'hidden',
+  },
+  safeArea: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    minHeight: height,
+    paddingBottom: 120,
   },
   content: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: SPACING.xxl,
-    paddingBottom: 80,
-  },
-  glow: {
-    position: 'absolute',
-    width: width * 0.8,
-    height: width * 0.8,
-    backgroundColor: COLORS.accent,
-    opacity: 0.03,
-    borderRadius: width,
-    top: '15%',
   },
   textContainer: {
     alignItems: 'center',
-    marginBottom: 80,
+    marginBottom: 40,
   },
   title: {
     fontSize: 48,
@@ -104,29 +154,81 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     textTransform: 'uppercase',
   },
+  stageIndicator: {
+    marginBottom: 30,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(184, 161, 255, 0.2)',
+    borderRadius: 20,
+    backgroundColor: 'rgba(184, 161, 255, 0.05)',
+  },
+  stageText: {
+    fontSize: 10,
+    color: COLORS.accent,
+    fontWeight: '700',
+    letterSpacing: 4,
+  },
   buttonContainer: {
     width: '100%',
     maxWidth: 320,
     gap: 15,
+    marginBottom: 50,
   },
   playButton: {
     backgroundColor: COLORS.accent,
     paddingVertical: 22,
     alignItems: 'center',
     borderRadius: 4,
-    shadowColor: COLORS.accent,
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.3,
-    shadowRadius: 15,
-    elevation: 8,
-    position: 'relative',
-    overflow: 'hidden',
   },
   playButtonText: {
     fontSize: 13,
     fontWeight: '800',
     color: COLORS.primary,
     letterSpacing: 3,
+  },
+  lastFoundContainer: {
+    width: '100%',
+    maxWidth: 240,
+    alignItems: 'center',
+  },
+  lastFoundLabel: {
+    fontSize: 9,
+    color: COLORS.textSecondary,
+    letterSpacing: 3,
+    marginBottom: 15,
+    fontWeight: '600',
+  },
+  vignette: {
+    width: '100%',
+    height: 140,
+    borderRadius: 4,
+    overflow: 'hidden',
+    backgroundColor: COLORS.secondary,
+    borderWidth: 1,
+    borderColor: 'rgba(184, 161, 255, 0.1)',
+  },
+  vignetteImage: {
+    width: '100%',
+    height: '100%',
+    opacity: 0.6,
+  },
+  vignetteOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 12,
+    backgroundColor: 'rgba(15, 15, 20, 0.9)',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(184, 161, 255, 0.1)',
+  },
+  vignetteName: {
+    fontSize: 10,
+    color: COLORS.textPrimary,
+    fontWeight: '600',
+    letterSpacing: 1,
+    textAlign: 'center',
   },
   footer: {
     position: 'absolute',

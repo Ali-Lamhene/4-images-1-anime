@@ -44,6 +44,8 @@ export const TRANSLATIONS = {
         my_collection: "MY COLLECTION",
         episodes: "episodes",
         year: "year",
+        last_found: "LAST FOUND",
+        current_stage: "QUEST {{n}}",
         system: "SYSTEM",
 
         // Settings Screen
@@ -129,6 +131,8 @@ export const TRANSLATIONS = {
         my_collection: "MA COLLECTION",
         episodes: "épisodes",
         year: "année",
+        last_found: "DERNIER TROUVÉ",
+        current_stage: "QUÊTE {{n}}",
         system: "SYSTÈME",
 
         // Settings Screen

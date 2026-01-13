@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import BackgroundTexture from '../components/BackgroundTexture';
 import GameHeader from '../components/GameHeader';
 import Images from '../components/Images';
 import LetterGame from '../components/LetterGame';
@@ -49,7 +50,6 @@ export default function PlayScreen() {
 
       if (savedIndex < ANIME_DATA.length) {
         const anime = ANIME_DATA[savedIndex];
-        // Use preferred name based on namingType
         const namingType = savedSettings.namingType || 'original';
         const preferredName = anime.names[namingType] || anime.names.original;
 
@@ -171,7 +171,7 @@ export default function PlayScreen() {
     setShowVictoryPopup(false);
 
     const nextIndex = currentAnimeIndex + 1;
-    setCurrentAnimeIndex(nextIndex);
+    setCurrentIndex(nextIndex);
 
     if (nextIndex < ANIME_DATA.length) {
       const nextAnime = ANIME_DATA[nextIndex];
@@ -213,74 +213,89 @@ export default function PlayScreen() {
 
   if (isActuallyCompleted) {
     return (
-      <SafeAreaView style={styles.container}>
-        <GameHeader user={user} showBackButton={true} />
-        <View style={styles.completedContent}>
-          <Text style={styles.completedTitle}>{t('congratulations')}</Text>
-          <View style={styles.completedDivider} />
-          <Text style={styles.completedText}>
-            {t('all_completed')}
-          </Text>
-          <Text style={styles.completedSubtext}>
-            {t('more_coming')}
-          </Text>
-          <TouchableOpacity
-            style={styles.homeButton}
-            onPress={() => router.replace('/')}
-          >
-            <Text style={styles.homeButtonText}>{t('back_home')}</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+      <View style={styles.container}>
+        <BackgroundTexture />
+        <SafeAreaView style={styles.safeArea}>
+          <GameHeader user={user} showBackButton={true} />
+          <View style={styles.completedContent}>
+            <Text style={styles.completedTitle}>{t('congratulations')}</Text>
+            <View style={styles.completedDivider} />
+            <Text style={styles.completedText}>
+              {t('all_completed')}
+            </Text>
+            <Text style={styles.completedSubtext}>
+              {t('more_coming')}
+            </Text>
+            <TouchableOpacity
+              style={styles.homeButton}
+              onPress={() => router.replace('/')}
+            >
+              <Text style={styles.homeButtonText}>{t('back_home')}</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </View>
     );
   }
 
   if (!gameState && currentAnimeIndex < ANIME_DATA.length) return null;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <GameHeader
-        user={user}
-        showBackButton={!showVictoryPopup}
-        variant={showVictoryPopup ? 'overlay' : 'default'}
-      />
+    <View style={styles.container}>
+      <BackgroundTexture />
+      <SafeAreaView style={styles.safeArea}>
+        <GameHeader
+          user={user}
+          showBackButton={!showVictoryPopup}
+          variant={showVictoryPopup ? 'overlay' : 'default'}
+        />
 
-      <View style={styles.content}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
-        >
-          <View style={styles.gameWrapper}>
-            <Images images={gameState.currentAnime.images} />
+        <View style={styles.content}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+          >
+            <View style={styles.gameWrapper}>
+              {/* Stylized Stage Number */}
+              <View style={styles.stageIndicator}>
+                <View style={styles.stageLine} />
+                <Text style={styles.stageText}>
+                  {t('current_stage', { n: currentAnimeIndex + 1 })}
+                </Text>
+                <View style={styles.stageLine} />
+              </View>
 
-            <LetterGame
+              <Images images={gameState.currentAnime.images} />
+
+              <LetterGame
+                animeName={gameState.preferredName}
+                selectedLetters={gameState.selectedLetters}
+                availableLetters={gameState.availableLetters}
+                userCoins={user.coins}
+                onLetterSelect={handleLetterSelect}
+                onLetterRemove={handleLetterRemove}
+                onHintRequest={handleHintRequest}
+              />
+            </View>
+          </ScrollView>
+
+          {showVictoryPopup && (
+            <VictoryPopup
+              rewards={DEFAULT_REWARDS}
               animeName={gameState.preferredName}
-              selectedLetters={gameState.selectedLetters}
-              availableLetters={gameState.availableLetters}
-              userCoins={user.coins}
-              onLetterSelect={handleLetterSelect}
-              onLetterRemove={handleLetterRemove}
-              onHintRequest={handleHintRequest}
+              onContinue={handleContinue}
             />
-          </View>
-        </ScrollView>
+          )}
 
-        {showVictoryPopup && (
-          <VictoryPopup
-            rewards={DEFAULT_REWARDS}
-            animeName={gameState.preferredName}
-            onContinue={handleContinue}
-          />
-        )}
-
-        {rankUpLevel && (
-          <RankUpPopup
-            level={rankUpLevel}
-            onClose={() => setRankUpLevel(null)}
-          />
-        )}
-      </View>
-    </SafeAreaView>
+          {rankUpLevel && (
+            <RankUpPopup
+              level={rankUpLevel}
+              onClose={() => setRankUpLevel(null)}
+            />
+          )}
+        </View>
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -288,13 +303,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.primary,
+    overflow: 'hidden',
+  },
+  safeArea: {
+    flex: 1,
   },
   content: {
     flex: 1,
   },
   scrollContent: {
     flexGrow: 1,
-    paddingBottom: 20,
+    paddingBottom: 120,
+    paddingTop: 10,
   },
   gameWrapper: {
     maxWidth: 600,
@@ -302,6 +322,25 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
     justifyContent: 'center',
+  },
+  stageIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 15,
+    marginBottom: 10,
+  },
+  stageLine: {
+    height: 1,
+    width: 30,
+    backgroundColor: COLORS.accent,
+    opacity: 0.2,
+  },
+  stageText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: COLORS.accent,
+    letterSpacing: 4,
   },
   completedContent: {
     flex: 1,

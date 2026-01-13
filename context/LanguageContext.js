@@ -1,8 +1,7 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { TRANSLATIONS } from '../constants/translations';
 import { getSettings, saveSettings } from '../utils/storage';
-
-const LanguageContext = createContext();
+import { LanguageContext } from './LanguageContextObject';
 
 export function LanguageProvider({ children }) {
     const [language, setLanguage] = useState('en');
@@ -25,12 +24,9 @@ export function LanguageProvider({ children }) {
 
     const t = (key, params = {}) => {
         let text = TRANSLATIONS[language][key] || key;
-
-        // Replace params like {{cost}}
         Object.keys(params).forEach(param => {
             text = text.replace(`{{${param}}}`, params[param]);
         });
-
         return text;
     };
 
@@ -43,8 +39,5 @@ export function LanguageProvider({ children }) {
 
 export const useTranslation = () => {
     const context = useContext(LanguageContext);
-    if (!context) {
-        throw new Error('useTranslation must be used within a LanguageProvider');
-    }
     return context;
 };

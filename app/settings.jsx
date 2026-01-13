@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import BackgroundTexture from '../components/BackgroundTexture';
 import BottomNavBar from '../components/BottomNavBar';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
@@ -54,120 +55,127 @@ export default function SettingsScreen() {
     if (!isReady || !isLangReady) return null;
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => router.back()}>
-                    <Text style={styles.backText}>←</Text>
-                </TouchableOpacity>
-                <Text style={styles.title}>{t('settings')}</Text>
-            </View>
+        <View style={styles.container}>
+            <BackgroundTexture />
+            <SafeAreaView style={styles.safeArea}>
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={() => router.back()}>
+                        <Text style={styles.backText}>←</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.title}>{t('settings')}</Text>
+                </View>
 
-            <ScrollView style={styles.content}>
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>{t('system_section')}</Text>
+                <ScrollView
+                    style={styles.content}
+                    contentContainerStyle={styles.scrollContent}
+                    showsVerticalScrollIndicator={false}
+                >
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>{t('system_section')}</Text>
 
-                    <View style={styles.option}>
-                        <View>
-                            <Text style={styles.optionText}>{t('sounds')}</Text>
-                            <Text style={styles.optionSubtext}>{t('sounds_sub')}</Text>
+                        <View style={styles.option}>
+                            <View>
+                                <Text style={styles.optionText}>{t('sounds')}</Text>
+                                <Text style={styles.optionSubtext}>{t('sounds_sub')}</Text>
+                            </View>
+                            <Switch
+                                trackColor={{ false: COLORS.secondary, true: COLORS.accent }}
+                                thumbColor={settings.sounds ? COLORS.white : COLORS.textSecondary}
+                                ios_backgroundColor={COLORS.secondary}
+                                onValueChange={() => toggleSwitch('sounds')}
+                                value={settings.sounds}
+                            />
                         </View>
-                        <Switch
-                            trackColor={{ false: COLORS.secondary, true: COLORS.accent }}
-                            thumbColor={settings.sounds ? COLORS.white : COLORS.textSecondary}
-                            ios_backgroundColor={COLORS.secondary}
-                            onValueChange={() => toggleSwitch('sounds')}
-                            value={settings.sounds}
-                        />
-                    </View>
 
-                    <View style={styles.option}>
-                        <View>
-                            <Text style={styles.optionText}>{t('notifications')}</Text>
-                            <Text style={styles.optionSubtext}>{t('notifications_sub')}</Text>
+                        <View style={styles.option}>
+                            <View>
+                                <Text style={styles.optionText}>{t('notifications')}</Text>
+                                <Text style={styles.optionSubtext}>{t('notifications_sub')}</Text>
+                            </View>
+                            <Switch
+                                trackColor={{ false: COLORS.secondary, true: COLORS.accent }}
+                                thumbColor={settings.notifications ? COLORS.white : COLORS.textSecondary}
+                                ios_backgroundColor={COLORS.secondary}
+                                onValueChange={() => toggleSwitch('notifications')}
+                                value={settings.notifications}
+                            />
                         </View>
-                        <Switch
-                            trackColor={{ false: COLORS.secondary, true: COLORS.accent }}
-                            thumbColor={settings.notifications ? COLORS.white : COLORS.textSecondary}
-                            ios_backgroundColor={COLORS.secondary}
-                            onValueChange={() => toggleSwitch('notifications')}
-                            value={settings.notifications}
-                        />
                     </View>
-                </View>
 
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>{t('language')}</Text>
-                    <Text style={[styles.optionSubtext, { marginBottom: 15 }]}>{t('language_sub')}</Text>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>{t('language')}</Text>
+                        <Text style={[styles.optionSubtext, { marginBottom: 15 }]}>{t('language_sub')}</Text>
 
-                    <View style={styles.selectionCard}>
-                        {LANGUAGES.map((lang) => (
-                            <TouchableOpacity
-                                key={lang.code}
-                                style={[
-                                    styles.selectionOption,
-                                    language === lang.code && styles.selectionOptionActive
-                                ]}
-                                onPress={() => handleLanguageChange(lang.code)}
-                                activeOpacity={0.7}
-                            >
-                                <Text style={[
-                                    styles.selectionLabel,
-                                    language === lang.code && styles.selectionLabelActive
-                                ]}>
-                                    {lang.label}
-                                </Text>
-                                {language === lang.code && (
-                                    <View style={styles.activeDot} />
-                                )}
-                            </TouchableOpacity>
-                        ))}
+                        <View style={styles.selectionCard}>
+                            {LANGUAGES.map((lang) => (
+                                <TouchableOpacity
+                                    key={lang.code}
+                                    style={[
+                                        styles.selectionOption,
+                                        language === lang.code && styles.selectionOptionActive
+                                    ]}
+                                    onPress={() => handleLanguageChange(lang.code)}
+                                    activeOpacity={0.7}
+                                >
+                                    <Text style={[
+                                        styles.selectionLabel,
+                                        language === lang.code && styles.selectionLabelActive
+                                    ]}>
+                                        {lang.label}
+                                    </Text>
+                                    {language === lang.code && (
+                                        <View style={styles.activeDot} />
+                                    )}
+                                </TouchableOpacity>
+                            ))}
+                        </View>
                     </View>
-                </View>
 
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>{t('naming_style')}</Text>
-                    <Text style={[styles.optionSubtext, { marginBottom: 15 }]}>{t('naming_style_sub')}</Text>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>{t('naming_style')}</Text>
+                        <Text style={[styles.optionSubtext, { marginBottom: 15 }]}>{t('naming_style_sub')}</Text>
 
-                    <View style={styles.selectionCard}>
-                        {NAMING_TYPES.map((type) => (
-                            <TouchableOpacity
-                                key={type.code}
-                                style={[
-                                    styles.selectionOption,
-                                    settings.namingType === type.code && styles.selectionOptionActive
-                                ]}
-                                onPress={() => handleNamingTypeChange(type.code)}
-                                activeOpacity={0.7}
-                            >
-                                <Text style={[
-                                    styles.selectionLabel,
-                                    settings.namingType === type.code && styles.selectionLabelActive
-                                ]}>
-                                    {t(type.labelKey)}
-                                </Text>
-                                {settings.namingType === type.code && (
-                                    <View style={styles.activeDot} />
-                                )}
-                            </TouchableOpacity>
-                        ))}
+                        <View style={styles.selectionCard}>
+                            {NAMING_TYPES.map((type) => (
+                                <TouchableOpacity
+                                    key={type.code}
+                                    style={[
+                                        styles.selectionOption,
+                                        settings.namingType === type.code && styles.selectionOptionActive
+                                    ]}
+                                    onPress={() => handleNamingTypeChange(type.code)}
+                                    activeOpacity={0.7}
+                                >
+                                    <Text style={[
+                                        styles.selectionLabel,
+                                        settings.namingType === type.code && styles.selectionLabelActive
+                                    ]}>
+                                        {t(type.labelKey)}
+                                    </Text>
+                                    {settings.namingType === type.code && (
+                                        <View style={styles.activeDot} />
+                                    )}
+                                </TouchableOpacity>
+                            ))}
+                        </View>
                     </View>
-                </View>
 
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>{t('about_section')}</Text>
-                    <View style={styles.infoRow}>
-                        <Text style={styles.infoLabel}>{t('version')}</Text>
-                        <Text style={styles.infoValue}>1.0.0</Text>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>{t('about_section')}</Text>
+                        <View style={styles.infoRow}>
+                            <Text style={styles.infoLabel}>{t('version')}</Text>
+                            <Text style={styles.infoValue}>1.0.0</Text>
+                        </View>
+                        <View style={styles.infoRow}>
+                            <Text style={styles.infoLabel}>{t('developer')}</Text>
+                            <Text style={styles.infoValue}>Ali Lamhene</Text>
+                        </View>
                     </View>
-                    <View style={styles.infoRow}>
-                        <Text style={styles.infoLabel}>{t('developer')}</Text>
-                        <Text style={styles.infoValue}>Ali Lamhene</Text>
-                    </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </SafeAreaView>
 
             <BottomNavBar />
-        </SafeAreaView>
+        </View>
     );
 }
 
@@ -175,6 +183,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.primary,
+        overflow: 'hidden',
+    },
+    safeArea: {
+        flex: 1,
     },
     header: {
         flexDirection: 'row',
@@ -197,6 +209,9 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         paddingHorizontal: SPACING.lg,
+    },
+    scrollContent: {
+        paddingBottom: 120, // Clear BottomNavBar
     },
     section: {
         marginBottom: 40,
@@ -228,7 +243,7 @@ const styles = StyleSheet.create({
         fontWeight: '300',
     },
     selectionCard: {
-        backgroundColor: COLORS.secondary,
+        backgroundColor: COLORS.secondaryOp || 'rgba(26, 26, 34, 0.95)',
         borderRadius: 2,
         overflow: 'hidden',
     },

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ANIME_DATA } from '../assets/data/data';
+import BackgroundTexture from '../components/BackgroundTexture';
 import BottomNavBar from '../components/BottomNavBar';
 import GoldCoinIcon from '../components/icons/GoldCoinIcon';
 import { COLORS } from '../constants/colors';
@@ -55,94 +56,97 @@ export default function ProfileScreen() {
     if (!isReady) return null;
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollContent}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>{t('profile')}</Text>
-                    <View style={styles.divider} />
-                </View>
+        <View style={styles.container}>
+            <BackgroundTexture />
+            <SafeAreaView style={styles.safeArea}>
+                <ScrollView contentContainerStyle={styles.scrollContent}>
+                    <View style={styles.header}>
+                        <Text style={styles.title}>{t('profile')}</Text>
+                        <View style={styles.divider} />
+                    </View>
 
-                <View style={styles.mainStats}>
-                    <Text style={styles.rankLabel}>{t(`rank_${currentRank.name.toLowerCase()}`)}</Text>
-                    <Text style={styles.levelValue}>{t('level')} {user.level}</Text>
+                    <View style={styles.mainStats}>
+                        <Text style={styles.rankLabel}>{t(`rank_${currentRank.name.toLowerCase()}`)}</Text>
+                        <Text style={styles.levelValue}>{t('level')} {user.level}</Text>
 
-                    <View style={styles.xpBox}>
-                        <View style={styles.xpInfo}>
-                            <Text style={styles.xpLabel}>{t('experience')}</Text>
-                            <Text style={styles.xpValue}>{user.xp} XP</Text>
-                        </View>
-                        <View style={styles.progressBar}>
-                            <View style={[styles.progressFill, { width: `${xpProgress}%` }]} />
+                        <View style={styles.xpBox}>
+                            <View style={styles.xpInfo}>
+                                <Text style={styles.xpLabel}>{t('experience')}</Text>
+                                <Text style={styles.xpValue}>{user.xp} XP</Text>
+                            </View>
+                            <View style={styles.progressBar}>
+                                <View style={[styles.progressFill, { width: `${xpProgress}%` }]} />
+                            </View>
                         </View>
                     </View>
-                </View>
 
-                <View style={styles.statsGrid}>
-                    <View style={styles.statCard}>
-                        <GoldCoinIcon width={24} height={24} />
-                        <Text style={styles.statVal}>{user.coins}</Text>
-                        <Text style={styles.statLab}>{t('credits')}</Text>
-                    </View>
-                    <View style={styles.statCard}>
-                        <View style={styles.iconCircle}>
-                            <Text style={styles.iconText}>🎬</Text>
+                    <View style={styles.statsGrid}>
+                        <View style={styles.statCard}>
+                            <GoldCoinIcon width={24} height={24} />
+                            <Text style={styles.statVal}>{user.coins}</Text>
+                            <Text style={styles.statLab}>{t('credits')}</Text>
                         </View>
-                        <Text style={styles.statVal}>{currentIndex}</Text>
-                        <Text style={styles.statLab}>{t('animes_found')}</Text>
+                        <View style={styles.statCard}>
+                            <View style={styles.iconCircle}>
+                                <Text style={styles.iconText}>🎬</Text>
+                            </View>
+                            <Text style={styles.statVal}>{currentIndex}</Text>
+                            <Text style={styles.statLab}>{t('animes_found')}</Text>
+                        </View>
                     </View>
-                </View>
 
-                {/* Collection Section */}
-                {unlockedAnimes.length > 0 && (
-                    <View style={styles.progressSection}>
-                        <Text style={styles.sectionTitle}>{t('my_collection')}</Text>
-                        <View style={styles.collectionContainer}>
-                            <ScrollView
-                                style={styles.collectionScroll}
-                                showsVerticalScrollIndicator={true}
-                                nestedScrollEnabled={true}
-                            >
-                                {unlockedAnimes.map((anime) => {
-                                    const namingType = settings?.namingType || 'original';
-                                    const displayName = anime.names[namingType] || anime.names.original;
-                                    const synopsis = anime.info.synopsis[language] || anime.info.synopsis.en;
+                    {/* Collection Section */}
+                    {unlockedAnimes.length > 0 && (
+                        <View style={styles.progressSection}>
+                            <Text style={styles.sectionTitle}>{t('my_collection')}</Text>
+                            <View style={styles.collectionContainer}>
+                                <ScrollView
+                                    style={styles.collectionScroll}
+                                    showsVerticalScrollIndicator={true}
+                                    nestedScrollEnabled={true}
+                                >
+                                    {unlockedAnimes.map((anime) => {
+                                        const namingType = settings?.namingType || 'original';
+                                        const displayName = anime.names[namingType] || anime.names.original;
+                                        const synopsis = anime.info.synopsis[language] || anime.info.synopsis.en;
 
-                                    return (
-                                        <View key={anime.id} style={styles.collectionItem}>
-                                            <Image
-                                                source={{ uri: anime.images[0] }}
-                                                style={styles.collectionThumb}
-                                            />
-                                            <View style={styles.collectionInfo}>
-                                                <Text style={styles.collectionName}>{displayName}</Text>
-                                                <View style={styles.collectionMeta}>
-                                                    <Text style={styles.metaText}>{anime.info.year}</Text>
-                                                    <Text style={styles.metaDivider}>•</Text>
-                                                    <Text style={styles.metaText}>{anime.info.episodes} {t('episodes')}</Text>
+                                        return (
+                                            <View key={anime.id} style={styles.collectionItem}>
+                                                <Image
+                                                    source={{ uri: anime.images[0] }}
+                                                    style={styles.collectionThumb}
+                                                />
+                                                <View style={styles.collectionInfo}>
+                                                    <Text style={styles.collectionName}>{displayName}</Text>
+                                                    <View style={styles.collectionMeta}>
+                                                        <Text style={styles.metaText}>{anime.info.year}</Text>
+                                                        <Text style={styles.metaDivider}>•</Text>
+                                                        <Text style={styles.metaText}>{anime.info.episodes} {t('episodes')}</Text>
+                                                    </View>
+                                                    <Text style={styles.collectionSynopsis} numberOfLines={2}>
+                                                        {synopsis}
+                                                    </Text>
                                                 </View>
-                                                <Text style={styles.collectionSynopsis} numberOfLines={2}>
-                                                    {synopsis}
-                                                </Text>
                                             </View>
-                                        </View>
-                                    );
-                                })}
-                            </ScrollView>
+                                        );
+                                    })}
+                                </ScrollView>
+                            </View>
                         </View>
-                    </View>
-                )}
+                    )}
 
-                <View style={styles.dangerZone}>
-                    <Text style={styles.sectionTitle}>{t('danger_zone')}</Text>
-                    <TouchableOpacity
-                        style={styles.resetButton}
-                        onPress={() => setShowResetModal(true)}
-                        activeOpacity={0.8}
-                    >
-                        <Text style={styles.resetButtonText}>{t('reset_progress')}</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
+                    <View style={styles.dangerZone}>
+                        <Text style={styles.sectionTitle}>{t('danger_zone')}</Text>
+                        <TouchableOpacity
+                            style={styles.resetButton}
+                            onPress={() => setShowResetModal(true)}
+                            activeOpacity={0.8}
+                        >
+                            <Text style={styles.resetButtonText}>{t('reset_progress')}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
 
             <BottomNavBar />
 
@@ -177,7 +181,7 @@ export default function ProfileScreen() {
                     </View>
                 </View>
             </Modal>
-        </SafeAreaView>
+        </View>
     );
 }
 
@@ -185,10 +189,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.primary,
+        overflow: 'hidden',
+    },
+    safeArea: {
+        flex: 1,
     },
     scrollContent: {
         paddingHorizontal: SPACING.lg,
-        paddingBottom: 140,
+        paddingBottom: 120, // Match other pages
     },
     header: {
         alignItems: 'center',
@@ -207,7 +215,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     mainStats: {
-        backgroundColor: COLORS.secondary,
+        backgroundColor: COLORS.secondaryOp || 'rgba(26, 26, 34, 0.95)',
         padding: 30,
         borderRadius: 2,
         alignItems: 'center',
@@ -263,7 +271,7 @@ const styles = StyleSheet.create({
     },
     statCard: {
         flex: 1,
-        backgroundColor: COLORS.secondary,
+        backgroundColor: COLORS.secondaryOp || 'rgba(26, 26, 34, 0.95)',
         padding: 20,
         alignItems: 'center',
         gap: 8,
@@ -288,10 +296,9 @@ const styles = StyleSheet.create({
     iconText: {
         fontSize: 16,
     },
-    // Collection Styles
     collectionContainer: {
-        maxHeight: 250, // Limited height, but fits content if smaller
-        backgroundColor: COLORS.secondary,
+        maxHeight: 250,
+        backgroundColor: COLORS.secondaryOp || 'rgba(26, 26, 34, 0.95)',
         borderRadius: 4,
         padding: 10,
         borderWidth: 1,
@@ -346,15 +353,6 @@ const styles = StyleSheet.create({
         lineHeight: 14,
         fontWeight: '300',
     },
-    emptyCollection: {
-        gap: 10,
-        opacity: 0.2,
-    },
-    emptySlot: {
-        height: 80,
-        backgroundColor: COLORS.primary,
-        borderRadius: 2,
-    },
     progressSection: {
         paddingVertical: 20,
         marginBottom: 20,
@@ -365,24 +363,6 @@ const styles = StyleSheet.create({
         color: COLORS.textSecondary,
         letterSpacing: 2,
         marginBottom: 15,
-    },
-    globalBar: {
-        height: 4,
-        backgroundColor: COLORS.secondary,
-        width: '100%',
-        borderRadius: 2,
-        marginBottom: 10,
-    },
-    globalFill: {
-        height: '100%',
-        backgroundColor: COLORS.textPrimary,
-        borderRadius: 2,
-    },
-    progressText: {
-        fontSize: 11,
-        color: COLORS.textSecondary,
-        fontWeight: '300',
-        letterSpacing: 0.5,
     },
     dangerZone: {
         paddingVertical: 20,
@@ -396,6 +376,7 @@ const styles = StyleSheet.create({
         borderRadius: 2,
         alignItems: 'center',
         marginTop: 10,
+        backgroundColor: 'rgba(255, 94, 94, 0.05)',
     },
     resetButtonText: {
         fontSize: 10,

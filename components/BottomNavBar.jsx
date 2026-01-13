@@ -73,6 +73,8 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         paddingBottom: 25,
+        zIndex: 1000,
+        elevation: 10,
     },
     navItem: {
         alignItems: 'center',
