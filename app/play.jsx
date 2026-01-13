@@ -12,18 +12,22 @@ import { ANIME_DATA } from '../assets/data/data';
 import { COLORS } from '../constants/colors';
 import { DEFAULT_REWARDS, HINT_COST } from '../constants/game';
 import { calculateLevel, checkAnswer, normalizeString, shuffleLetters } from '../utils/gameUtils';
+import {
+  INITIAL_USER,
+  getCurrentAnimeIndex,
+  getUserData,
+  saveCurrentAnimeIndex,
+  saveUserData
+} from '../utils/storage';
 
 
 export default function PlayScreen() {
   const [currentAnimeIndex, setCurrentAnimeIndex] = useState(0);
   const [showVictoryPopup, setShowVictoryPopup] = useState(false);
   const [rankUpLevel, setRankUpLevel] = useState(null);
+  const [isReady, setIsReady] = useState(false);
 
-  const [user, setUser] = useState({
-    coins: 500,
-    xp: 150,
-    level: 2,
-  });
+  const [user, setUser] = useState(INITIAL_USER);
 
   const currentAnime = ANIME_DATA[currentAnimeIndex];
 
@@ -37,6 +41,47 @@ export default function PlayScreen() {
       used: false,
     })),
   });
+
+  // 1. Load data on mount
+  useEffect(() => {
+    const loadData = async () => {
+      const savedUser = await getUserData();
+      const savedIndex = await getCurrentAnimeIndex();
+
+      setUser(savedUser);
+      setCurrentAnimeIndex(savedIndex);
+
+      // Re-initialize gameState with the loaded index
+      const anime = ANIME_DATA[savedIndex] || ANIME_DATA[0];
+      setGameState({
+        currentAnime: anime,
+        selectedLetters: Array(
+          anime.name.replace(/\s/g, '').length
+        ).fill(null),
+        availableLetters: shuffleLetters(anime.name).map(char => ({
+          char,
+          used: false,
+        })),
+      });
+
+      setIsReady(true);
+    };
+
+    loadData();
+  }, []);
+
+  // 2. Save data whenever it changes
+  useEffect(() => {
+    if (isReady) {
+      saveUserData(user);
+    }
+  }, [user, isReady]);
+
+  useEffect(() => {
+    if (isReady) {
+      saveCurrentAnimeIndex(currentAnimeIndex);
+    }
+  }, [currentAnimeIndex, isReady]);
 
   /* -------------------- GAME LOGIC -------------------- */
 
@@ -160,6 +205,8 @@ export default function PlayScreen() {
   };
 
   /* -------------------- RENDER -------------------- */
+
+  if (!isReady) return null; // Or a loading spinner
 
   return (
     <SafeAreaView style={styles.container}>
