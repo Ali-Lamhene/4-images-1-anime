@@ -7,35 +7,11 @@ import Images from '../components/Images';
 import LetterGame from '../components/LetterGame';
 import VictoryPopup from '../components/VictoryPopup';
 
+import { ANIME_DATA } from '../assets/data/data';
 import { COLORS } from '../constants/colors';
-import { HINT_COST } from '../constants/game';
+import { DEFAULT_REWARDS, HINT_COST } from '../constants/game';
 import { checkAnswer, normalizeString, shuffleLetters } from '../utils/gameUtils';
 
-// Données de test
-const ANIME_TEST = [
-  {
-    id: '1',
-    name: 'One Piece',
-    images: [
-      'https://via.placeholder.com/300/FF6347/FFFFFF?text=Image+1',
-      'https://via.placeholder.com/300/4682B4/FFFFFF?text=Image+2',
-      'https://via.placeholder.com/300/32CD32/FFFFFF?text=Image+3',
-      'https://via.placeholder.com/300/FFD700/FFFFFF?text=Image+4',
-    ],
-    rewards: { coins: 100, xp: 50 },
-  },
-  {
-    id: '2',
-    name: 'Naruto',
-    images: [
-      'https://via.placeholder.com/300/FF8C00/FFFFFF?text=Image+1',
-      'https://via.placeholder.com/300/1E90FF/FFFFFF?text=Image+2',
-      'https://via.placeholder.com/300/FFD700/FFFFFF?text=Image+3',
-      'https://via.placeholder.com/300/DC143C/FFFFFF?text=Image+4',
-    ],
-    rewards: { coins: 100, xp: 50 },
-  },
-];
 
 export default function PlayScreen() {
   const [currentAnimeIndex, setCurrentAnimeIndex] = useState(0);
@@ -47,7 +23,7 @@ export default function PlayScreen() {
     level: 2,
   });
 
-  const currentAnime = ANIME_TEST[currentAnimeIndex];
+  const currentAnime = ANIME_DATA[currentAnimeIndex];
 
   const [gameState, setGameState] = useState({
     currentAnime,
@@ -134,14 +110,14 @@ export default function PlayScreen() {
     // Récompenses
     setUser(prev => ({
       ...prev,
-      coins: prev.coins + currentAnime.rewards.coins,
-      xp: prev.xp + currentAnime.rewards.xp,
+      coins: prev.coins + DEFAULT_REWARDS.coins,
+      xp: prev.xp + DEFAULT_REWARDS.xp,
     }));
 
     setShowVictoryPopup(false);
 
-    const nextIndex = (currentAnimeIndex + 1) % ANIME_TEST.length;
-    const nextAnime = ANIME_TEST[nextIndex];
+    const nextIndex = (currentAnimeIndex + 1) % ANIME_DATA.length;
+    const nextAnime = ANIME_DATA[nextIndex];
 
     setCurrentAnimeIndex(nextIndex);
     setGameState({
@@ -198,7 +174,7 @@ export default function PlayScreen() {
 
         {showVictoryPopup && (
           <VictoryPopup
-            rewards={currentAnime.rewards}
+            rewards={DEFAULT_REWARDS}
             onContinue={handleContinue}
           />
         )}

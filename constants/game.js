@@ -11,3 +11,8 @@ export const RANKS = [
 ];
 
 export const XP_PER_LEVEL = 100;
+
+export const DEFAULT_REWARDS = {
+  coins: 100,
+  xp: 50,
+};

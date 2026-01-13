@@ -263,7 +263,6 @@ const styles = StyleSheet.create({
   },
 
   popupContainer: {
-    borderRadius: SPACING.radiusXl,
     padding: SPACING.xxl,
     width: '100%',
     maxWidth: 400,
