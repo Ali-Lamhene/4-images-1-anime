@@ -4,6 +4,7 @@ const STORAGE_KEYS = {
     USER_DATA: 'user_data',
     CURRENT_ANIME_INDEX: 'current_anime_index',
     SETTINGS: 'settings',
+    TUTORIAL_SEEN: 'tutorial_seen',
 };
 
 export const INITIAL_SETTINGS = {
@@ -78,5 +79,22 @@ export const getSettings = async () => {
     } catch (error) {
         console.error('Error getting settings:', error);
         return INITIAL_SETTINGS;
+    }
+};
+export const saveTutorialSeen = async (seen) => {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEYS.TUTORIAL_SEEN, JSON.stringify(seen));
+    } catch (error) {
+        console.error('Error saving tutorial status:', error);
+    }
+};
+
+export const getTutorialSeen = async () => {
+    try {
+        const data = await AsyncStorage.getItem(STORAGE_KEYS.TUTORIAL_SEEN);
+        return data ? JSON.parse(data) : false;
+    } catch (error) {
+        console.error('Error getting tutorial status:', error);
+        return false;
     }
 };

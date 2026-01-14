@@ -1,16 +1,17 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import BackgroundTexture from '../components/BackgroundTexture';
 import GameHeader from '../components/GameHeader';
+import GoldCoinIcon from '../components/icons/GoldCoinIcon';
+import PotionIcon from '../components/icons/PotionIcon';
 import Images from '../components/Images';
 import LetterGame from '../components/LetterGame';
 import RankUpPopup from '../components/RankUpPopup';
+import Tutorial from '../components/Tutorial';
 import VictoryPopup from '../components/VictoryPopup';
-import GoldCoinIcon from '../components/icons/GoldCoinIcon';
-import PotionIcon from '../components/icons/PotionIcon';
 
 import { ANIME_DATA } from '../assets/data/data';
 import { COLORS } from '../constants/colors';
@@ -21,8 +22,10 @@ import {
   INITIAL_USER,
   getCurrentAnimeIndex,
   getSettings,
+  getTutorialSeen,
   getUserData,
   saveCurrentAnimeIndex,
+  saveTutorialSeen,
   saveUserData
 } from '../utils/storage';
 
@@ -41,16 +44,30 @@ export default function PlayScreen() {
   const [gameState, setGameState] = useState(null);
   const [revealedImages, setRevealedImages] = useState([]);
   const [potentialRewards, setPotentialRewards] = useState(DEFAULT_REWARDS);
+  const [showTutorial, setShowTutorial] = useState(false);
+
+  // Tutorial refs
+  const scrollRef = useRef(null);
+  const rewardsRef = useRef(null);
+  const imagesRef = useRef(null);
+  const letterGameRef = useRef(null);
+  const hintRef = useRef(null);
 
   useEffect(() => {
     const loadData = async () => {
       const savedUser = await getUserData();
       const savedIndex = await getCurrentAnimeIndex();
       const savedSettings = await getSettings();
+      const tutorialSeen = await getTutorialSeen();
 
       setUser(savedUser);
       setCurrentAnimeIndex(savedIndex);
       setSettings(savedSettings);
+
+      // Show tutorial only if no anime found (index 0) and not seen yet
+      if (savedIndex === 0 && !tutorialSeen) {
+        setShowTutorial(true);
+      }
 
       if (savedIndex < ANIME_DATA.length) {
         const anime = ANIME_DATA[savedIndex];
@@ -279,12 +296,13 @@ export default function PlayScreen() {
 
         <View style={styles.content}>
           <ScrollView
+            ref={scrollRef}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scrollContent}
           >
             <View style={styles.gameWrapper}>
               {/* Stylized Stage Number */}
-              <View style={styles.stageIndicator}>
+              <View ref={rewardsRef} style={styles.stageIndicator}>
                 <View style={styles.stageContent}>
                   <Text style={styles.stageText}>
                     {t('current_stage', { n: currentAnimeIndex + 1 })}
@@ -305,12 +323,15 @@ export default function PlayScreen() {
               </View>
 
               <Images
+                ref={imagesRef}
                 images={gameState.currentAnime.images}
                 revealedImages={revealedImages}
                 onReveal={handleRevealImage}
               />
 
               <LetterGame
+                ref={letterGameRef}
+                hintRef={hintRef}
                 animeName={gameState.preferredName}
                 selectedLetters={gameState.selectedLetters}
                 availableLetters={gameState.availableLetters}
@@ -336,6 +357,21 @@ export default function PlayScreen() {
               onClose={() => setRankUpLevel(null)}
             />
           )}
+
+          <Tutorial
+            isVisible={showTutorial}
+            targetRefs={{
+              rewards: rewardsRef,
+              images: imagesRef,
+              letters: letterGameRef,
+              hints: hintRef,
+              scroll: scrollRef
+            }}
+            onClose={() => {
+              setShowTutorial(false);
+              saveTutorialSeen(true);
+            }}
+          />
         </View>
       </SafeAreaView>
     </View>

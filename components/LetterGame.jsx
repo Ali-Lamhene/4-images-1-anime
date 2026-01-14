@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants/colors';
 import { HINT_COST } from '../constants/game';
@@ -6,7 +7,7 @@ import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
 import GoldCoinIcon from './icons/GoldCoinIcon';
 
-export default function LetterGame({
+const LetterGame = React.forwardRef(({
   animeName,
   selectedLetters,
   availableLetters,
@@ -14,7 +15,8 @@ export default function LetterGame({
   onLetterSelect,
   onLetterRemove,
   onHintRequest,
-}) {
+  hintRef,
+}, ref) => {
   const { t } = useTranslation();
 
   const handleHint = () => {
@@ -26,7 +28,7 @@ export default function LetterGame({
   };
 
   return (
-    <View style={styles.container}>
+    <View ref={ref} style={styles.container}>
       {/* Answer Area - Compacted */}
       <View style={styles.answerContainer}>
         {(() => {
@@ -82,29 +84,33 @@ export default function LetterGame({
           ))}
         </View>
 
-        <TouchableOpacity
-          style={[
-            styles.hintBtn,
-            userCoins < HINT_COST && { opacity: 0.5 }
-          ]}
-          onPress={handleHint}
-          activeOpacity={0.7}
-        >
-          <View style={styles.hintContent}>
-            <View style={styles.hintLeft}>
-              <MaterialCommunityIcons name="lightbulb-outline" size={16} color={COLORS.primary} />
-              <Text style={styles.hintText}>{t('hint') || 'INDICE'}</Text>
+        <View ref={hintRef}>
+          <TouchableOpacity
+            style={[
+              styles.hintBtn,
+              userCoins < HINT_COST && { opacity: 0.5 }
+            ]}
+            onPress={handleHint}
+            activeOpacity={0.7}
+          >
+            <View style={styles.hintContent}>
+              <View style={styles.hintLeft}>
+                <MaterialCommunityIcons name="lightbulb-outline" size={16} color={COLORS.primary} />
+                <Text style={styles.hintText}>{t('hint') || 'INDICE'}</Text>
+              </View>
+              <View style={styles.hintPrice}>
+                <GoldCoinIcon width={28} height={28} />
+                <Text style={styles.hintPriceText}>{HINT_COST}</Text>
+              </View>
             </View>
-            <View style={styles.hintPrice}>
-              <GoldCoinIcon width={28} height={28} />
-              <Text style={styles.hintPriceText}>{HINT_COST}</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
-}
+});
+
+export default LetterGame;
 
 const styles = StyleSheet.create({
   container: {

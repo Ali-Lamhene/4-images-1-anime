@@ -87,6 +87,21 @@ export const TRANSLATIONS = {
         nav_home: "HOME",
         nav_profile: "PROFILE",
         nav_settings: "SETTINGS",
+
+        // Tutorial
+        tutorial_welcome_title: "WELCOME!",
+        tutorial_welcome_desc: "Let's learn how to become an Anime Legend.",
+        tutorial_goal_title: "YOUR QUEST",
+        tutorial_goal_desc: "Guess the hidden anime using 4 images as clues.",
+        tutorial_rewards_title: "MAX REWARDS",
+        tutorial_rewards_desc: "Keep images hidden to win maximum Coins and XP!",
+        tutorial_reveal_title: "REVEAL IMAGES",
+        tutorial_reveal_desc: "Tapping an image reveals it, but your final reward will decrease.",
+        tutorial_letters_title: "THE POWER OF LETTERS",
+        tutorial_letters_desc: "Use the available letters to write the name of the anime.",
+        tutorial_hints_title: "NEED HELP?",
+        tutorial_hints_desc: "Use your Gold Coins to buy a hint if you're stuck.",
+        tutorial_got_it: "I'M READY!",
     },
     fr: {
         // General
@@ -176,5 +191,20 @@ export const TRANSLATIONS = {
         nav_home: "ACCUEIL",
         nav_profile: "PROFIL",
         nav_settings: "PARAMÈTRES",
+
+        // Didacticiel
+        tutorial_welcome_title: "BIENVENUE !",
+        tutorial_welcome_desc: "Découvre comment devenir une Légende des Animes.",
+        tutorial_goal_title: "TA QUÊTE",
+        tutorial_goal_desc: "Devine l'anime caché en utilisant les 4 images comme indices.",
+        tutorial_rewards_title: "MAX RÉCOMPENSES",
+        tutorial_rewards_desc: "Garde les images cachées pour gagner un maximum de Pièces et d'XP !",
+        tutorial_reveal_title: "RÉVÈLE LES IMAGES",
+        tutorial_reveal_desc: "Appuyer sur une image la révèle, mais ta récompense finale diminuera.",
+        tutorial_letters_title: "LE POUVOIR DES LETTRES",
+        tutorial_letters_desc: "Utilise les lettres disponibles pour écrire le nom de l'anime.",
+        tutorial_hints_title: "BESOIN D'AIDE ?",
+        tutorial_hints_desc: "Utilise tes Pièces d'Or pour acheter un indice si tu es bloqué.",
+        tutorial_got_it: "JE SUIS PRÊT !",
     }
 };

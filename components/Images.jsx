@@ -1,11 +1,12 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { forwardRef } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 
-export default function Images({ images, revealedImages = [], onReveal }) {
+const Images = forwardRef(({ images, revealedImages = [], onReveal }, ref) => {
   return (
-    <View style={styles.container}>
+    <View ref={ref} style={styles.container}>
       <View style={styles.grid}>
         {images.slice(0, 4).map((imageUrl, index) => {
           const isRevealed = revealedImages.includes(index);
@@ -41,7 +42,9 @@ export default function Images({ images, revealedImages = [], onReveal }) {
       </View>
     </View>
   );
-}
+});
+
+export default Images;
 
 const styles = StyleSheet.create({
   container: {

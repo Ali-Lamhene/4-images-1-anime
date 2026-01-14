@@ -26,7 +26,7 @@ const BadgeBeginner = ({ size, idPrefix }) => (
                 <Stop offset="70%" stopColor="#8B5E3C" />
                 <Stop offset="100%" stopColor="#5D3F28" />
             </RadialGradient>
-        </Defs>
+        </Defs>&&
         {/* Outer Stone Ring with individual stones */}
         <G>
             {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
