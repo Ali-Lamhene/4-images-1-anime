@@ -7,6 +7,7 @@ import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
 import GoldCoinIcon from './icons/GoldCoinIcon';
 import PotionIcon from './icons/PotionIcon';
+import RankBadge from './RankBadge';
 
 export default function GameHeader({
   user,
@@ -32,15 +33,18 @@ export default function GameHeader({
               <Text style={styles.backText}>←</Text>
             </TouchableOpacity>
           )}
-          <View style={styles.rankInfo}>
-            <Text style={styles.rankName}>{t(`rank_${currentRank.name.toLowerCase()}`)}</Text>
-            <View style={styles.progressRow}>
-              <View style={styles.progressBar}>
-                <View style={[styles.progressFill, { width: `${xpProgress}%` }]} />
-              </View>
-              <View style={styles.xpWrapper}>
-                <PotionIcon width={18} height={18} />
-                <AnimatedCounter value={user.xp} style={styles.xpText} />
+          <View style={styles.rankContainer}>
+            <RankBadge level={user.level} size={38} />
+            <View style={styles.rankInfo}>
+              <Text style={styles.rankName}>{t(`rank_${currentRank.name.toLowerCase()}`)}</Text>
+              <View style={styles.progressRow}>
+                <View style={styles.progressBar}>
+                  <View style={[styles.progressFill, { width: `${xpProgress}%` }]} />
+                </View>
+                <View style={styles.xpWrapper}>
+                  <PotionIcon width={18} height={18} />
+                  <AnimatedCounter value={user.xp} style={styles.xpText} />
+                </View>
               </View>
             </View>
           </View>
@@ -108,11 +112,16 @@ const styles = StyleSheet.create({
   },
   left: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    gap: 15,
+    alignItems: 'center',
+    gap: 12,
   },
   backButton: {
-    paddingBottom: 4,
+    marginRight: -4,
+  },
+  rankContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   backText: {
     color: COLORS.textPrimary,

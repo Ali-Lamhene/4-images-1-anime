@@ -13,6 +13,7 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 import { COLORS } from '../constants/colors';
 import { RANKS } from '../constants/game';
 import { useTranslation } from '../context/LanguageContext';
+import RankBadge from './RankBadge';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -51,6 +52,8 @@ export default function RankUpPopup({ level, onClose }) {
                 ]}
             >
                 <Text style={styles.rankLabel}>{t('new_rank')}</Text>
+
+                <RankBadge level={level} size={100} style={styles.badge} />
 
                 <Text style={styles.rankName}>{t(`rank_${rank.name.toLowerCase()}`)}</Text>
 
@@ -107,11 +110,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     rankLabel: {
-        fontSize: 9,
-        fontWeight: '400',
-        color: COLORS.textSecondary,
+        fontSize: 10,
+        fontWeight: '700',
+        color: COLORS.accent,
         letterSpacing: 4,
+        marginBottom: 25,
+    },
+    badge: {
         marginBottom: 20,
+        elevation: 10,
+        shadowColor: COLORS.accent,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.8,
+        shadowRadius: 20,
     },
     rankName: {
         fontSize: 34,

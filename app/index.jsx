@@ -5,10 +5,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ANIME_DATA } from '../assets/data/data';
 import BackgroundTexture from '../components/BackgroundTexture';
 import BottomNavBar from '../components/BottomNavBar';
+import RankBadge from '../components/RankBadge';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
-import { getCurrentAnimeIndex, getSettings } from '../utils/storage';
+import { getCurrentAnimeIndex, getSettings, getUserData, INITIAL_USER } from '../utils/storage';
 
 const { width, height } = Dimensions.get('window');
 
@@ -16,6 +17,7 @@ export default function Index() {
   const router = useRouter();
   const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [user, setUser] = useState(INITIAL_USER);
   const [settings, setSettings] = useState(null);
   const [isReady, setIsReady] = useState(false);
 
@@ -23,8 +25,10 @@ export default function Index() {
     const loadData = async () => {
       const index = await getCurrentAnimeIndex();
       const savedSettings = await getSettings();
+      const userData = await getUserData();
       setCurrentIndex(index);
       setSettings(savedSettings);
+      setUser(userData);
       setIsReady(true);
     };
     loadData();
@@ -45,6 +49,18 @@ export default function Index() {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.content}>
+            {/* Top Rank Badge */}
+            <TouchableOpacity
+              style={styles.userHeader}
+              onPress={() => router.push('/profile')}
+              activeOpacity={0.7}
+            >
+              <RankBadge level={user.level} size={40} />
+              <View>
+                <Text style={styles.userLevel}>{t('lvl')} {user.level}</Text>
+                <Text style={styles.userXp}>{user.xp} XP</Text>
+              </View>
+            </TouchableOpacity>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{t('title_top')}</Text>
               <View style={styles.subtitleRow}>
@@ -119,6 +135,32 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: SPACING.xxl,
+    paddingTop: 60,
+  },
+  userHeader: {
+    position: 'absolute',
+    top: 20,
+    backgroundColor: 'rgba(26, 26, 34, 0.5)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 30,
+    gap: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(184, 161, 255, 0.1)',
+  },
+  userLevel: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: COLORS.textPrimary,
+    letterSpacing: 1,
+  },
+  userXp: {
+    fontSize: 9,
+    fontWeight: '400',
+    color: COLORS.accent,
+    letterSpacing: 1,
   },
   textContainer: {
     alignItems: 'center',

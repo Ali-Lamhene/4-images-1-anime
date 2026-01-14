@@ -6,10 +6,12 @@ import { ANIME_DATA } from '../assets/data/data';
 import BackgroundTexture from '../components/BackgroundTexture';
 import BottomNavBar from '../components/BottomNavBar';
 import GoldCoinIcon from '../components/icons/GoldCoinIcon';
+import RankBadge from '../components/RankBadge';
 import { COLORS } from '../constants/colors';
 import { RANKS } from '../constants/game';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
+import { calculateLevel } from '../utils/gameUtils';
 import { clearAllData, getCurrentAnimeIndex, getSettings, getUserData, INITIAL_USER } from '../utils/storage';
 
 const { width } = Dimensions.get('window');
@@ -31,7 +33,12 @@ export default function ProfileScreen() {
         const data = await getUserData();
         const index = await getCurrentAnimeIndex();
         const savedSettings = await getSettings();
-        setUser(data);
+
+        // Ensure level is correct based on XP if it's not present or wrong
+        const correctLevel = calculateLevel(data.xp || 0);
+        const updatedUser = { ...data, level: correctLevel };
+
+        setUser(updatedUser);
         setCurrentIndex(index);
         setSettings(savedSettings);
         setIsReady(true);
@@ -66,8 +73,13 @@ export default function ProfileScreen() {
                     </View>
 
                     <View style={styles.mainStats}>
-                        <Text style={styles.rankLabel}>{t(`rank_${currentRank.name.toLowerCase()}`)}</Text>
-                        <Text style={styles.levelValue}>{t('level')} {user.level}</Text>
+                        <View style={styles.rankHeaderRow}>
+                            <RankBadge level={user.level} size={80} style={styles.badgeLarge} />
+                            <View style={styles.rankTextContainer}>
+                                <Text style={styles.rankLabel}>{t(`rank_${currentRank.name.toLowerCase()}`)}</Text>
+                                <Text style={styles.levelValue}>{t('level')} {user.level}</Text>
+                            </View>
+                        </View>
 
                         <View style={styles.xpBox}>
                             <View style={styles.xpInfo}>
@@ -221,19 +233,34 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 20,
     },
+    rankHeaderRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 20,
+        marginBottom: 20,
+    },
+    badgeLarge: {
+        textShadowColor: COLORS.accent,
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 20,
+    },
+    rankTextContainer: {
+        alignItems: 'flex-start',
+    },
     rankLabel: {
-        fontSize: 10,
-        fontWeight: '400',
-        color: COLORS.textSecondary,
-        letterSpacing: 4,
-        marginBottom: 10,
+        fontSize: 14,
+        fontWeight: '800',
+        color: COLORS.accent,
+        letterSpacing: 2,
+        marginBottom: 4,
+        textTransform: 'uppercase',
     },
     levelValue: {
-        fontSize: 36,
-        fontWeight: '600',
+        fontSize: 18,
+        fontWeight: '500',
         color: COLORS.textPrimary,
-        letterSpacing: 2,
-        marginBottom: 30,
+        letterSpacing: 1,
+        opacity: 0.8,
     },
     xpBox: {
         width: '100%',
