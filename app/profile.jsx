@@ -1,5 +1,5 @@
-import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ANIME_DATA } from '../assets/data/data';
@@ -25,9 +25,11 @@ export default function ProfileScreen() {
     const [showResetModal, setShowResetModal] = useState(false);
     const [settings, setSettings] = useState(null);
 
-    useEffect(() => {
-        loadStats();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            loadStats();
+        }, [])
+    );
 
     const loadStats = async () => {
         const data = await getUserData();

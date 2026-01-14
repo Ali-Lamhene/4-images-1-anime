@@ -1,5 +1,5 @@
-import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ANIME_DATA } from '../assets/data/data';
@@ -21,18 +21,21 @@ export default function Index() {
   const [settings, setSettings] = useState(null);
   const [isReady, setIsReady] = useState(false);
 
-  useEffect(() => {
-    const loadData = async () => {
-      const index = await getCurrentAnimeIndex();
-      const savedSettings = await getSettings();
-      const userData = await getUserData();
-      setCurrentIndex(index);
-      setSettings(savedSettings);
-      setUser(userData);
-      setIsReady(true);
-    };
-    loadData();
-  }, []);
+  const loadData = async () => {
+    const index = await getCurrentAnimeIndex();
+    const savedSettings = await getSettings();
+    const userData = await getUserData();
+    setCurrentIndex(index);
+    setSettings(savedSettings);
+    setUser(userData);
+    setIsReady(true);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, [])
+  );
 
   if (!isReady) return null;
 
@@ -104,9 +107,9 @@ export default function Index() {
               </View>
             )}
 
-            <View style={styles.footer}>
+            {/* <View style={styles.footer}>
               <Text style={styles.footerText}>{t('footer_text')}</Text>
-            </View>
+            </View> */}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -143,8 +146,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(26, 26, 34, 0.5)',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingHorizontal: 8,
     borderRadius: 30,
     gap: 12,
     borderWidth: 1,
