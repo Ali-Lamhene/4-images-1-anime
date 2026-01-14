@@ -128,13 +128,14 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     minHeight: height,
-    paddingBottom: 120,
+    paddingBottom: 40,
   },
   content: {
     flex: 1,
+    justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: SPACING.xxl,
-    paddingTop: 60,
+    paddingTop: 40,
   },
   userHeader: {
     position: 'absolute',

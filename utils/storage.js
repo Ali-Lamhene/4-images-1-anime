@@ -5,6 +5,7 @@ const STORAGE_KEYS = {
     CURRENT_ANIME_INDEX: 'current_anime_index',
     SETTINGS: 'settings',
     TUTORIAL_SEEN: 'tutorial_seen',
+    REVEALED_IMAGES: 'revealed_images',
 };
 
 export const INITIAL_SETTINGS = {
@@ -96,5 +97,23 @@ export const getTutorialSeen = async () => {
     } catch (error) {
         console.error('Error getting tutorial status:', error);
         return false;
+    }
+};
+
+export const saveRevealedImages = async (revealed) => {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEYS.REVEALED_IMAGES, JSON.stringify(revealed));
+    } catch (error) {
+        console.error('Error saving revealed images:', error);
+    }
+};
+
+export const getRevealedImages = async () => {
+    try {
+        const data = await AsyncStorage.getItem(STORAGE_KEYS.REVEALED_IMAGES);
+        return data ? JSON.parse(data) : [];
+    } catch (error) {
+        console.error('Error getting revealed images:', error);
+        return [];
     }
 };

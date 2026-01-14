@@ -22,10 +22,12 @@ import { calculateLevel, checkAnswer, normalizeString, shuffleLetters } from '..
 import {
   INITIAL_USER,
   getCurrentAnimeIndex,
+  getRevealedImages,
   getSettings,
   getTutorialSeen,
   getUserData,
   saveCurrentAnimeIndex,
+  saveRevealedImages,
   saveTutorialSeen,
   saveUserData
 } from '../utils/storage';
@@ -76,6 +78,8 @@ export default function PlayScreen() {
         const namingType = savedSettings.namingType || 'original';
         const preferredName = anime.names[namingType] || anime.names.original;
 
+        const savedRevealed = await getRevealedImages();
+
         setGameState({
           currentAnime: anime,
           preferredName,
@@ -87,8 +91,15 @@ export default function PlayScreen() {
             used: false,
           })),
         });
-        setRevealedImages([]);
-        setPotentialRewards(DEFAULT_REWARDS);
+
+        setRevealedImages(savedRevealed);
+
+        // Recalculate rewards based on loaded reveals
+        const reductionFactor = savedRevealed.length * 0.25;
+        setPotentialRewards({
+          coins: Math.max(10, Math.floor(DEFAULT_REWARDS.coins * (1 - reductionFactor))),
+          xp: Math.max(5, Math.floor(DEFAULT_REWARDS.xp * (1 - reductionFactor)))
+        });
       }
 
       setIsReady(true);
@@ -108,6 +119,12 @@ export default function PlayScreen() {
       saveCurrentAnimeIndex(currentAnimeIndex);
     }
   }, [currentAnimeIndex, isReady]);
+
+  useEffect(() => {
+    if (isReady) {
+      saveRevealedImages(revealedImages);
+    }
+  }, [revealedImages, isReady]);
 
   useEffect(() => {
     if (gameState && gameState.selectedLetters.every(l => l !== null)) {
@@ -240,6 +257,7 @@ export default function PlayScreen() {
         })),
       });
       setRevealedImages([]);
+      saveRevealedImages([]); // Clear in storage too
       setPotentialRewards(DEFAULT_REWARDS);
     }
   };
