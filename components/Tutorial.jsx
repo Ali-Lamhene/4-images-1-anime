@@ -143,6 +143,11 @@ export default function Tutorial({ isVisible, onClose, targetRefs }) {
             position: 'center'
         },
         {
+            title: t('tutorial_naming_title'),
+            desc: t('tutorial_naming_desc'),
+            position: 'center'
+        },
+        {
             title: t('tutorial_rewards_title'),
             desc: t('tutorial_rewards_desc'),
             position: 'bottom',

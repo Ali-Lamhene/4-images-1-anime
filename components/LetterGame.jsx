@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 20,
     marginBottom: 20,
   },
   answerWord: {
