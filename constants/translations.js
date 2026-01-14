@@ -33,6 +33,7 @@ export const TRANSLATIONS = {
         // Profile Screen
         profile: "PROFILE",
         rank: "RANK",
+        achievements: "ACHIEVEMENTS",
         animes_found: "ANIMES FOUND",
         global_progress: "GLOBAL PROGRESS",
         animes_completed: "{{current}} out of {{total}} animes completed",
@@ -104,6 +105,18 @@ export const TRANSLATIONS = {
         tutorial_hints_title: "NEED HELP?",
         tutorial_hints_desc: "Use your Gold Coins to buy a hint if you're stuck.",
         tutorial_got_it: "I'M READY!",
+
+        // Badges
+        badge_first_guess_desc: "Guess your first anime",
+        badge_sharp_eye_desc: "Guess an anime with 0 images revealed",
+        badge_rising_star_desc: "Complete 10 levels",
+        badge_anime_scholar_desc: "Complete 25 levels",
+        badge_coin_collector_desc: "Accumulate 500 coins total",
+        badge_wealthy_traveler_desc: "Have 1000 coins at once",
+        badge_streak_master_desc: "Guess 5 animes in a row",
+        badge_no_help_needed_desc: "Complete 5 levels without using hints",
+        badge_fast_learner_desc: "Reach Level 10",
+        badge_anime_legend_desc: "Complete all available animes",
     },
     fr: {
         // General
@@ -139,6 +152,7 @@ export const TRANSLATIONS = {
         // Profile Screen
         profile: "PROFIL",
         rank: "RANG",
+        achievements: "HAUTS FAITS",
         animes_found: "ANIMES TROUVÉS",
         global_progress: "AVANCEMENT GLOBAL",
         animes_completed: "{{current}} sur {{total}} animes complétés",
@@ -210,5 +224,17 @@ export const TRANSLATIONS = {
         tutorial_hints_title: "BESOIN D'AIDE ?",
         tutorial_hints_desc: "Utilise tes Pièces d'Or pour acheter un indice si tu es bloqué.",
         tutorial_got_it: "JE SUIS PRÊT !",
+
+        // Badges
+        badge_first_guess_desc: "Devine ton premier animé",
+        badge_sharp_eye_desc: "Devine un animé avec 0 image révélée",
+        badge_rising_star_desc: "Complète 10 niveaux",
+        badge_anime_scholar_desc: "Complète 25 niveaux",
+        badge_coin_collector_desc: "Accumule 500 pièces au total",
+        badge_wealthy_traveler_desc: "Possède 1000 pièces d'un coup",
+        badge_streak_master_desc: "Devine 5 animés d'affilée",
+        badge_no_help_needed_desc: "Complète 5 niveaux sans utiliser d'indices",
+        badge_fast_learner_desc: "Atteins le Niveau 10",
+        badge_anime_legend_desc: "Complète tous les animés disponibles",
     }
 };

@@ -16,9 +16,18 @@ export const INITIAL_SETTINGS = {
 };
 
 export const INITIAL_USER = {
-    coins: 0,
+    coins: 100, // Giving some starting coins for better testing
     xp: 0,
     level: 1,
+    unlockedBadges: [],
+    stats: {
+        perfectReveals: 0,
+        accumulatedCoins: 100,
+        currentStreak: 0,
+        maxStreak: 0,
+        noHintStreak: 0,
+        totalHintsUsed: 0,
+    }
 };
 
 export const saveUserData = async (userData) => {

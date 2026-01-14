@@ -5,6 +5,7 @@ import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import BackgroundTexture from '../components/BackgroundTexture';
+import BadgePopup from '../components/BadgePopup';
 import GameHeader from '../components/GameHeader';
 import GoldCoinIcon from '../components/icons/GoldCoinIcon';
 import PotionIcon from '../components/icons/PotionIcon';
@@ -13,6 +14,7 @@ import LetterGame from '../components/LetterGame';
 import RankUpPopup from '../components/RankUpPopup';
 import Tutorial from '../components/Tutorial';
 import VictoryPopup from '../components/VictoryPopup';
+import { checkBadgeUnlocks } from '../utils/badgeUtils';
 
 import { ANIME_DATA } from '../assets/data/data';
 import { COLORS } from '../constants/colors';
@@ -40,6 +42,8 @@ export default function PlayScreen() {
   const [currentAnimeIndex, setCurrentAnimeIndex] = useState(0);
   const [showVictoryPopup, setShowVictoryPopup] = useState(false);
   const [rankUpLevel, setRankUpLevel] = useState(null);
+  const [badgeQueue, setBadgeQueue] = useState([]);
+  const [hintsUsedLevel, setHintsUsedLevel] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const [settings, setSettings] = useState(null);
 
@@ -214,7 +218,15 @@ export default function PlayScreen() {
 
     if (letterIndex !== -1) {
       handleLetterSelect(letter, letterIndex);
-      setUser({ ...user, coins: user.coins - HINT_COST });
+      setHintsUsedLevel(prev => prev + 1);
+      setUser({
+        ...user,
+        coins: user.coins - HINT_COST,
+        stats: {
+          ...user.stats,
+          totalHintsUsed: (user.stats?.totalHintsUsed || 0) + 1
+        }
+      });
     }
   };
 
@@ -223,19 +235,44 @@ export default function PlayScreen() {
       const newXP = prev.xp + potentialRewards.xp;
       const newLevel = calculateLevel(newXP);
 
+      const perfectReveal = revealedImages.length === 0;
+      const noHints = hintsUsedLevel === 0;
+
+      const newStats = {
+        ...prev.stats,
+        perfectReveals: perfectReveal ? (prev.stats?.perfectReveals || 0) + 1 : (prev.stats?.perfectReveals || 0),
+        accumulatedCoins: (prev.stats?.accumulatedCoins || 0) + potentialRewards.coins,
+        currentStreak: (prev.stats?.currentStreak || 0) + 1,
+        maxStreak: Math.max(prev.stats?.maxStreak || 0, (prev.stats?.currentStreak || 0) + 1),
+        noHintStreak: noHints ? (prev.stats?.noHintStreak || 0) + 1 : 0,
+      };
+
       if (newLevel > prev.level) {
         setRankUpLevel(newLevel);
       }
 
-      return {
+      const updatedUser = {
         ...prev,
         coins: prev.coins + potentialRewards.coins,
         xp: newXP,
         level: newLevel,
+        stats: newStats,
+        foundAnimes: [...(prev.foundAnimes || []), gameState.currentAnime.id]
       };
+
+      // Check for new badges
+      const newBadges = checkBadgeUnlocks(updatedUser, ANIME_DATA);
+      if (newBadges.length > 0) {
+        setBadgeQueue(prevQueue => [...prevQueue, ...newBadges]);
+        // Update user with newly unlocked badges to avoid re-unlocking
+        updatedUser.unlockedBadges = [...(updatedUser.unlockedBadges || []), ...newBadges.map(b => b.id)];
+      }
+
+      return updatedUser;
     });
 
     setShowVictoryPopup(false);
+    setHintsUsedLevel(0);
 
     const nextIndex = currentAnimeIndex + 1;
     setCurrentAnimeIndex(nextIndex);
@@ -400,6 +437,11 @@ export default function PlayScreen() {
             }}
           />
         </View>
+        <BadgePopup
+          isVisible={badgeQueue.length > 0}
+          badge={badgeQueue[0]}
+          onClose={() => setBadgeQueue(prev => prev.slice(1))}
+        />
       </SafeAreaView>
     </View>
   );

@@ -4,9 +4,11 @@ import { Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacit
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ANIME_DATA } from '../assets/data/data';
 import BackgroundTexture from '../components/BackgroundTexture';
+import BadgeIcon from '../components/BadgeIcon';
 import BottomNavBar from '../components/BottomNavBar';
 import GoldCoinIcon from '../components/icons/GoldCoinIcon';
 import RankBadge from '../components/RankBadge';
+import { BADGES } from '../constants/badges';
 import { COLORS } from '../constants/colors';
 import { RANKS } from '../constants/game';
 import { SPACING } from '../constants/spacing';
@@ -109,9 +111,39 @@ export default function ProfileScreen() {
                         </View>
                     </View>
 
+                    {/* Achievements Section */}
+                    <View style={styles.sectionContainer}>
+                        <Text style={styles.sectionTitle}>{t('achievements')}</Text>
+                        <View style={styles.badgesContainer}>
+                            <ScrollView
+                                showsVerticalScrollIndicator={true}
+                                nestedScrollEnabled={true}
+                            >
+                                <View style={styles.badgesGrid}>
+                                    {BADGES.map(badge => {
+                                        const isUnlocked = user.unlockedBadges?.includes(badge.id);
+                                        return (
+                                            <View key={badge.id} style={[styles.badgeCard, !isUnlocked && styles.badgeCardLocked]}>
+                                                <BadgeIcon id={badge.id} size={60} locked={!isUnlocked} />
+                                                <View style={styles.badgeTextContainer}>
+                                                    <Text style={[styles.badgeName, !isUnlocked && styles.lockedText]}>
+                                                        {badge.name}
+                                                    </Text>
+                                                    <Text style={styles.badgeDesc} numberOfLines={2}>
+                                                        {t(badge.desc)}
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        );
+                                    })}
+                                </View>
+                            </ScrollView>
+                        </View>
+                    </View>
+
                     {/* Collection Section */}
                     {unlockedAnimes.length > 0 && (
-                        <View style={styles.progressSection}>
+                        <View style={styles.sectionContainer}>
                             <Text style={styles.sectionTitle}>{t('my_collection')}</Text>
                             <View style={styles.collectionContainer}>
                                 <ScrollView
@@ -297,7 +329,7 @@ const styles = StyleSheet.create({
     statsGrid: {
         flexDirection: 'row',
         gap: 15,
-        marginBottom: 40,
+        marginBottom: 25,
     },
     statCard: {
         flex: 1,
@@ -387,17 +419,68 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         marginBottom: 20,
     },
+    sectionContainer: {
+        marginTop: 10,
+        width: '100%',
+    },
     sectionTitle: {
         fontSize: 10,
-        fontWeight: '600',
+        fontWeight: '800',
         color: COLORS.textSecondary,
         letterSpacing: 2,
         marginBottom: 15,
+        textTransform: 'uppercase',
+    },
+    badgesContainer: {
+        maxHeight: 280, // Reduced height for a more compact layout
+        backgroundColor: 'rgba(26, 26, 34, 0.4)',
+        borderRadius: 15,
+        padding: 10,
+    },
+    badgesGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 10,
+        justifyContent: 'space-between',
+        paddingBottom: 10,
+    },
+    badgeCard: {
+        backgroundColor: 'rgba(26, 26, 34, 0.6)',
+        borderRadius: 20,
+        padding: 15,
+        width: '48%',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: 'rgba(184, 161, 255, 0.1)',
+    },
+    badgeCardLocked: {
+        opacity: 0.7,
+        backgroundColor: 'rgba(15, 15, 20, 0.4)',
+    },
+    badgeTextContainer: {
+        marginTop: 10,
+        alignItems: 'center',
+    },
+    badgeName: {
+        color: COLORS.textPrimary,
+        fontSize: 12,
+        fontWeight: '800',
+        textAlign: 'center',
+        marginBottom: 4,
+    },
+    badgeDesc: {
+        color: COLORS.textSecondary,
+        fontSize: 9,
+        textAlign: 'center',
+        lineHeight: 12,
+        opacity: 0.8,
+    },
+    lockedText: {
+        color: 'rgba(255, 255, 255, 0.3)',
     },
     dangerZone: {
         paddingVertical: 20,
-        borderTopWidth: 1,
-        borderTopColor: COLORS.secondary,
+        marginTop: 20,
     },
     resetButton: {
         paddingVertical: 18,
