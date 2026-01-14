@@ -1,21 +1,43 @@
-import { Image, StyleSheet, View } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 
-export default function Images({ images }) {
+export default function Images({ images, revealedImages = [], onReveal }) {
   return (
     <View style={styles.container}>
       <View style={styles.grid}>
-        {images.slice(0, 4).map((imageUrl, index) => (
-          <View key={index} style={styles.imageCard}>
-            <Image
-              source={{ uri: imageUrl }}
-              style={styles.image}
-              resizeMode="cover"
-            />
-            <View style={styles.overlay} />
-          </View>
-        ))}
+        {images.slice(0, 4).map((imageUrl, index) => {
+          const isRevealed = revealedImages.includes(index);
+
+          return (
+            <TouchableOpacity
+              key={index}
+              style={styles.imageCard}
+              onPress={() => !isRevealed && onReveal(index)}
+              activeOpacity={0.8}
+              disabled={isRevealed}
+            >
+              <Image
+                source={{ uri: imageUrl }}
+                style={[styles.image, !isRevealed && styles.blurredImage]}
+                resizeMode="cover"
+              />
+
+              {!isRevealed && (
+                <View style={styles.hiddenOverlay}>
+                  <MaterialCommunityIcons
+                    name="gesture-tap"
+                    size={32}
+                    color="rgba(184, 161, 255, 0.8)"
+                  />
+                </View>
+              )}
+
+              <View style={styles.overlay} />
+            </TouchableOpacity>
+          );
+        })}
       </View>
     </View>
   );
@@ -46,7 +68,18 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    opacity: 0.85,
+    opacity: 0.9,
+  },
+  blurredImage: {
+    opacity: 0,
+  },
+  hiddenOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(26, 26, 34, 0.95)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(184, 161, 255, 0.05)',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,

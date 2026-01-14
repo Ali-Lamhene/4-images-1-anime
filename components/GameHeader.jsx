@@ -39,7 +39,7 @@ export default function GameHeader({
                 <View style={[styles.progressFill, { width: `${xpProgress}%` }]} />
               </View>
               <View style={styles.xpWrapper}>
-                <PotionIcon width={8} height={8} />
+                <PotionIcon width={18} height={18} />
                 <AnimatedCounter value={user.xp} style={styles.xpText} />
               </View>
             </View>
@@ -48,7 +48,7 @@ export default function GameHeader({
 
         <View style={styles.right}>
           <View style={styles.creditValueRow}>
-            <GoldCoinIcon width={14} height={14} />
+            <GoldCoinIcon width={18} height={18} />
             <AnimatedCounter value={user.coins} style={styles.creditValue} />
           </View>
         </View>
@@ -134,10 +134,10 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   progressBar: {
-    width: 70,
-    height: 3,
+    width: 80,
+    height: 6,
     backgroundColor: COLORS.secondary,
-    borderRadius: 1.5,
+    borderRadius: 3,
     overflow: 'hidden',
   },
   progressFill: {
@@ -150,9 +150,9 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   xpText: {
-    fontSize: 9,
+    fontSize: 10,
     color: COLORS.textSecondary,
-    fontWeight: '400',
+    fontWeight: '600',
   },
   right: {
     alignItems: 'flex-end',

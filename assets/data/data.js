@@ -15,10 +15,10 @@ export const ANIME_DATA = [
             }
         },
         images: [
-            'https://images.alphacoders.com/132/1324328.png',
-            'https://images8.alphacoders.com/132/1324330.png',
-            'https://images6.alphacoders.com/132/1324332.png',
-            'https://images4.alphacoders.com/132/1324329.png',
+            'https://picsum.photos/seed/op1/400',
+            'https://picsum.photos/seed/op2/400',
+            'https://picsum.photos/seed/op3/400',
+            'https://picsum.photos/seed/op4/400',
         ],
     },
     {
@@ -37,10 +37,10 @@ export const ANIME_DATA = [
             }
         },
         images: [
-            'https://images2.alphacoders.com/129/1299949.png',
-            'https://images3.alphacoders.com/129/1299950.png',
-            'https://images4.alphacoders.com/129/1299951.png',
-            'https://images5.alphacoders.com/129/1299952.png',
+            'https://picsum.photos/seed/nar1/400',
+            'https://picsum.photos/seed/nar2/400',
+            'https://picsum.photos/seed/nar3/400',
+            'https://picsum.photos/seed/nar4/400',
         ],
     },
     {
@@ -59,10 +59,10 @@ export const ANIME_DATA = [
             }
         },
         images: [
-            'https://images5.alphacoders.com/132/1324504.png',
-            'https://images7.alphacoders.com/132/1324505.png',
-            'https://images2.alphacoders.com/132/1324506.png',
-            'https://images3.alphacoders.com/132/1324507.png',
+            'https://picsum.photos/seed/aot1/400',
+            'https://picsum.photos/seed/aot2/400',
+            'https://picsum.photos/seed/aot3/400',
+            'https://picsum.photos/seed/aot4/400',
         ],
     },
     {
@@ -81,10 +81,10 @@ export const ANIME_DATA = [
             }
         },
         images: [
-            'https://images6.alphacoders.com/128/1288282.png',
-            'https://images7.alphacoders.com/128/1288283.png',
-            'https://images8.alphacoders.com/128/1288284.png',
-            'https://images2.alphacoders.com/128/1288285.png',
+            'https://picsum.photos/seed/mha1/400',
+            'https://picsum.photos/seed/mha2/400',
+            'https://picsum.photos/seed/mha3/400',
+            'https://picsum.photos/seed/mha4/400',
         ],
     },
     {
@@ -103,10 +103,10 @@ export const ANIME_DATA = [
             }
         },
         images: [
-            'https://images4.alphacoders.com/133/1330384.png',
-            'https://images5.alphacoders.com/133/1330385.png',
-            'https://images6.alphacoders.com/133/1330386.png',
-            'https://images8.alphacoders.com/133/1330387.png',
+            'https://picsum.photos/seed/ds1/400',
+            'https://picsum.photos/seed/ds2/400',
+            'https://picsum.photos/seed/ds3/400',
+            'https://picsum.photos/seed/ds4/400',
         ],
     },
 ];

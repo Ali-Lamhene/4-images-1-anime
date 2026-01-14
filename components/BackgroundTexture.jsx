@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import Svg, { Circle, Defs, Pattern, Rect } from 'react-native-svg';
+import Svg, { Circle, Defs, Pattern, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { COLORS } from '../constants/colors';
 
 export default function BackgroundTexture() {
@@ -16,6 +16,10 @@ export default function BackgroundTexture() {
             <View style={StyleSheet.absoluteFill}>
                 <Svg height="100%" width="100%">
                     <Defs>
+                        <RadialGradient id="vignette" cx="50%" cy="50%" rx="50%" ry="50%" fx="50%" fy="50%">
+                            <Stop offset="0%" stopColor={COLORS.primary} stopOpacity="0" />
+                            <Stop offset="100%" stopColor={COLORS.primary} stopOpacity="0.5" />
+                        </RadialGradient>
                         <Pattern
                             id="persistent-dots"
                             x="0"
@@ -24,15 +28,18 @@ export default function BackgroundTexture() {
                             height="32"
                             patternUnits="userSpaceOnUse"
                         >
-                            {/* Very fine and sharp dots */}
-                            <Circle cx="2" cy="2" r="1.1" fill={COLORS.accent} opacity="0.45" />
+                            {/* Balanced opacity for visibility vs aesthetics */}
+                            <Circle cx="2" cy="2" r="1.1" fill={COLORS.accent} opacity="0.28" />
                         </Pattern>
                     </Defs>
+                    {/* Background Pattern */}
                     <Rect width="100%" height="100%" fill="url(#persistent-dots)" />
+                    {/* Subtle Vignette Overlay */}
+                    <Rect width="100%" height="100%" fill="url(#vignette)" />
                 </Svg>
             </View>
 
-            {/* Subtle Scanlines / Noise simulation overlay */}
+            {/* Subtle Noise / Ambient simulation overlay */}
             <View style={styles.overlay} />
         </View>
     );

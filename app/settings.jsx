@@ -205,6 +205,9 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: COLORS.textPrimary,
         letterSpacing: 4,
+        textShadowColor: 'rgba(0, 0, 0, 0.8)',
+        textShadowOffset: { width: 0, height: 1 },
+        textShadowRadius: 2,
     },
     content: {
         flex: 1,
@@ -222,6 +225,9 @@ const styles = StyleSheet.create({
         color: COLORS.accent,
         letterSpacing: 2,
         marginBottom: 15,
+        textShadowColor: 'rgba(0, 0, 0, 0.8)',
+        textShadowOffset: { width: 0, height: 1 },
+        textShadowRadius: 2,
     },
     option: {
         flexDirection: 'row',

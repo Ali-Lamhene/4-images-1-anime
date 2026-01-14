@@ -153,6 +153,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '400',
     textTransform: 'uppercase',
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   stageIndicator: {
     marginBottom: 30,
@@ -168,6 +171,9 @@ const styles = StyleSheet.create({
     color: COLORS.accent,
     fontWeight: '700',
     letterSpacing: 4,
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   buttonContainer: {
     width: '100%',

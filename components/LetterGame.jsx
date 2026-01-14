@@ -1,8 +1,10 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants/colors';
 import { HINT_COST } from '../constants/game';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
+import GoldCoinIcon from './icons/GoldCoinIcon';
 
 export default function LetterGame({
   animeName,
@@ -81,10 +83,23 @@ export default function LetterGame({
         </View>
 
         <TouchableOpacity
-          style={[styles.hintBtn, userCoins < HINT_COST && { opacity: 0.3 }]}
+          style={[
+            styles.hintBtn,
+            userCoins < HINT_COST && { opacity: 0.5 }
+          ]}
           onPress={handleHint}
+          activeOpacity={0.7}
         >
-          <Text style={styles.hintText}>{t('hint_cost', { cost: HINT_COST })}</Text>
+          <View style={styles.hintContent}>
+            <View style={styles.hintLeft}>
+              <MaterialCommunityIcons name="lightbulb-outline" size={16} color={COLORS.primary} />
+              <Text style={styles.hintText}>{t('hint') || 'INDICE'}</Text>
+            </View>
+            <View style={styles.hintPrice}>
+              <GoldCoinIcon width={12} height={12} />
+              <Text style={styles.hintPriceText}>{HINT_COST}</Text>
+            </View>
+          </View>
         </TouchableOpacity>
       </View>
     </View>
@@ -111,58 +126,103 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   answerBox: {
-    width: 28,
-    height: 38,
-    backgroundColor: COLORS.secondary,
+    width: 32, // Slightly wider
+    height: 42, // Slightly taller
+    backgroundColor: 'rgba(26, 26, 34, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 2,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(184, 161, 255, 0.1)', // Subtle accent border
   },
   answerBoxFilled: {
-    backgroundColor: COLORS.accent, // Lavande discret pour les lettres ajoutées
+    backgroundColor: COLORS.accent,
+    borderColor: COLORS.accent,
+    elevation: 4,
+    shadowColor: COLORS.accent,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   answerText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: COLORS.primary, // Texte sombre sur fond lavande pour contraste
+    fontSize: 20,
+    fontWeight: '700',
+    color: COLORS.primary,
   },
   keyboardSection: {
-    marginTop: 10,
+    marginTop: 20,
   },
   lettersGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: 6,
+    gap: 8,
     marginBottom: 20,
   },
   letterBtn: {
-    width: 42,
-    height: 42,
+    width: 44,
+    height: 44,
     backgroundColor: COLORS.secondary,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.05)',
   },
   letterBtnUsed: {
-    opacity: 0.05,
+    opacity: 0.25, // Increased visibility from 0.05
+    backgroundColor: 'rgba(26, 26, 34, 0.4)',
+    borderColor: 'transparent',
   },
   letterText: {
-    fontSize: 16,
-    fontWeight: '400',
+    fontSize: 18,
+    fontWeight: '500',
     color: COLORS.textPrimary,
   },
   hintBtn: {
-    alignItems: 'center',
-    paddingVertical: 14,
-    backgroundColor: COLORS.secondary,
-    borderRadius: 4,
+    backgroundColor: COLORS.accent,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
     marginTop: 10,
+    alignSelf: 'center',
+    minWidth: 160,
+    elevation: 3,
+    shadowColor: COLORS.accent,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+  },
+  hintContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  hintLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
   hintText: {
-    fontSize: 10,
-    color: COLORS.accent, // Accent Lavande pour le bouton indice
-    letterSpacing: 2,
+    fontSize: 12,
+    color: COLORS.primary,
+    letterSpacing: 1.5,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+  },
+  hintPrice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(15, 15, 20, 0.15)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    gap: 4,
+  },
+  hintPriceText: {
+    fontSize: 12,
+    color: COLORS.primary,
     fontWeight: '700',
   }
+
 });

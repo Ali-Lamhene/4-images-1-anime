@@ -9,6 +9,8 @@ import Images from '../components/Images';
 import LetterGame from '../components/LetterGame';
 import RankUpPopup from '../components/RankUpPopup';
 import VictoryPopup from '../components/VictoryPopup';
+import GoldCoinIcon from '../components/icons/GoldCoinIcon';
+import PotionIcon from '../components/icons/PotionIcon';
 
 import { ANIME_DATA } from '../assets/data/data';
 import { COLORS } from '../constants/colors';
@@ -37,6 +39,8 @@ export default function PlayScreen() {
 
   const [user, setUser] = useState(INITIAL_USER);
   const [gameState, setGameState] = useState(null);
+  const [revealedImages, setRevealedImages] = useState([]);
+  const [potentialRewards, setPotentialRewards] = useState(DEFAULT_REWARDS);
 
   useEffect(() => {
     const loadData = async () => {
@@ -64,6 +68,8 @@ export default function PlayScreen() {
             used: false,
           })),
         });
+        setRevealedImages([]);
+        setPotentialRewards(DEFAULT_REWARDS);
       }
 
       setIsReady(true);
@@ -133,6 +139,25 @@ export default function PlayScreen() {
     setGameState({ ...gameState, selectedLetters, availableLetters });
   };
 
+  const handleRevealImage = (index) => {
+    if (revealedImages.includes(index)) return;
+
+    const newRevealed = [...revealedImages, index];
+    setRevealedImages(newRevealed);
+
+    // Each reveal reduces reward: Remaining = X - (nbRevealed * X/4)
+    // Actually if 0 revealed: 100%. 1: 75%. 2: 50%. 3: 25%. 4: Small base reward?
+    // Let's go with literal interpretation: decrement by X/4 each click.
+    const reductionFactor = newRevealed.length * 0.25;
+    const newCoins = Math.max(10, Math.floor(DEFAULT_REWARDS.coins * (1 - reductionFactor)));
+    const newXP = Math.max(5, Math.floor(DEFAULT_REWARDS.xp * (1 - reductionFactor)));
+
+    setPotentialRewards({
+      coins: newCoins,
+      xp: newXP
+    });
+  };
+
   const handleHintRequest = () => {
     if (user.coins < HINT_COST) return;
 
@@ -153,7 +178,7 @@ export default function PlayScreen() {
 
   const handleContinue = () => {
     setUser(prev => {
-      const newXP = prev.xp + DEFAULT_REWARDS.xp;
+      const newXP = prev.xp + potentialRewards.xp;
       const newLevel = calculateLevel(newXP);
 
       if (newLevel > prev.level) {
@@ -162,7 +187,7 @@ export default function PlayScreen() {
 
       return {
         ...prev,
-        coins: prev.coins + DEFAULT_REWARDS.coins,
+        coins: prev.coins + potentialRewards.coins,
         xp: newXP,
         level: newLevel,
       };
@@ -171,7 +196,7 @@ export default function PlayScreen() {
     setShowVictoryPopup(false);
 
     const nextIndex = currentAnimeIndex + 1;
-    setCurrentIndex(nextIndex);
+    setCurrentAnimeIndex(nextIndex);
 
     if (nextIndex < ANIME_DATA.length) {
       const nextAnime = ANIME_DATA[nextIndex];
@@ -189,6 +214,8 @@ export default function PlayScreen() {
           used: false,
         })),
       });
+      setRevealedImages([]);
+      setPotentialRewards(DEFAULT_REWARDS);
     }
   };
 
@@ -259,13 +286,29 @@ export default function PlayScreen() {
               {/* Stylized Stage Number */}
               <View style={styles.stageIndicator}>
                 <View style={styles.stageLine} />
-                <Text style={styles.stageText}>
-                  {t('current_stage', { n: currentAnimeIndex + 1 })}
-                </Text>
+                <View style={styles.stageContent}>
+                  <Text style={styles.stageText}>
+                    {t('current_stage', { n: currentAnimeIndex + 1 })}
+                  </Text>
+                  <View style={styles.rewardIndicator}>
+                    <View style={styles.rewardBadge}>
+                      <GoldCoinIcon width={10} height={10} />
+                      <Text style={styles.rewardBadgeText}>{potentialRewards.coins}</Text>
+                    </View>
+                    <View style={styles.rewardBadge}>
+                      <PotionIcon width={10} height={10} />
+                      <Text style={styles.rewardBadgeText}>{potentialRewards.xp}</Text>
+                    </View>
+                  </View>
+                </View>
                 <View style={styles.stageLine} />
               </View>
 
-              <Images images={gameState.currentAnime.images} />
+              <Images
+                images={gameState.currentAnime.images}
+                revealedImages={revealedImages}
+                onReveal={handleRevealImage}
+              />
 
               <LetterGame
                 animeName={gameState.preferredName}
@@ -281,7 +324,7 @@ export default function PlayScreen() {
 
           {showVictoryPopup && (
             <VictoryPopup
-              rewards={DEFAULT_REWARDS}
+              rewards={potentialRewards}
               animeName={gameState.preferredName}
               onContinue={handleContinue}
             />
@@ -341,6 +384,31 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: COLORS.accent,
     letterSpacing: 4,
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+  stageContent: {
+    alignItems: 'center',
+    gap: 4,
+  },
+  rewardIndicator: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  rewardBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(184, 161, 255, 0.1)',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 10,
+  },
+  rewardBadgeText: {
+    fontSize: 9,
+    color: COLORS.textPrimary,
+    fontWeight: '700',
   },
   completedContent: {
     flex: 1,
