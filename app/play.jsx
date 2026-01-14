@@ -1,3 +1,4 @@
+import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -45,6 +46,7 @@ export default function PlayScreen() {
   const [revealedImages, setRevealedImages] = useState([]);
   const [potentialRewards, setPotentialRewards] = useState(DEFAULT_REWARDS);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   // Tutorial refs
   const scrollRef = useRef(null);
@@ -117,7 +119,9 @@ export default function PlayScreen() {
       ) {
         setTimeout(() => setShowVictoryPopup(true), 300);
       } else {
-        resetAnswer();
+        // Wrong answer: Trigger haptics and error styling
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        setIsError(true);
       }
     }
   }, [gameState?.selectedLetters]);
@@ -125,6 +129,8 @@ export default function PlayScreen() {
   const handleLetterSelect = (letter, index) => {
     const firstEmpty = gameState.selectedLetters.findIndex(l => l === null);
     if (firstEmpty === -1) return;
+
+    if (isError) setIsError(false);
 
     const selectedLetters = [...gameState.selectedLetters];
     selectedLetters[firstEmpty] = letter;
@@ -138,6 +144,8 @@ export default function PlayScreen() {
   const handleLetterRemove = index => {
     const letter = gameState.selectedLetters[index];
     if (!letter) return;
+
+    if (isError) setIsError(false);
 
     const selectedLetters = [...gameState.selectedLetters];
     selectedLetters[index] = null;
@@ -336,6 +344,7 @@ export default function PlayScreen() {
                 selectedLetters={gameState.selectedLetters}
                 availableLetters={gameState.availableLetters}
                 userCoins={user.coins}
+                isError={isError}
                 onLetterSelect={handleLetterSelect}
                 onLetterRemove={handleLetterRemove}
                 onHintRequest={handleHintRequest}

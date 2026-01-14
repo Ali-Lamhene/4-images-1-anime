@@ -81,7 +81,7 @@ export default function RankUpPopup({ level, onClose }) {
                         origin={{ x: SCREEN_WIDTH / 2, y: -20 }}
                         fadeOut={true}
                         fallSpeed={3000}
-                        colors={[COLORS.accent, COLORS.textPrimary, '#FFD700', COLORS.white]}
+                        colors={[COLORS.accent, '#A084FF', '#D4C7FF', COLORS.white, '#8B8B9E']}
                     />
                 </View>
             )}

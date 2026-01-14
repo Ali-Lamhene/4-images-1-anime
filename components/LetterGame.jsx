@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React from 'react';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Alert, Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants/colors';
 import { HINT_COST } from '../constants/game';
 import { SPACING } from '../constants/spacing';
@@ -12,12 +12,26 @@ const LetterGame = React.forwardRef(({
   selectedLetters,
   availableLetters,
   userCoins,
+  isError,
   onLetterSelect,
   onLetterRemove,
   onHintRequest,
   hintRef,
 }, ref) => {
   const { t } = useTranslation();
+  const shakeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (isError) {
+      Animated.sequence([
+        Animated.timing(shakeAnim, { toValue: 10, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: -10, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 10, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: -10, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 0, duration: 50, useNativeDriver: true }),
+      ]).start();
+    }
+  }, [isError]);
 
   const handleHint = () => {
     if (userCoins < HINT_COST) {
@@ -30,7 +44,12 @@ const LetterGame = React.forwardRef(({
   return (
     <View ref={ref} style={styles.container}>
       {/* Answer Area - Compacted */}
-      <View style={styles.answerContainer}>
+      <Animated.View
+        style={[
+          styles.answerContainer,
+          { transform: [{ translateX: shakeAnim }] }
+        ]}
+      >
         {(() => {
           const words = animeName.toUpperCase().split(' ');
           let cursor = 0;
@@ -48,12 +67,15 @@ const LetterGame = React.forwardRef(({
                       key={`ans-${idx}`}
                       style={[
                         styles.answerBox,
-                        letter && styles.answerBoxFilled
+                        letter && styles.answerBoxFilled,
+                        isError && letter && styles.answerBoxError
                       ]}
                       onPress={() => letter && onLetterRemove(idx)}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.answerText}>{letter || ''}</Text>
+                      <Text style={[styles.answerText, isError && letter && styles.answerTextError]}>
+                        {letter || ''}
+                      </Text>
                     </TouchableOpacity>
                   );
                 })}
@@ -64,7 +86,7 @@ const LetterGame = React.forwardRef(({
 
           return nodes;
         })()}
-      </View>
+      </Animated.View>
 
       <View style={styles.keyboardSection}>
         <View style={styles.lettersGrid}>
@@ -150,10 +172,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },
+  answerBoxError: {
+    backgroundColor: '#FF3B30',
+    borderColor: '#FF3B30',
+    shadowColor: '#FF3B30',
+    shadowOpacity: 0.5,
+  },
   answerText: {
     fontSize: 20,
     fontWeight: '700',
     color: COLORS.primary,
+  },
+  answerTextError: {
+    color: '#FFFFFF',
   },
   keyboardSection: {
     marginTop: 20,
@@ -230,5 +261,4 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontWeight: '800',
   }
-
 });
