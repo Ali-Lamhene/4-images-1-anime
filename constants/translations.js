@@ -12,9 +12,9 @@ export const TRANSLATIONS = {
         // Index Screen
         start_experience: "START EXPERIENCE",
         collections: "COLLECTIONS",
-        title_top: "4 IMAGES",
-        title_bottom: "ONE ANIME",
-        footer_text: "FOUR IMAGES • ONE ANIME",
+        title_top: "ANIME",
+        title_bottom: "LEGENDS",
+        footer_text: "ANIME LEGENDS • THE ULTIMATE QUEST",
 
         // Play Screen
         victory: "VICTORY",
@@ -116,9 +116,9 @@ export const TRANSLATIONS = {
         // Index Screen
         start_experience: "COMMENCER L'EXPÉRIENCE",
         collections: "COLLECTIONS",
-        title_top: "4 IMAGES",
-        title_bottom: "UN ANIME",
-        footer_text: "QUATRE IMAGES • UN ANIME",
+        title_top: "ANIME",
+        title_bottom: "LEGENDS",
+        footer_text: "ANIME LEGENDS • LA QUÊTE ULTIME",
 
         // Play Screen
         victory: "VICTOIRE",

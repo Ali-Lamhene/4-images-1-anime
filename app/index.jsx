@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ANIME_DATA } from '../assets/data/data';
+import AnimeLegendsLogo from '../components/AnimeLegendsLogo';
 import BackgroundTexture from '../components/BackgroundTexture';
 import BottomNavBar from '../components/BottomNavBar';
 import RankBadge from '../components/RankBadge';
@@ -64,13 +65,9 @@ export default function Index() {
                 <Text style={styles.userXp}>{user.xp} XP</Text>
               </View>
             </TouchableOpacity>
-            <View style={styles.textContainer}>
-              <Text style={styles.title}>{t('title_top')}</Text>
-              <View style={styles.subtitleRow}>
-                <View style={styles.subtitleLine} />
-                <Text style={styles.subtitle}>{t('title_bottom')}</Text>
-                <View style={styles.subtitleLine} />
-              </View>
+
+            <View style={styles.logoContainer}>
+              <AnimeLegendsLogo size={260} />
             </View>
 
             {/* Current Stage Indicator */}
@@ -135,7 +132,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: SPACING.xxl,
     paddingTop: 60,
@@ -163,6 +159,11 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: COLORS.accent,
     letterSpacing: 1,
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+    marginTop: 30,
   },
   textContainer: {
     alignItems: 'center',
