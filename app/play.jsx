@@ -285,12 +285,12 @@ export default function PlayScreen() {
             <View style={styles.gameWrapper}>
               {/* Stylized Stage Number */}
               <View style={styles.stageIndicator}>
-                <View style={styles.stageLine} />
                 <View style={styles.stageContent}>
                   <Text style={styles.stageText}>
                     {t('current_stage', { n: currentAnimeIndex + 1 })}
                   </Text>
                   <View style={styles.rewardIndicator}>
+                    <View style={styles.stageLine} />
                     <View style={styles.rewardBadge}>
                       <GoldCoinIcon width={10} height={10} />
                       <Text style={styles.rewardBadgeText}>{potentialRewards.coins}</Text>
@@ -299,9 +299,9 @@ export default function PlayScreen() {
                       <PotionIcon width={10} height={10} />
                       <Text style={styles.rewardBadgeText}>{potentialRewards.xp}</Text>
                     </View>
+                    <View style={styles.stageLine} />
                   </View>
                 </View>
-                <View style={styles.stageLine} />
               </View>
 
               <Images
@@ -356,8 +356,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingBottom: 120,
-    paddingTop: 10,
+    paddingVertical: 10,
   },
   gameWrapper: {
     maxWidth: 600,
@@ -390,10 +389,11 @@ const styles = StyleSheet.create({
   },
   stageContent: {
     alignItems: 'center',
-    gap: 4,
+    gap: 10,
   },
   rewardIndicator: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 10,
   },
   rewardBadge: {

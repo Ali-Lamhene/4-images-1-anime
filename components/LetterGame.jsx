@@ -96,7 +96,7 @@ export default function LetterGame({
               <Text style={styles.hintText}>{t('hint') || 'INDICE'}</Text>
             </View>
             <View style={styles.hintPrice}>
-              <GoldCoinIcon width={12} height={12} />
+              <GoldCoinIcon width={28} height={28} />
               <Text style={styles.hintPriceText}>{HINT_COST}</Text>
             </View>
           </View>
@@ -214,15 +214,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(15, 15, 20, 0.15)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 4,
+    paddingVertical: 0,
     borderRadius: 12,
     gap: 4,
   },
   hintPriceText: {
-    fontSize: 12,
+    fontSize: 13,
     color: COLORS.primary,
-    fontWeight: '700',
+    fontWeight: '800',
   }
 
 });

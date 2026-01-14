@@ -44,16 +44,6 @@ export default function RankUpPopup({ level, onClose }) {
 
     return (
         <Animated.View style={[styles.overlay, { opacity: opacityAnim }]}>
-            {showConfetti && (
-                <ConfettiCannon
-                    count={150}
-                    origin={{ x: SCREEN_WIDTH / 2, y: -20 }}
-                    fadeOut={true}
-                    fallSpeed={4000}
-                    colors={[COLORS.textPrimary, COLORS.accent, COLORS.secondary]}
-                />
-            )}
-
             <Animated.View
                 style={[
                     styles.popupContainer,
@@ -80,6 +70,18 @@ export default function RankUpPopup({ level, onClose }) {
                     <Text style={styles.closeButtonText}>{t('acknowledge')}</Text>
                 </TouchableOpacity>
             </Animated.View>
+
+            {showConfetti && (
+                <View style={StyleSheet.absoluteFill} pointerEvents="none">
+                    <ConfettiCannon
+                        count={200}
+                        origin={{ x: SCREEN_WIDTH / 2, y: -20 }}
+                        fadeOut={true}
+                        fallSpeed={3000}
+                        colors={[COLORS.accent, COLORS.textPrimary, '#FFD700', COLORS.white]}
+                    />
+                </View>
+            )}
         </Animated.View>
     );
 }
@@ -112,12 +114,15 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     rankName: {
-        fontSize: 32,
-        fontWeight: '600',
+        fontSize: 34,
+        fontWeight: '700',
         color: COLORS.textPrimary,
         textAlign: 'center',
-        letterSpacing: 6,
+        letterSpacing: 4,
         marginBottom: 20,
+        textShadowColor: 'rgba(184, 161, 255, 0.4)',
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 15,
     },
     divider: {
         width: 15,

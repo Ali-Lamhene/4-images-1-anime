@@ -1,4 +1,3 @@
-import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -21,7 +20,6 @@ const NAMING_TYPES = [
 ];
 
 export default function SettingsScreen() {
-    const router = useRouter();
     const { t, language, changeLanguage, isReady: isLangReady } = useTranslation();
     const [settings, setSettings] = useState(INITIAL_SETTINGS);
     const [isReady, setIsReady] = useState(false);
@@ -58,12 +56,7 @@ export default function SettingsScreen() {
         <View style={styles.container}>
             <BackgroundTexture />
             <SafeAreaView style={styles.safeArea}>
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={() => router.back()}>
-                        <Text style={styles.backText}>←</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.title}>{t('settings')}</Text>
-                </View>
+
 
                 <ScrollView
                     style={styles.content}
@@ -167,8 +160,8 @@ export default function SettingsScreen() {
                             <Text style={styles.infoValue}>1.0.0</Text>
                         </View>
                         <View style={styles.infoRow}>
-                            <Text style={styles.infoLabel}>{t('developer')}</Text>
-                            <Text style={styles.infoValue}>Ali Lamhene</Text>
+                            <Text style={styles.infoLabel}>{t('contact')}</Text>
+                            <Text style={styles.infoValue}>otakumi.factory@gmail.com</Text>
                         </View>
                     </View>
                 </ScrollView>
@@ -188,30 +181,11 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
     },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: SPACING.lg,
-        paddingVertical: SPACING.xl,
-        gap: 20,
-    },
-    backText: {
-        fontSize: 24,
-        color: COLORS.textPrimary,
-        fontWeight: '300',
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: COLORS.textPrimary,
-        letterSpacing: 4,
-        textShadowColor: 'rgba(0, 0, 0, 0.8)',
-        textShadowOffset: { width: 0, height: 1 },
-        textShadowRadius: 2,
-    },
+
     content: {
         flex: 1,
         paddingHorizontal: SPACING.lg,
+        paddingTop: SPACING.xl,
     },
     scrollContent: {
         paddingBottom: 120, // Clear BottomNavBar

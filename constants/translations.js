@@ -66,7 +66,7 @@ export const TRANSLATIONS = {
         name_french: "French",
         about_section: "ABOUT",
         version: "Version",
-        developer: "Developer",
+        contact: "Contact",
 
         // Ranks
         rank_débutant: "BEGINNER",
@@ -155,7 +155,7 @@ export const TRANSLATIONS = {
         name_french: "Français",
         about_section: "À PROPOS",
         version: "Version",
-        developer: "Développeur",
+        contact: "Contact",
 
         // Ranks
         rank_débutant: "DÉBUTANT",
