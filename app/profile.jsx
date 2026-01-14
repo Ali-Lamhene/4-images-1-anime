@@ -69,10 +69,10 @@ export default function ProfileScreen() {
             <BackgroundTexture />
             <SafeAreaView style={styles.safeArea}>
                 <ScrollView contentContainerStyle={styles.scrollContent}>
-                    <View style={styles.header}>
+                    {/* <View style={styles.header}>
                         <Text style={styles.title}>{t('profile')}</Text>
                         <View style={styles.divider} />
-                    </View>
+                    </View> */}
 
                     <View style={styles.mainStats}>
                         <View style={styles.rankHeaderRow}>
@@ -210,7 +210,8 @@ const styles = StyleSheet.create({
     },
     scrollContent: {
         paddingHorizontal: SPACING.lg,
-        paddingBottom: 120, // Match other pages
+        paddingBottom: 120,
+        paddingTop: 40,
     },
     header: {
         alignItems: 'center',

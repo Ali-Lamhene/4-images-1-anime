@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import Svg, { Circle, Defs, Pattern, RadialGradient, Rect, Stop } from 'react-native-svg';
+import Svg, { Circle, Defs, LinearGradient, Pattern, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { COLORS } from '../constants/colors';
 
 export default function BackgroundTexture() {
@@ -20,6 +20,10 @@ export default function BackgroundTexture() {
                             <Stop offset="0%" stopColor={COLORS.primary} stopOpacity="0" />
                             <Stop offset="100%" stopColor={COLORS.primary} stopOpacity="0.5" />
                         </RadialGradient>
+                        <LinearGradient id="bgAccentGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <Stop offset="20%" stopColor={COLORS.accent} stopOpacity="0" />
+                            <Stop offset="100%" stopColor={COLORS.accent} stopOpacity="0.45" />
+                        </LinearGradient>
                         <Pattern
                             id="persistent-dots"
                             x="0"
@@ -32,6 +36,8 @@ export default function BackgroundTexture() {
                             <Circle cx="2" cy="2" r="1.1" fill={COLORS.accent} opacity="0.28" />
                         </Pattern>
                     </Defs>
+                    {/* Background Gradient Layer */}
+                    <Rect width="100%" height="100%" fill="url(#bgAccentGradient)" />
                     {/* Background Pattern */}
                     <Rect width="100%" height="100%" fill="url(#persistent-dots)" />
                     {/* Subtle Vignette Overlay */}
