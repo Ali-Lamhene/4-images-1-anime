@@ -158,7 +158,7 @@ export default function ProfileScreen() {
                                         return (
                                             <View key={anime.id} style={styles.collectionItem}>
                                                 <Image
-                                                    source={{ uri: anime.images[0] }}
+                                                    source={{ uri: anime.vignette  }}
                                                     style={styles.collectionThumb}
                                                 />
                                                 <View style={styles.collectionInfo}>
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     sectionContainer: {
-        marginTop: 10,
+        marginTop: 40,
         width: '100%',
     },
     sectionTitle: {

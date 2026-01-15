@@ -20,7 +20,7 @@ export const ANIME_DATA = [
             'https://picsum.photos/seed/op3/400',
             'https://picsum.photos/seed/op4/400',
         ],
-        vignette: 'https://static.wikia.nocookie.net/onepiece/images/a/af/One_Piece_Anime_Poster.png',
+        vignette: 'https://cdn.myanimelist.net/images/anime/1386/100624l.jpg',
     },
     {
         id: '2',
@@ -43,7 +43,7 @@ export const ANIME_DATA = [
             'https://picsum.photos/seed/nar3/400',
             'https://picsum.photos/seed/nar4/400',
         ],
-        vignette: 'https://static.wikia.nocookie.net/naruto/images/0/09/Naruto_Part_1_Key_Visual.png',
+        vignette: 'https://cdn.myanimelist.net/images/anime/2/50745l.jpg',
     },
     {
         id: '3',
@@ -66,7 +66,7 @@ export const ANIME_DATA = [
             'https://picsum.photos/seed/aot3/400',
             'https://picsum.photos/seed/aot4/400',
         ],
-        vignette: 'https://static.wikia.nocookie.net/shingekinokyojin/images/d/d8/Attack_on_Titan_Season_1_Key_Visual.png',
+        vignette: 'https://cdn.myanimelist.net/images/anime/10/47347l.jpg',
     },
     {
         id: '4',
@@ -89,7 +89,7 @@ export const ANIME_DATA = [
             'https://picsum.photos/seed/mha3/400',
             'https://picsum.photos/seed/mha4/400',
         ],
-        vignette: 'https://static.wikia.nocookie.net/bokunoheroacademia/images/e/e1/My_Hero_Academia_Season_1_Poster.png',
+        vignette: 'https://cdn.myanimelist.net/images/anime/10/78745l.jpg',
     },
     {
         id: '5',
@@ -112,6 +112,6 @@ export const ANIME_DATA = [
             'https://picsum.photos/seed/ds3/400',
             'https://picsum.photos/seed/ds4/400',
         ],
-        vignette: 'https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/d/d4/Tanjiro_Kamado_Poster.png',
+        vignette: 'https://cdn.myanimelist.net/images/anime/1286/99889l.jpg',
     },
 ];

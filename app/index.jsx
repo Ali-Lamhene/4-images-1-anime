@@ -75,42 +75,44 @@ export default function Index() {
               <AnimeLegendsLogo size={260} />
             </View>
 
-            {/* Current Stage Indicator */}
-            <View style={styles.stageIndicator}>
-              <Text style={styles.stageText}>
-                {t('current_stage', { n: currentIndex + 1 })}
-              </Text>
-            </View>
-
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.playButton}
-                onPress={() => {
-                  playSound('start');
-                  router.push('/play');
-                }}
-                activeOpacity={0.9}
-              >
-                <Text style={styles.playButtonText}>
-                  {currentIndex === 0 ? t('start_experience') : t('continue').toUpperCase()}
+            <View style={styles.bottomControls}>
+              {/* Current Stage Indicator */}
+              <View style={styles.stageIndicator}>
+                <Text style={styles.stageText}>
+                  {t('current_stage', { n: currentIndex + 1 })}
                 </Text>
-              </TouchableOpacity>
-            </View>
+              </View>
 
-            {/* Last Found Vignette */}
-            {lastAnime && (
-              <View style={styles.lastFoundContainer}>
-                <Text style={styles.lastFoundLabel}>{t('last_found')}</Text>
-                <View style={styles.vignette}>
-                  <Image source={{ uri: lastAnime.vignette }} style={styles.vignetteImage} />
-                  <View style={styles.vignetteOverlay}>
-                    <Text style={styles.vignetteName} numberOfLines={1}>
-                      {lastAnime.names[namingType] || lastAnime.names.original}
-                    </Text>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={styles.playButton}
+                  onPress={() => {
+                    playSound('start');
+                    router.push('/play');
+                  }}
+                  activeOpacity={0.9}
+                >
+                  <Text style={styles.playButtonText}>
+                    {currentIndex === 0 ? t('start_experience') : t('continue').toUpperCase()}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Last Found Vignette */}
+              {lastAnime && (
+                <View style={styles.lastFoundContainer}>
+                  <Text style={styles.lastFoundLabel}>{t('last_found')}</Text>
+                  <View style={styles.vignette}>
+                    <Image source={{ uri: lastAnime.vignette }} style={styles.vignetteImage} />
+                    <View style={styles.vignetteOverlay}>
+                      <Text style={styles.vignetteName} numberOfLines={1}>
+                        {lastAnime.names[namingType] || lastAnime.names.original}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
-            )}
+              )}
+            </View>
 
             {/* <View style={styles.footer}>
               <Text style={styles.footerText}>{t('footer_text')}</Text>
@@ -136,7 +138,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     minHeight: height,
-    paddingBottom: 40,
+    paddingBottom: 90,
   },
   content: {
     flex: 1,
@@ -146,8 +148,8 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   userHeader: {
-    position: 'absolute',
-    top: 20,
+    margin: 'auto',
+    alignSelf: 'flex-start',
     backgroundColor: 'rgba(26, 26, 34, 0.5)',
     flexDirection: 'row',
     alignItems: 'center',
@@ -156,6 +158,7 @@ const styles = StyleSheet.create({
     gap: 12,
     borderWidth: 1,
     borderColor: 'rgba(184, 161, 255, 0.1)',
+    marginBottom: 10,
   },
   userLevel: {
     fontSize: 10,
@@ -171,8 +174,15 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 30,
-    marginTop: 30,
+    flex: 1,
+    justifyContent: 'center',
+    marginVertical: 20,
+  },
+  bottomControls: {
+    width: '100%',
+    alignItems: 'center',
+    paddingBottom: 20,
+    gap: 20,
   },
   textContainer: {
     alignItems: 'center',
@@ -212,7 +222,6 @@ const styles = StyleSheet.create({
     textShadowRadius: 3,
   },
   stageIndicator: {
-    marginBottom: 30,
     paddingHorizontal: 20,
     paddingVertical: 8,
     borderWidth: 1,
@@ -232,8 +241,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: '100%',
     maxWidth: 320,
-    gap: 15,
-    marginBottom: 50,
   },
   playButton: {
     backgroundColor: COLORS.accent,
@@ -260,13 +267,21 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   vignette: {
-    width: '100%',
-    height: 140,
-    borderRadius: 4,
+    width: 160,
+    height: 240,
+    borderRadius: 8,
     overflow: 'hidden',
     backgroundColor: COLORS.secondary,
     borderWidth: 1,
     borderColor: 'rgba(184, 161, 255, 0.1)',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
   },
   vignetteImage: {
     width: '100%',
