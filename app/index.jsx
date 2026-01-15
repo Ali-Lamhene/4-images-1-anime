@@ -102,7 +102,7 @@ export default function Index() {
               <View style={styles.lastFoundContainer}>
                 <Text style={styles.lastFoundLabel}>{t('last_found')}</Text>
                 <View style={styles.vignette}>
-                  <Image source={{ uri: lastAnime.images[0] }} style={styles.vignetteImage} />
+                  <Image source={{ uri: lastAnime.vignette }} style={styles.vignetteImage} />
                   <View style={styles.vignetteOverlay}>
                     <Text style={styles.vignetteName} numberOfLines={1}>
                       {lastAnime.names[namingType] || lastAnime.names.original}

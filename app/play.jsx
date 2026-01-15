@@ -418,6 +418,7 @@ export default function PlayScreen() {
             <VictoryPopup
               rewards={potentialRewards}
               animeName={gameState.preferredName}
+              vignette={gameState.currentAnime.vignette}
               onContinue={handleContinue}
             />
           )}

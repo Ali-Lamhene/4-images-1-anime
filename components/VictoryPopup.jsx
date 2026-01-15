@@ -3,6 +3,7 @@ import {
   Animated,
   Dimensions,
   Easing,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -18,7 +19,7 @@ import PotionIcon from './icons/PotionIcon';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-export default function VictoryPopup({ rewards, animeName, onContinue }) {
+export default function VictoryPopup({ rewards, animeName, vignette, onContinue }) {
   const { t } = useTranslation();
   const { playSound } = useSound();
   const [fadeAnim] = useState(new Animated.Value(0));
@@ -110,6 +111,13 @@ export default function VictoryPopup({ rewards, animeName, onContinue }) {
         ]}
       >
         <Text style={styles.title}>{t('success')}</Text>
+
+        {vignette && (
+          <View style={styles.vignetteWrapper}>
+            <Image source={{ uri: vignette }} style={styles.vignetteImage} />
+          </View>
+        )}
+
         <Text style={styles.animeResult}>{animeName.toUpperCase()}</Text>
         <View style={styles.divider} />
 
@@ -197,9 +205,23 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 320,
     backgroundColor: COLORS.secondary,
-    padding: 40,
+    padding: 30,
     alignItems: 'center',
     borderRadius: 2,
+  },
+  vignetteWrapper: {
+    width: '100%',
+    height: 150,
+    borderRadius: 4,
+    overflow: 'hidden',
+    marginVertical: 15,
+    borderWidth: 1,
+    borderColor: 'rgba(184, 161, 255, 0.2)',
+  },
+  vignetteImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
   title: {
     fontSize: 24,
