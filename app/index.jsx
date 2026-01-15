@@ -10,6 +10,7 @@ import RankBadge from '../components/RankBadge';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
+import { useSound } from '../context/SoundContext';
 import { getCurrentAnimeIndex, getSettings, getUserData, INITIAL_USER } from '../utils/storage';
 
 const { width, height } = Dimensions.get('window');
@@ -17,6 +18,7 @@ const { width, height } = Dimensions.get('window');
 export default function Index() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { playSound } = useSound();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [user, setUser] = useState(INITIAL_USER);
   const [settings, setSettings] = useState(null);
@@ -56,7 +58,10 @@ export default function Index() {
             {/* Top Rank Badge */}
             <TouchableOpacity
               style={styles.userHeader}
-              onPress={() => router.push('/profile')}
+              onPress={() => {
+                playSound('click');
+                router.push('/profile');
+              }}
               activeOpacity={0.7}
             >
               <RankBadge level={user.level} size={40} />
@@ -80,7 +85,10 @@ export default function Index() {
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.playButton}
-                onPress={() => router.push('/play')}
+                onPress={() => {
+                  playSound('start');
+                  router.push('/play');
+                }}
                 activeOpacity={0.9}
               >
                 <Text style={styles.playButtonText}>

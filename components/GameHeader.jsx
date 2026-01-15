@@ -5,6 +5,7 @@ import { COLORS } from '../constants/colors';
 import { RANKS } from '../constants/game';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
+import { useSound } from '../context/SoundContext';
 import GoldCoinIcon from './icons/GoldCoinIcon';
 import PotionIcon from './icons/PotionIcon';
 import RankBadge from './RankBadge';
@@ -16,6 +17,7 @@ export default function GameHeader({
 }) {
   const router = useRouter();
   const { t } = useTranslation();
+  const { playSound } = useSound();
   const currentRank = RANKS.find(r => r.level === user.level) || RANKS[0];
   const nextRank = RANKS.find(r => r.level === user.level + 1);
   const xpProgress = nextRank
@@ -29,7 +31,13 @@ export default function GameHeader({
       <View style={styles.mainRow}>
         <View style={styles.left}>
           {showBackButton && !isOverlay && (
-            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => {
+                playSound('back');
+                router.back();
+              }}
+            >
               <Text style={styles.backText}>←</Text>
             </TouchableOpacity>
           )}

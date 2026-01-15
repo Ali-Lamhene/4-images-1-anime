@@ -13,12 +13,14 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 import { COLORS } from '../constants/colors';
 import { RANKS } from '../constants/game';
 import { useTranslation } from '../context/LanguageContext';
+import { useSound } from '../context/SoundContext';
 import RankBadge from './RankBadge';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function RankUpPopup({ level, onClose }) {
     const { t } = useTranslation();
+    const { playSound } = useSound();
     const [showConfetti, setShowConfetti] = useState(false);
     const opacityAnim = useState(new Animated.Value(0))[0];
     const slideAnim = useState(new Animated.Value(10))[0];
@@ -26,6 +28,7 @@ export default function RankUpPopup({ level, onClose }) {
     const rank = RANKS.find(r => r.level === level) || RANKS[0];
 
     useEffect(() => {
+        playSound('levelup');
         Animated.parallel([
             Animated.timing(opacityAnim, {
                 toValue: 1,

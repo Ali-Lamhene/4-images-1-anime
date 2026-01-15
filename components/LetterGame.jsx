@@ -5,6 +5,7 @@ import { COLORS } from '../constants/colors';
 import { HINT_COST } from '../constants/game';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
+import { useSound } from '../context/SoundContext';
 import GoldCoinIcon from './icons/GoldCoinIcon';
 
 const LetterGame = React.forwardRef(({
@@ -19,10 +20,12 @@ const LetterGame = React.forwardRef(({
   hintRef,
 }, ref) => {
   const { t } = useTranslation();
+  const { playSound } = useSound();
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (isError) {
+      playSound('failure');
       Animated.sequence([
         Animated.timing(shakeAnim, { toValue: 10, duration: 50, useNativeDriver: true }),
         Animated.timing(shakeAnim, { toValue: -10, duration: 50, useNativeDriver: true }),
@@ -70,7 +73,12 @@ const LetterGame = React.forwardRef(({
                         letter && styles.answerBoxFilled,
                         isError && letter && styles.answerBoxError
                       ]}
-                      onPress={() => letter && onLetterRemove(idx)}
+                      onPress={() => {
+                        if (letter) {
+                          playSound('click');
+                          onLetterRemove(idx);
+                        }
+                      }}
                       activeOpacity={0.8}
                     >
                       <Text style={[styles.answerText, isError && letter && styles.answerTextError]}>
@@ -97,7 +105,12 @@ const LetterGame = React.forwardRef(({
                 styles.letterBtn,
                 item.used && styles.letterBtnUsed
               ]}
-              onPress={() => !item.used && onLetterSelect(item.char, index)}
+              onPress={() => {
+                if (!item.used) {
+                  playSound('click');
+                  onLetterSelect(item.char, index);
+                }
+              }}
               disabled={item.used}
               activeOpacity={0.8}
             >

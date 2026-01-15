@@ -1,14 +1,18 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useSound } from '../context/SoundContext';
 
 export default function BackButton() {
   const router = useRouter();
+  const { playSound } = useSound();
 
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.backButton}
-      onPress={() => router.back()}
+      onPress={() => {
+        playSound('back');
+        router.back();
+      }}
     >
       <Text style={styles.backIcon}>←</Text>
       <Text style={styles.backText}>Retour</Text>

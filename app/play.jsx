@@ -20,6 +20,7 @@ import { ANIME_DATA } from '../assets/data/data';
 import { COLORS } from '../constants/colors';
 import { DEFAULT_REWARDS, HINT_COST } from '../constants/game';
 import { useTranslation } from '../context/LanguageContext';
+import { useSound } from '../context/SoundContext';
 import { calculateLevel, checkAnswer, normalizeString, shuffleLetters } from '../utils/gameUtils';
 import {
   INITIAL_USER,
@@ -39,6 +40,7 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 export default function PlayScreen() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { playSound } = useSound();
   const [currentAnimeIndex, setCurrentAnimeIndex] = useState(0);
   const [showVictoryPopup, setShowVictoryPopup] = useState(false);
   const [rankUpLevel, setRankUpLevel] = useState(null);
@@ -188,6 +190,7 @@ export default function PlayScreen() {
   const handleRevealImage = (index) => {
     if (revealedImages.includes(index)) return;
 
+    playSound('reveal');
     const newRevealed = [...revealedImages, index];
     setRevealedImages(newRevealed);
 
@@ -217,6 +220,7 @@ export default function PlayScreen() {
     );
 
     if (letterIndex !== -1) {
+      playSound('hint');
       handleLetterSelect(letter, letterIndex);
       setHintsUsedLevel(prev => prev + 1);
       setUser({
@@ -335,7 +339,10 @@ export default function PlayScreen() {
             </Text>
             <TouchableOpacity
               style={styles.homeButton}
-              onPress={() => router.replace('/')}
+              onPress={() => {
+                playSound('click');
+                router.replace('/');
+              }}
             >
               <Text style={styles.homeButtonText}>{t('back_home')}</Text>
             </TouchableOpacity>

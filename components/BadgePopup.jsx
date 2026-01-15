@@ -4,17 +4,20 @@ import { Animated, Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View }
 import ConfettiCannon from 'react-native-confetti-cannon';
 import { COLORS } from '../constants/colors';
 import { useTranslation } from '../context/LanguageContext';
+import { useSound } from '../context/SoundContext';
 import BadgeIcon from './BadgeIcon';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const BadgePopup = ({ isVisible, badge, onClose }) => {
     const { t } = useTranslation();
+    const { playSound } = useSound();
     const scaleAnim = useRef(new Animated.Value(0)).current;
     const opacityAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         if (isVisible) {
+            playSound('reward');
             // Reset animations for new badge
             scaleAnim.setValue(0);
             opacityAnim.setValue(0);
@@ -62,7 +65,14 @@ const BadgePopup = ({ isVisible, badge, onClose }) => {
                         <Text style={styles.badgeDesc}>{t(badge.desc)}</Text>
                     </View>
 
-                    <TouchableOpacity style={styles.button} onPress={onClose} activeOpacity={0.8}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {
+                            playSound('click');
+                            onClose();
+                        }}
+                        activeOpacity={0.8}
+                    >
                         <Text style={styles.buttonText}>{t('acknowledge') || 'CONTINUE'}</Text>
                         <MaterialCommunityIcons name="arrow-right" size={18} color={COLORS.primary} />
                     </TouchableOpacity>

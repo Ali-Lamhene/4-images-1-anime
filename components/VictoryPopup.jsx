@@ -12,6 +12,7 @@ import {
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
+import { useSound } from '../context/SoundContext';
 import GoldCoinIcon from './icons/GoldCoinIcon';
 import PotionIcon from './icons/PotionIcon';
 
@@ -19,11 +20,13 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function VictoryPopup({ rewards, animeName, onContinue }) {
   const { t } = useTranslation();
+  const { playSound } = useSound();
   const [fadeAnim] = useState(new Animated.Value(0));
   const [slideAnim] = useState(new Animated.Value(20));
   const [activeIcons, setActiveIcons] = useState(null);
 
   useEffect(() => {
+    playSound('success');
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -40,9 +43,11 @@ export default function VictoryPopup({ rewards, animeName, onContinue }) {
   }, []);
 
   const handleContinue = () => {
+    playSound('click');
     setActiveIcons(null);
 
     setTimeout(() => {
+      playSound('reward');
       const runId = Date.now();
       const coins = [...Array(10)].map((_, i) => ({
         id: `coin-${runId}-${i}`,

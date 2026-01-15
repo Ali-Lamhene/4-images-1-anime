@@ -6,6 +6,7 @@ import BottomNavBar from '../components/BottomNavBar';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
+import { useSound } from '../context/SoundContext';
 import { getSettings, INITIAL_SETTINGS, saveSettings } from '../utils/storage';
 
 const LANGUAGES = [
@@ -21,6 +22,7 @@ const NAMING_TYPES = [
 
 export default function SettingsScreen() {
     const { t, language, changeLanguage, isReady: isLangReady } = useTranslation();
+    const { playSound, refreshSettings } = useSound();
     const [settings, setSettings] = useState(INITIAL_SETTINGS);
     const [isReady, setIsReady] = useState(false);
 
@@ -34,17 +36,23 @@ export default function SettingsScreen() {
     }, []);
 
     const toggleSwitch = async (key) => {
+        playSound('switch');
         const newSettings = { ...settings, [key]: !settings[key] };
         setSettings(newSettings);
         await saveSettings(newSettings);
+        if (key === 'sounds') {
+            await refreshSettings();
+        }
     };
 
     const handleLanguageChange = async (newLang) => {
+        playSound('click');
         await changeLanguage(newLang);
         setSettings(prev => ({ ...prev, language: newLang }));
     };
 
     const handleNamingTypeChange = async (newType) => {
+        playSound('click');
         const newSettings = { ...settings, namingType: newType };
         setSettings(newSettings);
         await saveSettings(newSettings);

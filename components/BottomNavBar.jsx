@@ -2,6 +2,7 @@ import { usePathname, useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants/colors';
 import { useTranslation } from '../context/LanguageContext';
+import { useSound } from '../context/SoundContext';
 import HomeIcon from './icons/HomeIcon';
 import ProfileIcon from './icons/ProfileIcon';
 import SettingsIcon from './icons/SettingsIcon';
@@ -10,6 +11,12 @@ export default function BottomNavBar() {
     const router = useRouter();
     const pathname = usePathname();
     const { t } = useTranslation();
+    const { playSound } = useSound();
+
+    const handlePress = (route) => {
+        playSound('click');
+        router.push(route);
+    };
 
     const isHome = pathname === '/' || pathname === '/index';
     const isProfile = pathname === '/profile';
@@ -19,7 +26,7 @@ export default function BottomNavBar() {
         <View style={styles.container}>
             <TouchableOpacity
                 style={styles.navItem}
-                onPress={() => router.push('/')}
+                onPress={() => handlePress('/')}
                 activeOpacity={0.7}
             >
                 <HomeIcon
@@ -32,7 +39,7 @@ export default function BottomNavBar() {
 
             <TouchableOpacity
                 style={styles.navItem}
-                onPress={() => router.push('/profile')}
+                onPress={() => handlePress('/profile')}
                 activeOpacity={0.7}
             >
                 <ProfileIcon
@@ -45,7 +52,7 @@ export default function BottomNavBar() {
 
             <TouchableOpacity
                 style={styles.navItem}
-                onPress={() => router.push('/settings')}
+                onPress={() => handlePress('/settings')}
                 activeOpacity={0.7}
             >
                 <SettingsIcon

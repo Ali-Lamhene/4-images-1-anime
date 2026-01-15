@@ -13,6 +13,7 @@ import {
 import Svg, { Defs, Mask, Path, Rect } from 'react-native-svg';
 import { COLORS } from '../constants/colors';
 import { useTranslation } from '../context/LanguageContext';
+import { useSound } from '../context/SoundContext';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -128,6 +129,7 @@ const TutorialStep = ({ title, desc, step, totalSteps, onNext, onSkip }) => {
 
 export default function Tutorial({ isVisible, onClose, targetRefs }) {
     const { t } = useTranslation();
+    const { playSound } = useSound();
     const [currentStep, setCurrentStep] = useState(0);
     const [hole, setHole] = useState(null);
 
@@ -256,10 +258,17 @@ export default function Tutorial({ isVisible, onClose, targetRefs }) {
 
     const handleNext = () => {
         if (currentStep < steps.length - 1) {
+            playSound('click');
             setCurrentStep(currentStep + 1);
         } else {
+            playSound('reward');
             onClose();
         }
+    };
+
+    const handleSkip = () => {
+        playSound('back');
+        onClose();
     };
 
     if (!isVisible) return null;
@@ -363,7 +372,7 @@ export default function Tutorial({ isVisible, onClose, targetRefs }) {
                         step={currentStep}
                         totalSteps={steps.length}
                         onNext={handleNext}
-                        onSkip={onClose}
+                        onSkip={handleSkip}
                     />
                 </View>
             </View>
