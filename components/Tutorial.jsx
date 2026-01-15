@@ -248,11 +248,13 @@ export default function Tutorial({ isVisible, onClose, targetRefs }) {
         }
 
         const stepData = steps[currentStep];
+
+        // Reset hole immediately to avoid "ghost" highlight from previous step
+        setHole(null);
+
         if (stepData.highlight) {
             const timer = setTimeout(() => measureAndSync(stepData.highlight), 150);
             return () => clearTimeout(timer);
-        } else {
-            setHole(null);
         }
     }, [currentStep, isVisible]);
 

@@ -7,6 +7,7 @@ import BackgroundTexture from '../components/BackgroundTexture';
 import BadgeIcon from '../components/BadgeIcon';
 import BottomNavBar from '../components/BottomNavBar';
 import GoldCoinIcon from '../components/icons/GoldCoinIcon';
+import StarIcon from '../components/icons/StarIcon';
 import RankBadge from '../components/RankBadge';
 import { BADGES } from '../constants/badges';
 import { COLORS } from '../constants/colors';
@@ -103,9 +104,7 @@ export default function ProfileScreen() {
                             <Text style={styles.statLab}>{t('credits')}</Text>
                         </View>
                         <View style={styles.statCard}>
-                            <View style={styles.iconCircle}>
-                                <Text style={styles.iconText}>🎬</Text>
-                            </View>
+                            <StarIcon width={24} height={24} />
                             <Text style={styles.statVal}>{currentIndex}</Text>
                             <Text style={styles.statLab}>{t('animes_found')}</Text>
                         </View>
