@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "4-images-1-anime",
-    "slug": "4-images-1-anime",
-    "version": "1.0.0",
+    "name": "Anime Legends !",
+    "slug": "anime-legends",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "4images1anime",
+    "scheme": "anime-legends",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.animelegends.app"
     },
     "web": {
       "output": "static",
@@ -42,6 +43,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "9616ee73-b5fc-4e2f-a89a-18399ba4dfc8"
+      }
     }
   }
 }

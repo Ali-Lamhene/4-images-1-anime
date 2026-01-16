@@ -15,10 +15,10 @@ export const ANIME_DATA = [
             }
         },
         images: [
-            'https://picsum.photos/seed/op1/400',
-            'https://picsum.photos/seed/op2/400',
-            'https://picsum.photos/seed/op3/400',
-            'https://picsum.photos/seed/op4/400',
+            'https://image.tmdb.org/t/p/original/2rmK7mnchw9Xr3XdiTFSxTTLXqv.jpg',
+            'https://image.tmdb.org/t/p/original/oVfucXvhutTpYExG9k06NJqnpT9.jpg',
+            'https://image.tmdb.org/t/p/original/4Mt7WHox67uJ1yErwTBFcV8KWgG.jpg',
+            'https://image.tmdb.org/t/p/original/6fRwRD7GdCfg6owzmCT3VgQtowl.jpg',
         ],
         vignette: 'https://cdn.myanimelist.net/images/anime/1386/100624l.jpg',
     },
@@ -38,10 +38,10 @@ export const ANIME_DATA = [
             }
         },
         images: [
-            'https://picsum.photos/seed/nar1/400',
-            'https://picsum.photos/seed/nar2/400',
-            'https://picsum.photos/seed/nar3/400',
-            'https://picsum.photos/seed/nar4/400',
+            'https://image.tmdb.org/t/p/original/iezCLPpH0SaRO5WTgRcWWX96hPY.jpg',
+            'https://image.tmdb.org/t/p/original/mJOKhcqhhK2IeheFMx0DBepw6nm.jpg',
+            'https://image.tmdb.org/t/p/original/suul3CDKkp0uzMwpqpVXz84yCwo.jpg',
+            'https://image.tmdb.org/t/p/original/4f3uYjpIkjDQOZDqgj9D3frfTE9.jpg',
         ],
         vignette: 'https://cdn.myanimelist.net/images/anime/2/50745l.jpg',
     },
@@ -61,10 +61,10 @@ export const ANIME_DATA = [
             }
         },
         images: [
-            'https://picsum.photos/seed/aot1/400',
-            'https://picsum.photos/seed/aot2/400',
-            'https://picsum.photos/seed/aot3/400',
-            'https://picsum.photos/seed/aot4/400',
+            'https://image.tmdb.org/t/p/original/wg0GsFpeHAFPbbcfsntTQBggWCo.jpg',
+            'https://image.tmdb.org/t/p/original/yvKrycViRMQcIgdnjsM5JGNWU4Q.jpg',
+            'https://image.tmdb.org/t/p/original/aok7IhrbA83josNz9Dqh8tNA0Ao.jpg',
+            'https://image.tmdb.org/t/p/original/rqbCbjB19amtOtFQbb3K2lgm2zv.jpg',
         ],
         vignette: 'https://cdn.myanimelist.net/images/anime/10/47347l.jpg',
     },
@@ -84,10 +84,10 @@ export const ANIME_DATA = [
             }
         },
         images: [
-            'https://picsum.photos/seed/mha1/400',
-            'https://picsum.photos/seed/mha2/400',
-            'https://picsum.photos/seed/mha3/400',
-            'https://picsum.photos/seed/mha4/400',
+            'https://image.tmdb.org/t/p/original/cH39aJg9VlEaYo6yY37Iah8RAaz.jpg',
+            'https://image.tmdb.org/t/p/original/3ILMlmC30QUnYkY3XEBOyJ82Dqu.jpg',
+            'https://image.tmdb.org/t/p/original/ol0H2DGp4ifBHA4JDlCpwJWxnY2.jpg',
+            'https://image.tmdb.org/t/p/original/xvru1tTbBgJnenAckfJviheWIR8.jpg',
         ],
         vignette: 'https://cdn.myanimelist.net/images/anime/10/78745l.jpg',
     },
@@ -107,11 +107,126 @@ export const ANIME_DATA = [
             }
         },
         images: [
-            'https://picsum.photos/seed/ds1/400',
-            'https://picsum.photos/seed/ds2/400',
-            'https://picsum.photos/seed/ds3/400',
-            'https://picsum.photos/seed/ds4/400',
+            'https://image.tmdb.org/t/p/original/5iilESGDr44JUO5as6KzejxkvJd.jpg',
+            'https://image.tmdb.org/t/p/original/kFqANiHH5CwcqAoau8PuT6qxmB6.jpg',
+            'https://image.tmdb.org/t/p/original/rSsTvyBFyoFtOHV35KkIw3S2jgZ.jpg',
+            'https://image.tmdb.org/t/p/original/rmlHFRgF3xWRby2trsjWb81wmLL.jpg',
         ],
         vignette: 'https://cdn.myanimelist.net/images/anime/1286/99889l.jpg',
+    },
+    {
+        id: '6',
+        names: {
+            original: 'Dragon Ball Super',
+            en: 'Dragon Ball Super',
+            fr: 'Dragon Ball Super'
+        },
+        info: {
+            year: '2015',
+            episodes: '131',
+            synopsis: {
+                en: 'Goku and his friends return for a new adventure with even more powerful enemies and gods.',
+                fr: 'Goku et ses amis reviennent pour une nouvelle aventure avec des ennemis et des dieux encore plus puissants.'
+            }
+        },
+        images: [
+            'https://image.tmdb.org/t/p/original/j4nwYu6PlsJAssk8KGsrn4lcWrz.jpg', // Broly Movie Backdrop (Official DBS Canon)
+            'https://image.tmdb.org/t/p/original/rk3MUfcLVGnPjMZfJoUUOGDzIyv.jpg',
+            'https://image.tmdb.org/t/p/original/dSRVAY7Z6PfXKdwllD976kxSjJQ.jpg',
+            'https://image.tmdb.org/t/p/original/dSDn6ZZEDatHR6aKczYU9NdNHgm.jpg',
+        ],
+        vignette: 'https://cdn.myanimelist.net/images/anime/7/74606l.jpg',
+    },
+    {
+        id: '7',
+        names: {
+            original: 'Hunter x Hunter',
+            en: 'Hunter x Hunter',
+            fr: 'Hunter x Hunter'
+        },
+        info: {
+            year: '2011',
+            episodes: '148',
+            synopsis: {
+                en: 'Gon Freecss aspires to become a Hunter, an exceptional being capable of greatness.',
+                fr: 'Gon Freecss aspire à devenir un Hunter, un être exceptionnel capable de grandeur.'
+            }
+        },
+        images: [
+            'https://image.tmdb.org/t/p/original/lqIfpGM8EQ9QQtOqrUuCjZ1j0m4.jpg',
+            'https://image.tmdb.org/t/p/original/6U0e6OHklJAcMAuIoGXjTBS5zsI.jpg',
+            'https://image.tmdb.org/t/p/original/bFKKyCI89Xq98Gul8cGox8K3sZa.jpg',
+            'https://image.tmdb.org/t/p/original/sjyobk8kdUzNlkejRhv68tNRJeB.jpg',
+        ],
+        vignette: 'https://cdn.myanimelist.net/images/anime/1337/99013l.jpg',
+    },
+    {
+        id: '8',
+        names: {
+            original: 'Bleach',
+            en: 'Bleach',
+            fr: 'Bleach'
+        },
+        info: {
+            year: '2004',
+            episodes: '366',
+            synopsis: {
+                en: 'Ichigo Kurosaki, a teenager with the ability to see ghosts, gains the powers of a Soul Reaper.',
+                fr: 'Ichigo Kurosaki, un adolescent capable de voir les fantômes, acquiert les pouvoirs d\'un Soul Reaper.'
+            }
+        },
+        images: [
+            'https://image.tmdb.org/t/p/original/wGRdwkk16peAaCQLqBcN4DLervX.jpg',
+            'https://image.tmdb.org/t/p/original/aqZKjMPFPhqTQpw6dg3KLLxEkB1.jpg',
+            'https://image.tmdb.org/t/p/original/3Bdh3lAgAheCBWAleDZv2mqy0MQ.jpg',
+            'https://image.tmdb.org/t/p/original/o0NsbcIvsllg6CJX0FBFY8wWbsn.jpg',
+        ],
+        vignette: 'https://cdn.myanimelist.net/images/anime/3/40451l.jpg',
+    },
+    {
+        id: '9',
+        names: {
+            original: 'Jujutsu Kaisen',
+            en: 'Jujutsu Kaisen',
+            fr: 'Jujutsu Kaisen'
+        },
+        info: {
+            year: '2020',
+            episodes: '24+',
+            synopsis: {
+                en: 'A boy swallows a cursed talisman - the finger of a demon - and becomes cursed himself.',
+                fr: 'Un garçon avale un talisman maudit - le doigt d\'un démon - et devient lui-même maudit.'
+            }
+        },
+        images: [
+            'https://image.tmdb.org/t/p/original/3US5UXJSStOVozc6EwhGSMDguol.jpg',
+            'https://image.tmdb.org/t/p/original/9xEnoyzX3WrlPKaBV7hz34Mtjmn.jpg',
+            'https://image.tmdb.org/t/p/original/fgPa2oJD8lbLaTanzlGDd32tqDE.jpg',
+            'https://image.tmdb.org/t/p/original/qpin8cASXEVtwhzNsprHYFiOAGk.jpg'
+        ],
+        vignette: 'https://cdn.myanimelist.net/images/anime/1171/109222l.jpg',
+    },
+    {
+        id: '10',
+        names: {
+            original: 'Fullmetal Alchemist: Brotherhood',
+            en: 'Fullmetal Alchemist: Brotherhood',
+            fr: 'Fullmetal Alchemist: Brotherhood'
+        },
+        info: {
+            year: '2009',
+            episodes: '64',
+            synopsis: {
+                en: 'Two brothers search for a Philosopher\'s Stone after an attempt to revive their deceased mother goes wrong.',
+                fr: 'Deux frères cherchent la Pierre Philosophale après qu\'une tentative de ressusciter leur mère décédée a mal tourné.'
+            }
+        },
+        images: [
+            'https://image.tmdb.org/t/p/original/4oPgD5z8yrMT5u2nr1bT8vIyaLR.jpg',
+            'https://image.tmdb.org/t/p/original/4mkeO7vmlWQSyPF7YcFGcnNzYvP.jpg',
+            'https://image.tmdb.org/t/p/original/yifsMbP78Y3kgYenJJLAkZD4rBe.jpg',
+            'https://image.tmdb.org/t/p/original/10jNFDeuIRYXabfPRBGWrm0J94G.jpg',
+        ],
+        vignette: 'https://cdn.myanimelist.net/images/anime/1223/96541l.jpg',
     },
 ];

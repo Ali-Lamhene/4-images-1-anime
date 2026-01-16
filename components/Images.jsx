@@ -1,15 +1,55 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { forwardRef } from 'react';
+import { forwardRef, useMemo } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 
 const Images = forwardRef(({ images, revealedImages = [], onReveal }, ref) => {
+  // Generate stable random drastic transforms for each image
+  const imageTransforms = useMemo(() => {
+    return images.map(() => {
+      // 1. MICROSCOPIC ZOOM: Scale between 5.0 and 9.5
+      // This is practically pixel-peeping. Recognizability drops to near zero.
+      const baseScale = 5.0 + Math.random() * 4.5; // Range: [5.0, 9.5]
+
+      // 2. Heavy Distortion:
+      // Aspect ratio can change by factor of 2 (0.5 to 1.5)
+      // This turns circles into flat ovals.
+      const stretchFactor = 0.5 + Math.random() * 1.0;
+      const scaleX = baseScale * stretchFactor;
+      const scaleY = baseScale;
+
+      // 3. Vertigo Rotation: +/- 60 degrees
+      // Up becomes sideways/diagonal.
+      const rotate = `${(Math.random() * 120 - 60).toFixed(0)}deg`;
+
+      // 4. Aggressive Panning:
+      // With high scale, we can push the "center" (where the face usually is) completely off the view
+      const minEffectiveScale = Math.min(scaleX, scaleY);
+      // We can shift up to 98% of the available overflow
+      const maxTranslate = ((minEffectiveScale - 1) / 2) * 98; // Use 98% of available overflow
+
+      const translateX = (Math.random() * 2 - 1) * maxTranslate;
+      const translateY = (Math.random() * 2 - 1) * maxTranslate;
+
+      return {
+        transform: [
+          { translateX },
+          { translateY },
+          { scaleX },
+          { scaleY },
+          { rotate }
+        ]
+      };
+    });
+  }, [images]);
+
   return (
     <View ref={ref} style={styles.container}>
       <View style={styles.grid}>
         {images.slice(0, 4).map((imageUrl, index) => {
           const isRevealed = revealedImages.includes(index);
+          const transformStyle = imageTransforms[index];
 
           return (
             <TouchableOpacity
@@ -21,7 +61,11 @@ const Images = forwardRef(({ images, revealedImages = [], onReveal }, ref) => {
             >
               <Image
                 source={{ uri: imageUrl }}
-                style={[styles.image, !isRevealed && styles.blurredImage]}
+                style={[
+                  styles.image,
+                  !isRevealed && styles.blurredImage,
+                  isRevealed && transformStyle // Apply extreme transform only when revealed
+                ]}
                 resizeMode="cover"
               />
 
