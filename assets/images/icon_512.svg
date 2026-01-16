@@ -1,0 +1,38 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1C1C26" />
+      <stop offset="100%" stop-color="#0F0F14" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Container -->
+  <!-- Using a full square (no radius) as recommended for Play Store upload (the store creates the mask). 
+       Adding the border as a stroke. 
+       Stroke width scaled: 2px (at 120 size) -> 8.5px (at 512 size) -->
+  <rect x="0" y="0" width="512" height="512" fill="#0F0F14" stroke="rgba(184, 161, 255, 0.2)" stroke-width="8.53" />
+
+  <!-- Inner Content -->
+  <!-- Svg content was size*0.8 = 409.6px. Centered. 
+       Offset = (512 - 409.6) / 2 = 51.2
+       Scale factor = 409.6 / 100 (original ViewBox) = 4.096 -->
+  <g transform="translate(51.2, 51.2) scale(4.096)">
+    <!-- Inner Circle Background -->
+    <circle cx="50" cy="50" r="48" fill="url(#iconBg)" />
+    
+    <!-- Star Shape -->
+    <path
+        d="M50 15 L58 42 L85 50 L58 58 L50 85 L42 58 L15 50 L42 42 Z"
+        fill="#B8A1FF"
+    />
+    
+    <!-- Checkmark Shape -->
+    <path
+        d="M35 45 L50 60 L65 45"
+        fill="none"
+        stroke="white"
+        stroke-width="3"
+        stroke-linecap="round"
+    />
+  </g>
+</svg>

@@ -1,0 +1,96 @@
+<svg width="1024" height="500" viewBox="0 0 1024 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradient: Subtle Radial to give depth -->
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#1A1A22" />
+      <stop offset="100%" stop-color="#0F0F14" />
+    </radialGradient>
+
+    <!-- Logo Text Gradient (Matches AnimeLegendsLogo) -->
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="50%" stop-color="#B8A1FF" />
+      <stop offset="100%" stop-color="#8A6EEF" />
+    </linearGradient>
+
+    <!-- Star Glow Gradient -->
+    <linearGradient id="starGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B8A1FF" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#B8A1FF" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="transparent" />
+    </linearGradient>
+
+    <!-- Star Core Gradient -->
+    <linearGradient id="starCore" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#B8A1FF" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect x="0" y="0" width="1024" height="500" fill="url(#bgGrad)" />
+
+  <!-- Main Content Group -->
+  <!-- 
+     Original Component viewBox: 0 0 300 180
+     Center of component: approx 150, 90
+     Target Center: 512, 250
+     Scale: 2.5 (Resulting width ~750px, well within 1024)
+  -->
+  <g transform="translate(512, 250) scale(2.5) translate(-150, -90)">
+    
+    <!-- BACKGROUND STAR GEOMETRY -->
+    <g transform="translate(150, 85)">
+      <!-- Outer Glow -->
+      <path
+          d="M0 -75 L18 -18 L75 0 L18 18 L0 75 L-18 18 L-75 0 L-18 -18 Z"
+          fill="url(#starGlow)"
+          transform="scale(1.2)"
+      />
+      <!-- Inner Core -->
+      <path
+          d="M0 -60 L12 -12 L60 0 L12 12 L0 60 L-12 12 L-60 0 L-12 -12 Z"
+          fill="url(#starCore)"
+          opacity="0.6"
+      />
+    </g>
+
+    <!-- Main Title: ANIME -->
+    <!-- Using generic font-family but asking for heavy weight to match design -->
+    <text
+        fill="url(#textGrad)"
+        font-size="52"
+        font-weight="900"
+        x="150"
+        y="95"
+        text-anchor="middle"
+        letter-spacing="12"
+        font-family="Arial, Helvetica, sans-serif"
+        style="text-shadow: 0px 0px 20px rgba(184, 161, 255, 0.5);"
+    >
+        ANIME
+    </text>
+
+    <!-- Subtitle: LEGENDS -->
+    <text
+        fill="#EDEDED"
+        font-size="24"
+        font-weight="300"
+        x="150"
+        y="125"
+        text-anchor="middle"
+        letter-spacing="18"
+        opacity="0.9"
+        font-family="Arial, Helvetica, sans-serif"
+        style="text-shadow: 0px 0px 10px rgba(184, 161, 255, 0.3);"
+    >
+        LEGENDS
+    </text>
+
+    <!-- Decorative Triangle -->
+    <g transform="translate(150, 138)">
+        <path d="M-12 0 L12 0 L0 8 Z" fill="#B8A1FF" opacity="0.8" />
+    </g>
+
+  </g>
+</svg>
