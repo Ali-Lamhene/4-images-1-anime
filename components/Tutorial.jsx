@@ -315,7 +315,7 @@ export default function Tutorial({ isVisible, onClose, targetRefs }) {
     }
 
     return (
-        <Modal transparent visible={isVisible} animationType="fade">
+        <Modal transparent visible={isVisible} animationType="fade" statusBarTranslucent={true}>
             <View style={styles.mainContainer}>
                 {/* SVG Overlay with hole */}
                 <Svg height={SCREEN_HEIGHT} width={SCREEN_WIDTH} style={StyleSheet.absoluteFill}>

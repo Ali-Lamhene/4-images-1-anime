@@ -44,7 +44,7 @@ const BadgePopup = ({ isVisible, badge, onClose }) => {
     if (!isVisible || !badge) return null;
 
     return (
-        <Modal transparent visible={isVisible} animationType="fade">
+        <Modal transparent visible={isVisible} animationType="fade" statusBarTranslucent={true}>
             <View style={styles.overlay}>
                 <Animated.View
                     style={[
@@ -97,7 +97,11 @@ export default BadgePopup;
 
 const styles = StyleSheet.create({
     overlay: {
-        flex: 1,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         backgroundColor: 'rgba(5, 5, 8, 0.9)',
         justifyContent: 'center',
         alignItems: 'center',

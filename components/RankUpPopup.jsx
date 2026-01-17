@@ -3,6 +3,7 @@ import {
     Animated,
     Dimensions,
     Easing,
+    Modal,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -47,48 +48,50 @@ export default function RankUpPopup({ level, onClose }) {
     }, []);
 
     return (
-        <Animated.View style={[styles.overlay, { opacity: opacityAnim }]}>
-            <Animated.View
-                style={[
-                    styles.popupContainer,
-                    { transform: [{ translateY: slideAnim }] },
-                ]}
-            >
-                <Text style={styles.rankLabel}>{t('new_rank')}</Text>
-
-                <RankBadge level={level} size={100} style={styles.badge} />
-
-                <Text style={styles.rankName}>{t(`rank_${rank.name.toLowerCase()}`)}</Text>
-
-                <View style={styles.divider} />
-
-                <Text style={styles.levelText}>{t('level_reached', { level })}</Text>
-
-                <Text style={styles.subtitle}>
-                    {t('rank_up_sub')}
-                </Text>
-
-                <TouchableOpacity
-                    style={styles.closeButton}
-                    onPress={onClose}
-                    activeOpacity={0.8}
+        <Modal transparent visible={true} animationType="fade" statusBarTranslucent={true}>
+            <Animated.View style={[styles.overlay, { opacity: opacityAnim }]}>
+                <Animated.View
+                    style={[
+                        styles.popupContainer,
+                        { transform: [{ translateY: slideAnim }] },
+                    ]}
                 >
-                    <Text style={styles.closeButtonText}>{t('acknowledge')}</Text>
-                </TouchableOpacity>
-            </Animated.View>
+                    <Text style={styles.rankLabel}>{t('new_rank')}</Text>
 
-            {showConfetti && (
-                <View style={StyleSheet.absoluteFill} pointerEvents="none">
-                    <ConfettiCannon
-                        count={200}
-                        origin={{ x: SCREEN_WIDTH / 2, y: -20 }}
-                        fadeOut={true}
-                        fallSpeed={3000}
-                        colors={[COLORS.accent, '#A084FF', '#D4C7FF', COLORS.white, '#8B8B9E']}
-                    />
-                </View>
-            )}
-        </Animated.View>
+                    <RankBadge level={level} size={100} style={styles.badge} />
+
+                    <Text style={styles.rankName}>{t(`rank_${rank.name.toLowerCase()}`)}</Text>
+
+                    <View style={styles.divider} />
+
+                    <Text style={styles.levelText}>{t('level_reached', { level })}</Text>
+
+                    <Text style={styles.subtitle}>
+                        {t('rank_up_sub')}
+                    </Text>
+
+                    <TouchableOpacity
+                        style={styles.closeButton}
+                        onPress={onClose}
+                        activeOpacity={0.8}
+                    >
+                        <Text style={styles.closeButtonText}>{t('acknowledge')}</Text>
+                    </TouchableOpacity>
+                </Animated.View>
+
+                {showConfetti && (
+                    <View style={StyleSheet.absoluteFill} pointerEvents="none">
+                        <ConfettiCannon
+                            count={200}
+                            origin={{ x: SCREEN_WIDTH / 2, y: -20 }}
+                            fadeOut={true}
+                            fallSpeed={3000}
+                            colors={[COLORS.accent, '#A084FF', '#D4C7FF', COLORS.white, '#8B8B9E']}
+                        />
+                    </View>
+                )}
+            </Animated.View>
+        </Modal>
     );
 }
 

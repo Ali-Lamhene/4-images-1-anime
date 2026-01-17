@@ -3,7 +3,7 @@ import {
   Animated,
   Dimensions,
   Easing,
-  Image,
+  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -103,99 +103,105 @@ export default function VictoryPopup({ rewards, animeName, vignette, onContinue 
   };
 
   return (
-    <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
-      <Animated.View
-        style={[
-          styles.container,
-          { transform: [{ translateY: slideAnim }] }
-        ]}
-      >
-        <Text style={styles.title}>{t('success')}</Text>
+    <Modal transparent visible={true} animationType="fade" statusBarTranslucent={true}>
+      <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
+        <Animated.View
+          style={[
+            styles.container,
+            { transform: [{ translateY: slideAnim }] }
+          ]}
+        >
+          <Text style={styles.title}>{t('success')}</Text>
 
-        {vignette && (
-          <View style={styles.vignetteWrapper}>
-            <Image source={{ uri: vignette }} style={styles.vignetteImage} />
+          {vignette && (
+            <View style={styles.vignetteWrapper}>
+              <Image source={{ uri: vignette }} style={styles.vignetteImage} />
+            </View>
+          )}
+
+          <Text style={styles.animeResult}>{animeName.toUpperCase()}</Text>
+          <View style={styles.divider} />
+
+          <View style={styles.rewardsRow}>
+            <View style={styles.rewardItem}>
+              <PotionIcon width={24} height={24} />
+              <Text style={styles.rewardVal}>+{rewards.xp}</Text>
+              <Text style={styles.rewardLab}>{t('experience')}</Text>
+            </View>
+            <View style={[styles.rewardItem, styles.rewardBorder]}>
+              <GoldCoinIcon width={24} height={24} />
+              <Text style={styles.rewardVal}>+{rewards.coins}</Text>
+              <Text style={styles.rewardLab}>{t('credits')}</Text>
+            </View>
+          </View>
+
+          <TouchableOpacity style={styles.button} onPress={handleContinue} activeOpacity={0.8}>
+            <Text style={styles.buttonText}>{t('continue')}</Text>
+          </TouchableOpacity>
+        </Animated.View>
+
+        {activeIcons && (
+          <View style={styles.flyingIconsContainer} pointerEvents="none">
+            {activeIcons.coins.map((coin) => {
+              const translateX = coin.progress.interpolate({
+                inputRange: [0, 0.3, 1],
+                outputRange: [60, coin.scatter.x, SCREEN_WIDTH / 2 - 40],
+              });
+              const translateY = coin.progress.interpolate({
+                inputRange: [0, 0.3, 1],
+                outputRange: [30, coin.scatter.y, -SCREEN_HEIGHT / 2 + 50],
+              });
+              const scale = coin.progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 0.3],
+              });
+              const opacity = coin.progress.interpolate({
+                inputRange: [0, 0.1, 0.9, 1],
+                outputRange: [0, 1, 1, 0],
+              });
+              return (
+                <Animated.View key={coin.id} style={[styles.flyingIcon, { transform: [{ translateX }, { translateY }, { scale }], opacity }]}>
+                  <GoldCoinIcon width={24} height={24} />
+                </Animated.View>
+              );
+            })}
+            {activeIcons.xp.map((xp) => {
+              const translateX = xp.progress.interpolate({
+                inputRange: [0, 0.3, 1],
+                outputRange: [-60, xp.scatter.x, -SCREEN_WIDTH / 2 + 80],
+              });
+              const translateY = xp.progress.interpolate({
+                inputRange: [0, 0.3, 1],
+                outputRange: [30, xp.scatter.y, -SCREEN_HEIGHT / 2 + 50],
+              });
+              const scale = xp.progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 0.3],
+              });
+              const opacity = xp.progress.interpolate({
+                inputRange: [0, 0.1, 0.9, 1],
+                outputRange: [0, 1, 1, 0],
+              });
+              return (
+                <Animated.View key={xp.id} style={[styles.flyingIcon, { transform: [{ translateX }, { translateY }, { scale }], opacity }]}>
+                  <PotionIcon width={24} height={24} />
+                </Animated.View>
+              );
+            })}
           </View>
         )}
-
-        <Text style={styles.animeResult}>{animeName.toUpperCase()}</Text>
-        <View style={styles.divider} />
-
-        <View style={styles.rewardsRow}>
-          <View style={styles.rewardItem}>
-            <PotionIcon width={24} height={24} />
-            <Text style={styles.rewardVal}>+{rewards.xp}</Text>
-            <Text style={styles.rewardLab}>{t('experience')}</Text>
-          </View>
-          <View style={[styles.rewardItem, styles.rewardBorder]}>
-            <GoldCoinIcon width={24} height={24} />
-            <Text style={styles.rewardVal}>+{rewards.coins}</Text>
-            <Text style={styles.rewardLab}>{t('credits')}</Text>
-          </View>
-        </View>
-
-        <TouchableOpacity style={styles.button} onPress={handleContinue} activeOpacity={0.8}>
-          <Text style={styles.buttonText}>{t('continue')}</Text>
-        </TouchableOpacity>
       </Animated.View>
-
-      {activeIcons && (
-        <View style={styles.flyingIconsContainer} pointerEvents="none">
-          {activeIcons.coins.map((coin) => {
-            const translateX = coin.progress.interpolate({
-              inputRange: [0, 0.3, 1],
-              outputRange: [60, coin.scatter.x, SCREEN_WIDTH / 2 - 40],
-            });
-            const translateY = coin.progress.interpolate({
-              inputRange: [0, 0.3, 1],
-              outputRange: [30, coin.scatter.y, -SCREEN_HEIGHT / 2 + 50],
-            });
-            const scale = coin.progress.interpolate({
-              inputRange: [0, 1],
-              outputRange: [1, 0.3],
-            });
-            const opacity = coin.progress.interpolate({
-              inputRange: [0, 0.1, 0.9, 1],
-              outputRange: [0, 1, 1, 0],
-            });
-            return (
-              <Animated.View key={coin.id} style={[styles.flyingIcon, { transform: [{ translateX }, { translateY }, { scale }], opacity }]}>
-                <GoldCoinIcon width={24} height={24} />
-              </Animated.View>
-            );
-          })}
-          {activeIcons.xp.map((xp) => {
-            const translateX = xp.progress.interpolate({
-              inputRange: [0, 0.3, 1],
-              outputRange: [-60, xp.scatter.x, -SCREEN_WIDTH / 2 + 80],
-            });
-            const translateY = xp.progress.interpolate({
-              inputRange: [0, 0.3, 1],
-              outputRange: [30, xp.scatter.y, -SCREEN_HEIGHT / 2 + 50],
-            });
-            const scale = xp.progress.interpolate({
-              inputRange: [0, 1],
-              outputRange: [1, 0.3],
-            });
-            const opacity = xp.progress.interpolate({
-              inputRange: [0, 0.1, 0.9, 1],
-              outputRange: [0, 1, 1, 0],
-            });
-            return (
-              <Animated.View key={xp.id} style={[styles.flyingIcon, { transform: [{ translateX }, { translateY }, { scale }], opacity }]}>
-                <PotionIcon width={24} height={24} />
-              </Animated.View>
-            );
-          })}
-        </View>
-      )}
-    </Animated.View>
+    </Modal>
   );
 }
 
 const styles = StyleSheet.create({
   overlay: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: 'rgba(15, 15, 20, 0.98)',
     justifyContent: 'center',
     alignItems: 'center',

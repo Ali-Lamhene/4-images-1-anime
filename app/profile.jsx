@@ -146,35 +146,36 @@ export default function ProfileScreen() {
                             <Text style={styles.sectionTitle}>{t('my_collection')}</Text>
                             <View style={styles.collectionContainer}>
                                 <ScrollView
-                                    style={styles.collectionScroll}
                                     showsVerticalScrollIndicator={true}
                                     nestedScrollEnabled={true}
                                 >
-                                    {unlockedAnimes.map((anime) => {
-                                        const namingType = settings?.namingType || 'original';
-                                        const displayName = anime.names[namingType] || anime.names.original;
-                                        const synopsis = anime.info.synopsis[language] || anime.info.synopsis.en;
+                                    <View style={styles.collectionList}>
+                                        {unlockedAnimes.map((anime) => {
+                                            const namingType = settings?.namingType || 'original';
+                                            const displayName = anime.names[namingType] || anime.names.original;
+                                            const synopsis = anime.info.synopsis[language] || anime.info.synopsis.en;
 
-                                        return (
-                                            <View key={anime.id} style={styles.collectionItem}>
-                                                <Image
-                                                    source={{ uri: anime.vignette  }}
-                                                    style={styles.collectionThumb}
-                                                />
-                                                <View style={styles.collectionInfo}>
-                                                    <Text style={styles.collectionName}>{displayName}</Text>
-                                                    <View style={styles.collectionMeta}>
-                                                        <Text style={styles.metaText}>{anime.info.year}</Text>
-                                                        <Text style={styles.metaDivider}>•</Text>
-                                                        <Text style={styles.metaText}>{anime.info.episodes} {t('episodes')}</Text>
+                                            return (
+                                                <View key={anime.id} style={styles.collectionItem}>
+                                                    <Image
+                                                        source={{ uri: anime.vignette }}
+                                                        style={styles.collectionThumb}
+                                                    />
+                                                    <View style={styles.collectionInfo}>
+                                                        <Text style={styles.collectionName}>{displayName}</Text>
+                                                        <View style={styles.collectionMeta}>
+                                                            <Text style={styles.metaText}>{anime.info.year}</Text>
+                                                            <Text style={styles.metaDivider}>•</Text>
+                                                            <Text style={styles.metaText}>{anime.info.episodes} {t('episodes')}</Text>
+                                                        </View>
+                                                        <Text style={styles.collectionSynopsis} numberOfLines={2}>
+                                                            {synopsis}
+                                                        </Text>
                                                     </View>
-                                                    <Text style={styles.collectionSynopsis} numberOfLines={2}>
-                                                        {synopsis}
-                                                    </Text>
                                                 </View>
-                                            </View>
-                                        );
-                                    })}
+                                            );
+                                        })}
+                                    </View>
                                 </ScrollView>
                             </View>
                         </View>
@@ -200,6 +201,7 @@ export default function ProfileScreen() {
                 visible={showResetModal}
                 animationType="fade"
                 onRequestClose={() => setShowResetModal(false)}
+                statusBarTranslucent={true}
             >
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
@@ -361,13 +363,13 @@ const styles = StyleSheet.create({
         maxHeight: 250,
         backgroundColor: COLORS.secondaryOp || 'rgba(26, 26, 34, 0.95)',
         borderRadius: 4,
-        padding: 10,
+        paddingHorizontal: 10,
         borderWidth: 1,
         borderColor: 'rgba(184, 161, 255, 0.1)',
         marginBottom: 5,
     },
-    collectionScroll: {
-        flex: 1,
+    collectionList: {
+        paddingBottom: 10,
     },
     collectionItem: {
         flexDirection: 'row',
@@ -497,7 +499,11 @@ const styles = StyleSheet.create({
         letterSpacing: 2,
     },
     modalOverlay: {
-        flex: 1,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         backgroundColor: 'rgba(0,0,0,0.9)',
         justifyContent: 'center',
         alignItems: 'center',
