@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -43,6 +44,7 @@ export default function RootLayout() {
       <SoundProvider>
         <SafeAreaProvider>
           <View style={styles.container}>
+            <StatusBar style="light" />
             <BackgroundTexture />
 
             <Stack

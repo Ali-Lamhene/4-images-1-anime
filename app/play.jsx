@@ -1,8 +1,9 @@
 import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import BackgroundTexture from '../components/BackgroundTexture';
 import BadgePopup from '../components/BadgePopup';
@@ -41,6 +42,7 @@ export default function PlayScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const { playSound } = useSound();
+  const insets = useSafeAreaInsets();
   const [currentAnimeIndex, setCurrentAnimeIndex] = useState(0);
   const [showVictoryPopup, setShowVictoryPopup] = useState(false);
   const [rankUpLevel, setRankUpLevel] = useState(null);
@@ -322,42 +324,44 @@ export default function PlayScreen() {
 
   const isActuallyCompleted = currentAnimeIndex >= ANIME_DATA.length && !showVictoryPopup && !rankUpLevel;
 
-  if (isActuallyCompleted) {
-    return (
-      <View style={styles.container}>
-        <BackgroundTexture />
-        <SafeAreaView style={styles.safeArea}>
-          <GameHeader user={user} showBackButton={true} />
-          <View style={styles.completedContent}>
-            <Text style={styles.completedTitle}>{t('congratulations')}</Text>
-            <View style={styles.completedDivider} />
-            <Text style={styles.completedText}>
-              {t('all_completed')}
-            </Text>
-            <Text style={styles.completedSubtext}>
-              {t('more_coming')}
-            </Text>
-            <TouchableOpacity
-              style={styles.homeButton}
-              onPress={() => {
-                playSound('click');
-                router.replace('/');
-              }}
-            >
-              <Text style={styles.homeButtonText}>{t('back_home')}</Text>
-            </TouchableOpacity>
-          </View>
-        </SafeAreaView>
+  const GameCompleted = ({ user, potentialRewards, t, playSound, router, insets }) => (
+    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+      <BackgroundTexture />
+      <View style={{ height: insets.top, backgroundColor: COLORS.primary }} />
+      <GameHeader user={user} showBackButton={true} />
+      <View style={styles.completedContent}>
+        <Text style={styles.completedTitle}>{t('congratulations')}</Text>
+        <View style={styles.completedDivider} />
+        <Text style={styles.completedText}>
+          {t('all_completed')}
+        </Text>
+        <Text style={styles.completedSubtext}>
+          {t('more_coming')}
+        </Text>
+        <TouchableOpacity
+          style={styles.homeButton}
+          onPress={() => {
+            playSound('click');
+            router.replace('/');
+          }}
+        >
+          <Text style={styles.homeButtonText}>{t('back_home')}</Text>
+        </TouchableOpacity>
       </View>
-    );
-  }
+    </View>
+  );
 
   if (!gameState && currentAnimeIndex < ANIME_DATA.length) return null;
 
   return (
     <View style={styles.container}>
+      <StatusBar style="light" backgroundColor={COLORS.primary} />
       <BackgroundTexture />
-      <SafeAreaView style={styles.safeArea}>
+
+      {/* Manual Status Bar Fill */}
+      <View style={{ height: insets.top, backgroundColor: COLORS.primary }} />
+
+      <View style={[styles.mainContent, { paddingBottom: insets.bottom }]}>
         <GameHeader
           user={user}
           showBackButton={!showVictoryPopup}
@@ -450,7 +454,7 @@ export default function PlayScreen() {
           badge={badgeQueue[0]}
           onClose={() => setBadgeQueue(prev => prev.slice(1))}
         />
-      </SafeAreaView>
+      </View>
     </View>
   );
 }
@@ -461,7 +465,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     overflow: 'hidden',
   },
-  safeArea: {
+  mainContent: {
     flex: 1,
   },
   content: {
