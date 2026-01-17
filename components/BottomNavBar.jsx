@@ -1,5 +1,6 @@
 import { usePathname, useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '../constants/colors';
 import { useTranslation } from '../context/LanguageContext';
 import { useSound } from '../context/SoundContext';
@@ -12,6 +13,7 @@ export default function BottomNavBar() {
     const pathname = usePathname();
     const { t } = useTranslation();
     const { playSound } = useSound();
+    const insets = useSafeAreaInsets();
 
     const handlePress = (route) => {
         playSound('click');
@@ -23,7 +25,12 @@ export default function BottomNavBar() {
     const isSettings = pathname === '/settings';
 
     return (
-        <View style={styles.container}>
+        <View
+            style={[
+                styles.container,
+                { paddingBottom: Math.max(insets.bottom, 12) },
+            ]}
+        >
             <TouchableOpacity
                 style={styles.navItem}
                 onPress={() => handlePress('/')}
