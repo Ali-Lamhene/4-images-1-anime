@@ -38,6 +38,7 @@ const LetterGame = React.forwardRef(({
   }, [isError]);
 
   const handleHint = () => {
+    playSound('click');
     if (userCoins < HINT_COST) {
       Alert.alert('INFO', t('hint_need_credits', { cost: HINT_COST }));
       return;

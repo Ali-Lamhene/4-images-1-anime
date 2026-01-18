@@ -14,6 +14,7 @@ import { COLORS } from '../constants/colors';
 import { RANKS } from '../constants/game';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
+import { useSound } from '../context/SoundContext';
 import { calculateLevel } from '../utils/gameUtils';
 import { clearAllData, getCurrentAnimeIndex, getSettings, getUserData, INITIAL_USER } from '../utils/storage';
 
@@ -22,6 +23,7 @@ const { width } = Dimensions.get('window');
 export default function ProfileScreen() {
     const router = useRouter();
     const { t, language } = useTranslation();
+    const { playSound } = useSound();
     const [user, setUser] = useState(INITIAL_USER);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isReady, setIsReady] = useState(false);
@@ -50,6 +52,7 @@ export default function ProfileScreen() {
     };
 
     const confirmReset = async () => {
+        playSound('click');
         await clearAllData();
         setUser(INITIAL_USER);
         setCurrentIndex(0);
@@ -185,7 +188,10 @@ export default function ProfileScreen() {
                         <Text style={styles.sectionTitle}>{t('danger_zone')}</Text>
                         <TouchableOpacity
                             style={styles.resetButton}
-                            onPress={() => setShowResetModal(true)}
+                            onPress={() => {
+                                playSound('click');
+                                setShowResetModal(true);
+                            }}
                             activeOpacity={0.8}
                         >
                             <Text style={styles.resetButtonText}>{t('reset_progress')}</Text>
@@ -214,7 +220,10 @@ export default function ProfileScreen() {
                         <View style={styles.modalButtons}>
                             <TouchableOpacity
                                 style={styles.cancelBtn}
-                                onPress={() => setShowResetModal(false)}
+                                onPress={() => {
+                                    playSound('click');
+                                    setShowResetModal(false);
+                                }}
                             >
                                 <Text style={styles.cancelBtnText}>{t('cancel')}</Text>
                             </TouchableOpacity>
