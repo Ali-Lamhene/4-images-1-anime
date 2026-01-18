@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, StyleSheet, View } from 'react-native';
 import { COLORS } from '../constants/colors';
 import AnimeLegendsLogo from './AnimeLegendsLogo';
+import BackgroundTexture from './BackgroundTexture';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -62,6 +63,7 @@ export default function CustomSplashScreen({ onFinish }) {
 
     return (
         <Animated.View style={[styles.container, { opacity: containerOpacity }]}>
+            <BackgroundTexture />
             <Animated.View style={[
                 styles.content,
                 {
@@ -70,7 +72,7 @@ export default function CustomSplashScreen({ onFinish }) {
                 }
             ]}>
                 {/* Animated Logo */}
-                <AnimeLegendsLogo size={320} showStar={true} />
+                <AnimeLegendsLogo size={260} showStar={true} />
 
                 <View style={styles.loaderContainer}>
                     <View style={styles.loaderBar}>
