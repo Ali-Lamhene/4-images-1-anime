@@ -18,6 +18,7 @@ const LetterGame = React.forwardRef(({
   onLetterRemove,
   onHintRequest,
   hintRef,
+  keyboardRef,
 }, ref) => {
   const { t } = useTranslation();
   const { playSound } = useSound();
@@ -97,7 +98,11 @@ const LetterGame = React.forwardRef(({
       </Animated.View>
 
       <View style={styles.keyboardSection}>
-        <View style={styles.lettersGrid}>
+        <View
+          ref={keyboardRef}
+          collapsable={false}
+          style={styles.lettersGrid}
+        >
           {availableLetters.map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -119,27 +124,27 @@ const LetterGame = React.forwardRef(({
           ))}
         </View>
 
-        <View ref={hintRef}>
-          <TouchableOpacity
-            style={[
-              styles.hintBtn,
-              userCoins < HINT_COST && { opacity: 0.5 }
-            ]}
-            onPress={handleHint}
-            activeOpacity={0.7}
-          >
-            <View style={styles.hintContent}>
-              <View style={styles.hintLeft}>
-                <MaterialCommunityIcons name="lightbulb-outline" size={16} color={COLORS.primary} />
-                <Text style={styles.hintText}>{t('hint') || 'INDICE'}</Text>
-              </View>
-              <View style={styles.hintPrice}>
-                <GoldCoinIcon width={28} height={28} />
-                <Text style={styles.hintPriceText}>{HINT_COST}</Text>
-              </View>
+        <TouchableOpacity
+          ref={hintRef}
+          collapsable={false}
+          style={[
+            styles.hintBtn,
+            userCoins < HINT_COST && { opacity: 0.5 }
+          ]}
+          onPress={handleHint}
+          activeOpacity={0.7}
+        >
+          <View style={styles.hintContent}>
+            <View style={styles.hintLeft}>
+              <MaterialCommunityIcons name="lightbulb-outline" size={16} color={COLORS.primary} />
+              <Text style={styles.hintText}>{t('hint') || 'INDICE'}</Text>
             </View>
-          </TouchableOpacity>
-        </View>
+            <View style={styles.hintPrice}>
+              <GoldCoinIcon width={28} height={28} />
+              <Text style={styles.hintPriceText}>{HINT_COST}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

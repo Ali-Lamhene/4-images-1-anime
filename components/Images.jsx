@@ -103,7 +103,7 @@ export default Images;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.md, // Reduced vertical padding
+    paddingVertical: 5, // Targeted reduction for tutorial visibility
     alignItems: 'center',
     width: '100%',
   },
