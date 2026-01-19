@@ -2,9 +2,9 @@
   "expo": {
     "name": "Anime Legends !",
     "slug": "anime-legends",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/app_icon_v3.png",
     "scheme": "anime-legends",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -12,10 +12,10 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 3,
+      "versionCode": 4,
       "adaptiveIcon": {
         "backgroundColor": "#0F0F14",
-        "foregroundImage": "./assets/images/icon.png"
+        "foregroundImage": "./assets/images/app_icon_v3.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
