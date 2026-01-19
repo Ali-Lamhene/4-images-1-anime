@@ -308,35 +308,36 @@ export default function PlayScreen() {
             </View>
           </ScrollView>
 
-          {showVictoryPopup && (
-            <VictoryPopup rewards={potentialRewards} animeName={gameState.preferredName} vignette={gameState.currentAnime.vignette} onContinue={handleContinue} />
-          )}
-
-          {rankUpLevel && <RankUpPopup level={rankUpLevel} onClose={() => setRankUpLevel(null)} />}
         </View>
 
-        <BadgePopup isVisible={badgeQueue.length > 0} badge={badgeQueue[0]} onClose={() => setBadgeQueue(prev => prev.slice(1))} />
+        {showVictoryPopup && (
+          <VictoryPopup rewards={potentialRewards} animeName={gameState.preferredName} vignette={gameState.currentAnime.vignette} onContinue={handleContinue} />
+        )}
 
-        <CustomTutorial
-          isVisible={tutorialActive}
-          step={tutorialStep}
-          layout={tutorialLayouts[tutorialStep]}
-          onNext={() => {
-            if (tutorialStep < 7) setTutorialStep(prev => prev + 1);
-            else {
-              setTutorialActive(false);
-              saveTutorialSeen(true);
-            }
-          }}
-          onStop={() => {
+        {rankUpLevel && <RankUpPopup level={rankUpLevel} onClose={() => setRankUpLevel(null)} />}
+      </View>
+
+      <BadgePopup isVisible={badgeQueue.length > 0} badge={badgeQueue[0]} onClose={() => setBadgeQueue(prev => prev.slice(1))} />
+
+      <CustomTutorial
+        isVisible={tutorialActive}
+        step={tutorialStep}
+        layout={tutorialLayouts[tutorialStep]}
+        onNext={() => {
+          if (tutorialStep < 7) setTutorialStep(prev => prev + 1);
+          else {
             setTutorialActive(false);
             saveTutorialSeen(true);
-          }}
-          t={t}
-          isFirstStep={tutorialStep === 1}
-          isLastStep={tutorialStep === 7}
-        />
-      </View>
+          }
+        }}
+        onStop={() => {
+          setTutorialActive(false);
+          saveTutorialSeen(true);
+        }}
+        t={t}
+        isFirstStep={tutorialStep === 1}
+        isLastStep={tutorialStep === 7}
+      />
     </View>
   );
 }
@@ -355,3 +356,5 @@ const styles = StyleSheet.create({
   rewardBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: 'rgba(184, 161, 255, 0.1)', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 10 },
   rewardBadgeText: { fontSize: 9, color: COLORS.textPrimary, fontWeight: '700' },
 });
+
+
