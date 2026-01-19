@@ -216,18 +216,34 @@ export default function PlayScreen() {
     setUser(prev => {
       const newXP = prev.xp + potentialRewards.xp;
       const newLevel = calculateLevel(newXP);
+
+      const isPerfect = revealedImages.length <= 1;
+      const usedNoHints = hintsUsedLevel === 0;
+
+      const newStats = {
+        ...(prev.stats || INITIAL_USER.stats),
+        perfectReveals: isPerfect ? (prev.stats?.perfectReveals || 0) + 1 : (prev.stats?.perfectReveals || 0),
+        accumulatedCoins: (prev.stats?.accumulatedCoins || 0) + potentialRewards.coins,
+        currentStreak: (prev.stats?.currentStreak || 0) + 1,
+        noHintStreak: usedNoHints ? (prev.stats?.noHintStreak || 0) + 1 : 0,
+      };
+      newStats.maxStreak = Math.max(newStats.currentStreak, prev.stats?.maxStreak || 0);
+
       const updatedUser = {
         ...prev,
         coins: prev.coins + potentialRewards.coins,
         xp: newXP,
         level: newLevel,
-        foundAnimes: [...(prev.foundAnimes || []), gameState.currentAnime.id]
+        foundAnimes: [...(prev.foundAnimes || []), gameState.currentAnime.id],
+        stats: newStats
       };
+
       const newBadges = checkBadgeUnlocks(updatedUser, ANIME_DATA);
       if (newBadges.length > 0) {
         setBadgeQueue(prevQueue => [...prevQueue, ...newBadges]);
         updatedUser.unlockedBadges = [...(updatedUser.unlockedBadges || []), ...newBadges.map(b => b.id)];
       }
+
       if (newLevel > prev.level) setRankUpLevel(newLevel);
       return updatedUser;
     });
