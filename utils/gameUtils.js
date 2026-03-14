@@ -1,7 +1,7 @@
 import { RANKS } from '../constants/game';
 
 export function shuffleLetters(name) {
-  const letters = name.toUpperCase().replace(/\s/g, '').split('');
+  const letters = normalizeString(name).split('');
 
   // Mélanger le tableau
   for (let i = letters.length - 1; i > 0; i--) {
@@ -12,7 +12,11 @@ export function shuffleLetters(name) {
 }
 
 export function normalizeString(str) {
-  return str.toUpperCase().replace(/\s/g, '');
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Enlever les accents
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, ''); // Ne garder que lettres et chiffres
 }
 
 export function checkAnswer(userAnswer, correctAnswer) {

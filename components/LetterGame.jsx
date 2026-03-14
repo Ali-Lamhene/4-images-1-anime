@@ -63,8 +63,19 @@ const LetterGame = React.forwardRef(({
           words.forEach((word, wIdx) => {
             nodes.push(
               <View key={`word-${wIdx}`} style={styles.answerWord}>
-                {word.split('').map((_, j) => {
-                  const idx = cursor + j;
+                {word.split('').map((char, j) => {
+                  const normalizedChar = char.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                  const isAlphaNumeric = /^[A-Z0-9]$/.test(normalizedChar);
+
+                  if (!isAlphaNumeric) {
+                    return (
+                      <View key={`special-${wIdx}-${j}`} style={styles.specialBox}>
+                        <Text style={styles.specialText}>{char}</Text>
+                      </View>
+                    );
+                  }
+
+                  const idx = cursor++;
                   const letter = selectedLetters[idx];
 
                   return (
@@ -91,7 +102,6 @@ const LetterGame = React.forwardRef(({
                 })}
               </View>
             );
-            cursor += word.length;
           });
 
           return nodes;
@@ -163,16 +173,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    gap: 20,
+    gap: 10,
     marginBottom: 10,
+    marginTop: 20,
   },
   answerWord: {
     flexDirection: 'row',
-    gap: 4,
+    gap: 2,
   },
   answerBox: {
-    width: 32, // Slightly wider
-    height: 42, // Slightly taller
+    width: 24, // Encore plus fin
+    height: 34, // Encore moins haut
     backgroundColor: 'rgba(26, 26, 34, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -196,12 +207,28 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
   },
   answerText: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '700',
     color: COLORS.primary,
   },
   answerTextError: {
     color: '#FFFFFF',
+  },
+  specialBox: {
+    width: 24,
+    height: 34,
+    backgroundColor: COLORS.accent,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.accent,
+    opacity: 0.7,
+  },
+  specialText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: COLORS.primary,
   },
   keyboardSection: {
     marginTop: 10,
@@ -211,11 +238,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: 8,
+    gap: 4,
   },
   letterBtn: {
-    width: 44,
-    height: 44,
+    width: 34,
+    height: 38,
     backgroundColor: COLORS.secondary,
     justifyContent: 'center',
     alignItems: 'center',
@@ -229,7 +256,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   letterText: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: '500',
     color: COLORS.textPrimary,
   },

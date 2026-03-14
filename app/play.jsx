@@ -90,7 +90,7 @@ export default function PlayScreen() {
         setGameState({
           currentAnime: anime,
           preferredName,
-          selectedLetters: Array(preferredName.replace(/\s/g, '').length).fill(null),
+          selectedLetters: Array(normalizeString(preferredName).length).fill(null),
           availableLetters: shuffleLetters(preferredName).map(char => ({ char, used: false })),
         });
 
@@ -258,7 +258,7 @@ export default function PlayScreen() {
       setGameState({
         currentAnime: nextAnime,
         preferredName,
-        selectedLetters: Array(preferredName.replace(/\s/g, '').length).fill(null),
+        selectedLetters: Array(normalizeString(preferredName).length).fill(null),
         availableLetters: shuffleLetters(preferredName).map(char => ({ char, used: false })),
       });
       setRevealedImages([]);
