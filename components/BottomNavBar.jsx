@@ -15,14 +15,18 @@ export default function BottomNavBar() {
     const { playSound } = useSound();
     const insets = useSafeAreaInsets();
 
-    const handlePress = (route) => {
-        playSound('click');
-        router.push(route);
-    };
-
     const isHome = pathname === '/' || pathname === '/index';
     const isProfile = pathname === '/profile';
     const isSettings = pathname === '/settings';
+
+    const handlePress = (route) => {
+        if (route === '/' && isHome) return;
+        if (route === '/profile' && isProfile) return;
+        if (route === '/settings' && isSettings) return;
+
+        playSound('click');
+        router.navigate(route);
+    };
 
     return (
         <View
