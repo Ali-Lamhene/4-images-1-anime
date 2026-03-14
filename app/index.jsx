@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   },
   lastFoundContainer: {
     width: '100%',
-    maxWidth: 240,
+    maxWidth: 200,
     alignItems: 'center',
   },
   lastFoundLabel: {
@@ -295,8 +295,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   vignette: {
-    width: 160,
-    height: 240,
+    width: 100,
+    height: 140,
     borderRadius: 8,
     overflow: 'hidden',
     backgroundColor: COLORS.secondary,

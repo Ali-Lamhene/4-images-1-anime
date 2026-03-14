@@ -67,6 +67,7 @@ export default function ProfileScreen() {
         : 100;
 
     const unlockedAnimes = ANIME_DATA.slice(0, currentIndex);
+    const displayAnimes = [...unlockedAnimes].reverse().slice(0, 4);
 
     const obtainedBadgeIds = user.unlockedBadges || [];
     const obtainedBadges = obtainedBadgeIds
@@ -159,42 +160,42 @@ export default function ProfileScreen() {
                     {/* Collection Section */}
                     {unlockedAnimes.length > 0 && (
                         <View style={styles.sectionContainer}>
+                        <View style={styles.sectionHeaderRow}>
                             <Text style={styles.sectionTitle}>{t('my_collection')}</Text>
-                            <View style={styles.collectionContainer}>
-                                <ScrollView
-                                    showsVerticalScrollIndicator={true}
-                                    nestedScrollEnabled={true}
-                                >
-                                    <View style={styles.collectionList}>
-                                        {unlockedAnimes.map((anime) => {
-                                            const namingType = settings?.namingType || 'original';
-                                            const displayName = anime.names[namingType] || anime.names.original;
-                                            const synopsis = anime.info.synopsis[language] || anime.info.synopsis.en;
+                            <TouchableOpacity onPress={() => { playSound('click'); router.push('/collection'); }}>
+                                <Text style={styles.seeAllText}>{t('see_all') || 'VOIR TOUT'}</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.collectionContainer}>
+                            <View style={styles.collectionList}>
+                                {displayAnimes.map((anime) => {
+                                    const namingType = settings?.namingType || 'original';
+                                    const displayName = anime.names[namingType] || anime.names.original;
+                                    const synopsis = anime.info.synopsis[language] || anime.info.synopsis.en;
 
-                                            return (
-                                                <View key={anime.id} style={styles.collectionItem}>
-                                                    <Image
-                                                        source={{ uri: anime.vignette }}
-                                                        style={styles.collectionThumb}
-                                                    />
-                                                    <View style={styles.collectionInfo}>
-                                                        <Text style={styles.collectionName}>{displayName}</Text>
-                                                        <View style={styles.collectionMeta}>
-                                                            <Text style={styles.metaText}>{anime.info.year}</Text>
-                                                            <Text style={styles.metaDivider}>•</Text>
-                                                            <Text style={styles.metaText}>{anime.info.episodes} {t('episodes')}</Text>
-                                                        </View>
-                                                        <Text style={styles.collectionSynopsis} numberOfLines={2}>
-                                                            {synopsis}
-                                                        </Text>
-                                                    </View>
+                                    return (
+                                        <View key={anime.id} style={styles.collectionItem}>
+                                            <Image
+                                                source={{ uri: anime.vignette }}
+                                                style={styles.collectionThumb}
+                                            />
+                                            <View style={styles.collectionInfo}>
+                                                <Text style={styles.collectionName}>{displayName}</Text>
+                                                <View style={styles.collectionMeta}>
+                                                    <Text style={styles.metaText}>{anime.info.year}</Text>
+                                                    <Text style={styles.metaDivider}>•</Text>
+                                                    <Text style={styles.metaText}>{anime.info.episodes} {t('episodes')}</Text>
                                                 </View>
-                                            );
-                                        })}
-                                    </View>
-                                </ScrollView>
+                                                <Text style={styles.collectionSynopsis} numberOfLines={2}>
+                                                    {synopsis}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    );
+                                })}
                             </View>
                         </View>
+                    </View>
                     )}
 
                     <View style={styles.dangerZone}>
@@ -382,7 +383,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     collectionContainer: {
-        maxHeight: 250,
         backgroundColor: COLORS.secondaryOp || 'rgba(26, 26, 34, 0.95)',
         borderRadius: 4,
         paddingHorizontal: 10,
@@ -390,6 +390,7 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(184, 161, 255, 0.1)',
         marginBottom: 5,
     },
+
     collectionList: {
         paddingBottom: 10,
     },
@@ -437,6 +438,25 @@ const styles = StyleSheet.create({
         color: COLORS.textSecondary,
         lineHeight: 14,
         fontWeight: '300',
+    },
+    placeholderItem: {
+        opacity: 0.6,
+    },
+    placeholderThumb: {
+        backgroundColor: 'rgba(26, 26, 34, 0.4)',
+        borderWidth: 1,
+        borderColor: 'rgba(184, 161, 255, 0.1)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    placeholderIcon: {
+        fontSize: 24,
+        fontWeight: '700',
+        color: 'rgba(184, 161, 255, 0.2)',
+    },
+    placeholderText: {
+        color: 'rgba(255, 255, 255, 0.4)',
+        letterSpacing: 4,
     },
     progressSection: {
         paddingVertical: 20,
