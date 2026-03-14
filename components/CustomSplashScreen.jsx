@@ -72,7 +72,7 @@ export default function CustomSplashScreen({ onFinish }) {
                 }
             ]}>
                 {/* Animated Logo */}
-                <AnimeLegendsLogo size={260} showStar={true} />
+                <AnimeLegendsLogo size={180} showStar={true} />
 
                 <View style={styles.loaderContainer}>
                     <View style={styles.loaderBar}>

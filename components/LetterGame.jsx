@@ -124,29 +124,29 @@ const LetterGame = React.forwardRef(({
             </TouchableOpacity>
           ))}
         </View>
-
-        <TouchableOpacity
-          ref={hintRef}
-          collapsable={false}
-          style={[
-            styles.hintBtn,
-            userCoins < HINT_COST && { opacity: 0.5 }
-          ]}
-          onPress={handleHint}
-          activeOpacity={0.7}
-        >
-          <View style={styles.hintContent}>
-            <View style={styles.hintLeft}>
-              <MaterialCommunityIcons name="lightbulb-outline" size={16} color={COLORS.primary} />
-              <Text style={styles.hintText}>{t('hint') || 'INDICE'}</Text>
-            </View>
-            <View style={styles.hintPrice}>
-              <GoldCoinIcon width={28} height={28} />
-              <Text style={styles.hintPriceText}>{HINT_COST}</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
       </View>
+
+      <TouchableOpacity
+        ref={hintRef}
+        collapsable={false}
+        style={[
+          styles.hintBtn,
+          userCoins < HINT_COST && { opacity: 0.5 }
+        ]}
+        onPress={handleHint}
+        activeOpacity={0.7}
+      >
+        <View style={styles.hintContent}>
+          <View style={styles.hintLeft}>
+            <MaterialCommunityIcons name="lightbulb-outline" size={16} color={COLORS.primary} />
+            <Text style={styles.hintText}>{t('hint') || 'INDICE'}</Text>
+          </View>
+          <View style={styles.hintPrice}>
+            <GoldCoinIcon width={28} height={28} />
+            <Text style={styles.hintPriceText}>{HINT_COST}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 });
@@ -155,8 +155,6 @@ export default LetterGame;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.md,
     maxWidth: 600,
     alignSelf: 'center',
     width: '100%',
@@ -166,7 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexWrap: 'wrap',
     gap: 20,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   answerWord: {
     flexDirection: 'row',
@@ -206,14 +204,14 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   keyboardSection: {
-    marginTop: 20,
+    marginTop: 10,
+    paddingHorizontal: 5,
   },
   lettersGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     gap: 8,
-    marginBottom: 20,
   },
   letterBtn: {
     width: 44,
@@ -240,7 +238,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
-    marginTop: 10,
+    marginTop: 20,
     alignSelf: 'center',
     minWidth: 160,
     elevation: 3,

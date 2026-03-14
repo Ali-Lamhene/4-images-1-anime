@@ -72,7 +72,7 @@ export default function Index() {
             </TouchableOpacity>
 
             <View style={styles.logoContainer}>
-              <AnimeLegendsLogo size={260} />
+              <AnimeLegendsLogo size={180} />
             </View>
 
             <View style={styles.bottomControls}>

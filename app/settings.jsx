@@ -196,10 +196,10 @@ const styles = StyleSheet.create({
         paddingTop: SPACING.xl,
     },
     scrollContent: {
-        paddingBottom: 120, // Clear BottomNavBar
+        paddingBottom: 60, // Clear BottomNavBar
     },
     section: {
-        marginBottom: 40,
+        marginBottom: 20,
     },
     sectionTitle: {
         fontSize: 10,

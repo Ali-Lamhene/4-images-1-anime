@@ -252,8 +252,8 @@ const styles = StyleSheet.create({
     },
     scrollContent: {
         paddingHorizontal: SPACING.lg,
-        paddingBottom: 120,
-        paddingTop: 40,
+        paddingBottom: 60,
+        paddingTop: 20,
     },
     header: {
         alignItems: 'center',

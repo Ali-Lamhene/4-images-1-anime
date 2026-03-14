@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
   mainContent: { flex: 1 },
   content: { flex: 1 },
   scrollContent: { flexGrow: 1, paddingVertical: 10 },
-  gameWrapper: { maxWidth: 600, width: '100%', alignSelf: 'center', flex: 1, justifyContent: 'center' },
+  gameWrapper: { maxWidth: 600, width: '100%', alignSelf: 'center', flexGrow: 1, justifyContent: 'space-between' },
   stageIndicator: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 15, marginBottom: 10 },
   stageLine: { height: 1, width: 30, backgroundColor: COLORS.accent, opacity: 0.2 },
   stageText: { fontSize: 10, fontWeight: '700', color: COLORS.accent, letterSpacing: 4 },
