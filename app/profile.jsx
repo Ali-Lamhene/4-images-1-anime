@@ -68,6 +68,19 @@ export default function ProfileScreen() {
 
     const unlockedAnimes = ANIME_DATA.slice(0, currentIndex);
 
+    const obtainedBadgeIds = user.unlockedBadges || [];
+    const obtainedBadges = obtainedBadgeIds
+        .map(id => BADGES.find(b => b.id === id))
+        .filter(Boolean);
+
+    const recentBadges = obtainedBadges.slice(-4).reverse();
+    let displayBadges = [...recentBadges];
+
+    if (displayBadges.length < 4) {
+        const lockedBadges = BADGES.filter(b => !obtainedBadgeIds.includes(b.id));
+        displayBadges = [...displayBadges, ...lockedBadges.slice(0, 4 - displayBadges.length)];
+    }
+
     if (!isReady) return null;
 
     return (
@@ -115,31 +128,31 @@ export default function ProfileScreen() {
 
                     {/* Achievements Section */}
                     <View style={styles.sectionContainer}>
-                        <Text style={styles.sectionTitle}>{t('achievements')}</Text>
+                        <View style={styles.sectionHeaderRow}>
+                            <Text style={styles.sectionTitle}>{t('achievements')}</Text>
+                            <TouchableOpacity onPress={() => { playSound('click'); router.push('/badges'); }}>
+                                <Text style={styles.seeAllText}>{t('see_all') || 'VOIR TOUT'}</Text>
+                            </TouchableOpacity>
+                        </View>
                         <View style={styles.badgesContainer}>
-                            <ScrollView
-                                showsVerticalScrollIndicator={true}
-                                nestedScrollEnabled={true}
-                            >
-                                <View style={styles.badgesGrid}>
-                                    {BADGES.map(badge => {
-                                        const isUnlocked = user.unlockedBadges?.includes(badge.id);
-                                        return (
-                                            <View key={badge.id} style={[styles.badgeCard, !isUnlocked && styles.badgeCardLocked]}>
-                                                <BadgeIcon id={badge.id} size={60} locked={!isUnlocked} />
-                                                <View style={styles.badgeTextContainer}>
-                                                    <Text style={[styles.badgeName, !isUnlocked && styles.lockedText]}>
-                                                        {badge.name}
-                                                    </Text>
-                                                    <Text style={styles.badgeDesc} numberOfLines={2}>
-                                                        {t(badge.desc)}
-                                                    </Text>
-                                                </View>
+                            <View style={styles.badgesGrid}>
+                                {displayBadges.map(badge => {
+                                    const isUnlocked = user.unlockedBadges?.includes(badge.id);
+                                    return (
+                                        <View key={badge.id} style={[styles.badgeCard, !isUnlocked && styles.badgeCardLocked]}>
+                                            <BadgeIcon id={badge.id} size={60} locked={!isUnlocked} />
+                                            <View style={styles.badgeTextContainer}>
+                                                <Text style={[styles.badgeName, !isUnlocked && styles.lockedText]}>
+                                                    {badge.name}
+                                                </Text>
+                                                <Text style={styles.badgeDesc} numberOfLines={2}>
+                                                    {t(badge.desc)}
+                                                </Text>
                                             </View>
-                                        );
-                                    })}
-                                </View>
-                            </ScrollView>
+                                        </View>
+                                    );
+                                })}
+                            </View>
                         </View>
                     </View>
 
@@ -433,16 +446,27 @@ const styles = StyleSheet.create({
         marginTop: 40,
         width: '100%',
     },
+    sectionHeaderRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 15,
+    },
+    seeAllText: {
+        fontSize: 10,
+        fontWeight: '800',
+        color: COLORS.accent,
+        textTransform: 'uppercase',
+        letterSpacing: 2,
+    },
     sectionTitle: {
         fontSize: 10,
         fontWeight: '800',
         color: COLORS.textSecondary,
         letterSpacing: 2,
-        marginBottom: 15,
         textTransform: 'uppercase',
     },
     badgesContainer: {
-        maxHeight: 280, // Reduced height for a more compact layout
         backgroundColor: 'rgba(26, 26, 34, 0.4)',
         borderRadius: 15,
         padding: 10,

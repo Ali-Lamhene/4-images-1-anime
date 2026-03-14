@@ -32,6 +32,7 @@ export const TRANSLATIONS = {
 
         // Profile Screen
         profile: "PROFILE",
+        see_all: "SEE ALL",
         rank: "RANK",
         achievements: "ACHIEVEMENTS",
         animes_found: "ANIMES FOUND",
@@ -151,6 +152,7 @@ export const TRANSLATIONS = {
 
         // Profile Screen
         profile: "PROFIL",
+        see_all: "VOIR TOUT",
         rank: "RANG",
         achievements: "HAUTS FAITS",
         animes_found: "ANIMES TROUVÉS",
