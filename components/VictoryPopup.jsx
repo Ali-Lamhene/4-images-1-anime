@@ -25,6 +25,7 @@ export default function VictoryPopup({ rewards, animeName, vignette, onContinue 
   const [fadeAnim] = useState(new Animated.Value(0));
   const [slideAnim] = useState(new Animated.Value(20));
   const [activeIcons, setActiveIcons] = useState(null);
+  const [isContinuing, setIsContinuing] = useState(false);
 
   useEffect(() => {
     playSound('success');
@@ -44,6 +45,8 @@ export default function VictoryPopup({ rewards, animeName, vignette, onContinue 
   }, []);
 
   const handleContinue = () => {
+    if (isContinuing) return;
+    setIsContinuing(true);
     playSound('click');
     setActiveIcons(null);
 
