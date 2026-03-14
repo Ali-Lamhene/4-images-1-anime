@@ -264,6 +264,8 @@ export default function PlayScreen() {
       setRevealedImages([]);
       saveRevealedImages([]);
       setPotentialRewards(DEFAULT_REWARDS);
+    } else {
+      router.replace('/');
     }
   };
 

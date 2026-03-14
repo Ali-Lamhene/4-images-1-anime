@@ -84,18 +84,25 @@ export default function Index() {
               </View>
 
               <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={styles.playButton}
-                  onPress={() => {
-                    playSound('start');
-                    router.push('/play');
-                  }}
-                  activeOpacity={0.9}
-                >
-                  <Text style={styles.playButtonText}>
-                    {currentIndex === 0 ? t('start_experience') : t('continue').toUpperCase()}
-                  </Text>
-                </TouchableOpacity>
+                {currentIndex < ANIME_DATA.length ? (
+                  <TouchableOpacity
+                    style={styles.playButton}
+                    onPress={() => {
+                      playSound('start');
+                      router.push('/play');
+                    }}
+                    activeOpacity={0.9}
+                  >
+                    <Text style={styles.playButtonText}>
+                      {currentIndex === 0 ? t('start_experience') : t('continue').toUpperCase()}
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  <View style={styles.completedContainer}>
+                    <Text style={styles.completedTitle}>{t('all_completed')}</Text>
+                    <Text style={styles.completedSubtitle}>{t('more_coming')}</Text>
+                  </View>
+                )}
               </View>
 
               {/* Last Found Vignette */}
@@ -252,6 +259,28 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: COLORS.primary,
     letterSpacing: 3,
+  },
+  completedContainer: {
+    padding: 24,
+    backgroundColor: 'rgba(184, 161, 255, 0.05)',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(184, 161, 255, 0.2)',
+    alignItems: 'center',
+  },
+  completedTitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: COLORS.accent,
+    textAlign: 'center',
+    marginBottom: 8,
+    lineHeight: 18,
+  },
+  completedSubtitle: {
+    fontSize: 10,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    lineHeight: 16,
   },
   lastFoundContainer: {
     width: '100%',
