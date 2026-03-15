@@ -119,6 +119,18 @@ export const TRANSLATIONS = {
         badge_no_help_needed_desc: "Complete 5 levels without using hints",
         badge_fast_learner_desc: "Reach Level 10",
         badge_anime_legend_desc: "Complete all available animes",
+
+        // Configurator
+        config_step1_title: "WELCOME",
+        config_step1_subtitle: "Let's personalize your experience.",
+        config_name_placeholder: "Enter your name",
+        config_name_required: "Please enter your name to continue.",
+        config_step2_title: "IMMERSION",
+        config_step2_subtitle: "Adjust the game atmosphere.",
+        config_step3_title: "ANIME NAMES",
+        config_step3_subtitle: "How do you prefer to read the titles?",
+        config_step3_desc: "Some animes have different names depending on the region. Choose your preference.",
+        config_finish: "START ADVENTURE",
     },
     fr: {
         // General
@@ -240,5 +252,17 @@ export const TRANSLATIONS = {
         badge_no_help_needed_desc: "Complète 5 niveaux sans utiliser d'indices",
         badge_fast_learner_desc: "Atteins le Niveau 10",
         badge_anime_legend_desc: "Complète tous les animés disponibles",
+
+        // Configurator
+        config_step1_title: "BIENVENUE",
+        config_step1_subtitle: "Personnalisons votre expérience.",
+        config_name_placeholder: "Entrez votre nom",
+        config_name_required: "Veuillez entrer votre nom pour continuer.",
+        config_step2_title: "IMMERSION",
+        config_step2_subtitle: "Ajustez l'atmosphère du jeu.",
+        config_step3_title: "NOMS DES ANIMES",
+        config_step3_subtitle: "Comment préférez-vous lire les titres ?",
+        config_step3_desc: "Certains animés ont des noms différents selon la région. Choisissez votre préférence.",
+        config_finish: "COMMENCER L'AVENTURE",
     }
 };

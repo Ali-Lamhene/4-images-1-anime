@@ -6,6 +6,7 @@ const STORAGE_KEYS = {
     SETTINGS: 'settings',
     TUTORIAL_SEEN: 'tutorial_seen',
     REVEALED_IMAGES: 'revealed_images',
+    HAS_COMPLETED_CONFIG: 'has_completed_config',
 };
 
 export const INITIAL_SETTINGS = {
@@ -16,6 +17,7 @@ export const INITIAL_SETTINGS = {
 };
 
 export const INITIAL_USER = {
+    name: 'Player',
     coins: 100, // Giving some starting coins for better testing
     xp: 0,
     level: 1,
@@ -124,5 +126,23 @@ export const getRevealedImages = async () => {
     } catch (error) {
         console.error('Error getting revealed images:', error);
         return [];
+    }
+};
+
+export const saveConfigCompleted = async (completed) => {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEYS.HAS_COMPLETED_CONFIG, JSON.stringify(completed));
+    } catch (error) {
+        console.error('Error saving config status:', error);
+    }
+};
+
+export const getConfigCompleted = async () => {
+    try {
+        const data = await AsyncStorage.getItem(STORAGE_KEYS.HAS_COMPLETED_CONFIG);
+        return data ? JSON.parse(data) : false;
+    } catch (error) {
+        console.error('Error getting config status:', error);
+        return false;
     }
 };

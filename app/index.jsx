@@ -11,7 +11,7 @@ import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
 import { useSound } from '../context/SoundContext';
-import { getCurrentAnimeIndex, getSettings, getUserData, INITIAL_USER } from '../utils/storage';
+import { getCurrentAnimeIndex, getSettings, getUserData, INITIAL_USER, getConfigCompleted } from '../utils/storage';
 
 const { width, height } = Dimensions.get('window');
 
@@ -25,6 +25,12 @@ export default function Index() {
   const [isReady, setIsReady] = useState(false);
 
   const loadData = async () => {
+    const configDone = await getConfigCompleted();
+    if (!configDone) {
+      router.replace('/configurator');
+      return;
+    }
+
     const index = await getCurrentAnimeIndex();
     const savedSettings = await getSettings();
     const userData = await getUserData();
