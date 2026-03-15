@@ -76,6 +76,31 @@ export const clearAllData = async () => {
     }
 };
 
+export const clearSelectiveData = async (options) => {
+    try {
+        if (options.progression) {
+            // Keep the name if it exists, otherwise use Initial
+            const currentData = await getUserData();
+            const playerName = currentData.name || INITIAL_USER.name;
+            
+            await saveUserData({ ...INITIAL_USER, name: playerName });
+            await saveCurrentAnimeIndex(0);
+            await saveRevealedImages([]);
+        }
+
+        if (options.settings) {
+            await saveSettings(INITIAL_SETTINGS);
+            await saveConfigCompleted(false);
+        }
+
+        if (options.tutorial) {
+            await saveTutorialSeen(false);
+        }
+    } catch (error) {
+        console.error('Error in clearSelectiveData:', error);
+    }
+};
+
 export const saveSettings = async (settings) => {
     try {
         await AsyncStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));

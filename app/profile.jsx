@@ -16,7 +16,7 @@ import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
 import { useSound } from '../context/SoundContext';
 import { calculateLevel } from '../utils/gameUtils';
-import { clearAllData, getCurrentAnimeIndex, getSettings, getUserData, INITIAL_USER } from '../utils/storage';
+import { clearSelectiveData, getCurrentAnimeIndex, getSettings, getUserData, INITIAL_USER } from '../utils/storage';
 
 const { width } = Dimensions.get('window');
 
@@ -29,6 +29,11 @@ export default function ProfileScreen() {
     const [isReady, setIsReady] = useState(false);
     const [showResetModal, setShowResetModal] = useState(false);
     const [settings, setSettings] = useState(null);
+
+    // Reset Choice States
+    const [resetProgression, setResetProgression] = useState(true);
+    const [resetSettings, setResetSettings] = useState(true);
+    const [resetTutorial, setResetTutorial] = useState(true);
 
     useFocusEffect(
         useCallback(() => {
@@ -53,9 +58,20 @@ export default function ProfileScreen() {
 
     const confirmReset = async () => {
         playSound('click');
-        await clearAllData();
-        setUser(INITIAL_USER);
-        setCurrentIndex(0);
+        
+        const options = {
+            progression: resetProgression,
+            settings: resetSettings,
+            tutorial: resetTutorial
+        };
+
+        if (!options.progression && !options.settings && !options.tutorial) {
+            setShowResetModal(false);
+            return;
+        }
+
+        await clearSelectiveData(options);
+        
         setShowResetModal(false);
         router.replace('/');
     };
@@ -98,6 +114,7 @@ export default function ProfileScreen() {
                         <View style={styles.rankHeaderRow}>
                             <RankBadge level={user.level} size={80} style={styles.badgeLarge} />
                             <View style={styles.rankTextContainer}>
+                                <Text style={styles.userName}>{user.name}</Text>
                                 <Text style={styles.rankLabel}>{t(`rank_${currentRank.name.toLowerCase()}`)}</Text>
                                 <Text style={styles.levelValue}>{t('level')} {user.level}</Text>
                             </View>
@@ -231,6 +248,47 @@ export default function ProfileScreen() {
                             {t('reset_warning')}
                         </Text>
 
+                        <View style={styles.resetOptions}>
+                            <TouchableOpacity 
+                                style={styles.resetOption}
+                                onPress={() => { playSound('switch'); setResetProgression(!resetProgression); }}
+                                activeOpacity={0.7}
+                            >
+                                <View style={[styles.checkbox, resetProgression && styles.checkboxActive]}>
+                                    {resetProgression && <View style={styles.checkboxDot} />}
+                                </View>
+                                <Text style={[styles.resetOptionText, resetProgression && styles.resetOptionTextActive]}>
+                                    {t('reset_option_progression')}
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity 
+                                style={styles.resetOption}
+                                onPress={() => { playSound('switch'); setResetSettings(!resetSettings); }}
+                                activeOpacity={0.7}
+                            >
+                                <View style={[styles.checkbox, resetSettings && styles.checkboxActive]}>
+                                    {resetSettings && <View style={styles.checkboxDot} />}
+                                </View>
+                                <Text style={[styles.resetOptionText, resetSettings && styles.resetOptionTextActive]}>
+                                    {t('reset_option_settings')}
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity 
+                                style={styles.resetOption}
+                                onPress={() => { playSound('switch'); setResetTutorial(!resetTutorial); }}
+                                activeOpacity={0.7}
+                            >
+                                <View style={[styles.checkbox, resetTutorial && styles.checkboxActive]}>
+                                    {resetTutorial && <View style={styles.checkboxDot} />}
+                                </View>
+                                <Text style={[styles.resetOptionText, resetTutorial && styles.resetOptionTextActive]}>
+                                    {t('reset_option_tutorial')}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+
                         <View style={styles.modalButtons}>
                             <TouchableOpacity
                                 style={styles.cancelBtn}
@@ -242,10 +300,16 @@ export default function ProfileScreen() {
                                 <Text style={styles.cancelBtnText}>{t('cancel')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={styles.confirmBtn}
+                                style={[
+                                    styles.confirmBtn, 
+                                    (!resetProgression && !resetSettings && !resetTutorial) && styles.confirmBtnDisabled
+                                ]}
                                 onPress={confirmReset}
+                                disabled={!resetProgression && !resetSettings && !resetTutorial}
                             >
-                                <Text style={styles.confirmBtnText}>{t('confirm')}</Text>
+                                <Text style={styles.confirmBtnText}>
+                                    {(!resetProgression && !resetSettings && !resetTutorial) ? t('cancel') : t('confirm')}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -306,20 +370,27 @@ const styles = StyleSheet.create({
     rankTextContainer: {
         alignItems: 'flex-start',
     },
-    rankLabel: {
-        fontSize: 14,
-        fontWeight: '800',
-        color: COLORS.accent,
+    userName: {
+        fontSize: 22,
+        fontWeight: '900',
+        color: COLORS.textPrimary,
         letterSpacing: 2,
         marginBottom: 4,
         textTransform: 'uppercase',
     },
+    rankLabel: {
+        fontSize: 12,
+        fontWeight: '700',
+        color: COLORS.accent,
+        letterSpacing: 2,
+        marginBottom: 2,
+        textTransform: 'uppercase',
+    },
     levelValue: {
-        fontSize: 18,
-        fontWeight: '500',
-        color: COLORS.textPrimary,
+        fontSize: 14,
+        fontWeight: '400',
+        color: COLORS.textSecondary,
         letterSpacing: 1,
-        opacity: 0.8,
     },
     xpBox: {
         width: '100%',
@@ -623,5 +694,51 @@ const styles = StyleSheet.create({
         color: COLORS.primary,
         fontWeight: '700',
         letterSpacing: 1,
+    },
+    confirmBtnDisabled: {
+        backgroundColor: COLORS.secondary,
+        borderColor: 'rgba(255,255,255,0.1)',
+        borderWidth: 1,
+    },
+    resetOptions: {
+        width: '100%',
+        marginBottom: 25,
+        gap: 12,
+    },
+    resetOption: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
+        backgroundColor: 'rgba(255,255,255,0.03)',
+        padding: 12,
+        borderRadius: 4,
+    },
+    resetOptionText: {
+        fontSize: 10,
+        color: COLORS.textSecondary,
+        flex: 1,
+    },
+    resetOptionTextActive: {
+        color: COLORS.textPrimary,
+        fontWeight: '600',
+    },
+    checkbox: {
+        width: 18,
+        height: 18,
+        borderRadius: 4,
+        borderWidth: 2,
+        borderColor: COLORS.textSecondary,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    checkboxActive: {
+        borderColor: COLORS.accent,
+        backgroundColor: 'rgba(184, 161, 255, 0.1)',
+    },
+    checkboxDot: {
+        width: 8,
+        height: 8,
+        borderRadius: 2,
+        backgroundColor: COLORS.accent,
     }
 });

@@ -72,8 +72,8 @@ export default function Index() {
             >
               <RankBadge level={user.level} size={40} />
               <View>
-                <Text style={styles.userLevel}>{t('lvl')} {user.level}</Text>
-                <Text style={styles.userXp}>{user.xp} XP</Text>
+                <Text style={styles.userName}>{user.name}</Text>
+                <Text style={styles.userLevel}>{t('lvl')} {user.level} • {user.xp} XP</Text>
               </View>
             </TouchableOpacity>
 
@@ -172,17 +172,18 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(184, 161, 255, 0.1)',
     marginBottom: 10,
   },
-  userLevel: {
-    fontSize: 10,
-    fontWeight: '800',
-    color: COLORS.textPrimary,
-    letterSpacing: 1,
-  },
-  userXp: {
-    fontSize: 9,
-    fontWeight: '400',
+  userName: {
+    fontSize: 11,
+    fontWeight: '900',
     color: COLORS.accent,
     letterSpacing: 1,
+    textTransform: 'uppercase',
+  },
+  userLevel: {
+    fontSize: 9,
+    fontWeight: '500',
+    color: COLORS.textPrimary,
+    letterSpacing: 0.5,
   },
   logoContainer: {
     alignItems: 'center',
