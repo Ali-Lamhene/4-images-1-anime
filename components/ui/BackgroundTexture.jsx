@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import Svg, { Circle, Defs, LinearGradient, Pattern, RadialGradient, Rect, Stop } from 'react-native-svg';
-import { COLORS } from '../constants/colors';
+import { COLORS } from '../../constants/colors';
 
 export default function BackgroundTexture() {
     return (

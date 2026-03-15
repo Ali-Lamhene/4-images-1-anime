@@ -1,3 +1,5 @@
+import { COLORS } from '../../constants/colors';
+import { RANKS } from '../../constants/game';
 import { useId } from 'react';
 import { View } from 'react-native';
 import Svg, {

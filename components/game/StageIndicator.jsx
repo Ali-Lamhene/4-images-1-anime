@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import GoldCoinIcon from './icons/GoldCoinIcon';
-import PotionIcon from './icons/PotionIcon';
-import { COLORS } from '../constants/colors';
-import { useGame } from '../context/GameContext';
+import GoldCoinIcon from '../icons/GoldCoinIcon';
+import PotionIcon from '../icons/PotionIcon';
+import { COLORS } from '../../constants/colors';
+import { useGame } from '../../context/GameContext';
 
 const StageIndicator = ({ t }) => {
     const { currentAnimeIndex, potentialRewards } = useGame();

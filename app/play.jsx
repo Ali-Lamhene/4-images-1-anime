@@ -4,15 +4,15 @@ import { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import BackgroundTexture from '../components/BackgroundTexture';
-import BadgePopup from '../components/BadgePopup';
-import CustomTutorial from '../components/CustomTutorial';
-import GameHeader from '../components/GameHeader';
-import Images from '../components/Images';
-import LetterGame from '../components/LetterGame';
-import RankUpPopup from '../components/RankUpPopup';
-import VictoryPopup from '../components/VictoryPopup';
-import StageIndicator from '../components/StageIndicator';
+import BackgroundTexture from '../components/ui/BackgroundTexture';
+import BadgePopup from '../components/popups/BadgePopup';
+import CustomTutorial from '../components/tutorial/CustomTutorial';
+import GameHeader from '../components/layout/GameHeader';
+import Images from '../components/game/Images';
+import LetterGame from '../components/game/LetterGame';
+import RankUpPopup from '../components/popups/RankUpPopup';
+import VictoryPopup from '../components/popups/VictoryPopup';
+import StageIndicator from '../components/game/StageIndicator';
 
 import { ANIME_DATA } from '../assets/data/data';
 import { COLORS } from '../constants/colors';

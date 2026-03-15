@@ -1,13 +1,13 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useRef } from 'react';
 import { Alert, Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { COLORS } from '../constants/colors';
-import { HINT_COST } from '../constants/game';
-import { SPACING } from '../constants/spacing';
-import { useTranslation } from '../context/LanguageContext';
-import { useSound } from '../context/SoundContext';
-import GoldCoinIcon from './icons/GoldCoinIcon';
-import { useGame } from '../context/GameContext';
+import { COLORS } from '../../constants/colors';
+import { HINT_COST } from '../../constants/game';
+import { SPACING } from '../../constants/spacing';
+import { useTranslation } from '../../context/LanguageContext';
+import { useSound } from '../../context/SoundContext';
+import GoldCoinIcon from '../icons/GoldCoinIcon';
+import { useGame } from '../../context/GameContext';
 
 const LetterGame = React.forwardRef(({
   hintRef,

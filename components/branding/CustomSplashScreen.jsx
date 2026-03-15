@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, StyleSheet, View } from 'react-native';
-import { COLORS } from '../constants/colors';
+import { COLORS } from '../../constants/colors';
 import AnimeLegendsLogo from './AnimeLegendsLogo';
-import BackgroundTexture from './BackgroundTexture';
+import BackgroundTexture from '../ui/BackgroundTexture';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 

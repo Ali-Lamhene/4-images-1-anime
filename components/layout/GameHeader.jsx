@@ -1,14 +1,14 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { Animated, Easing, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { COLORS } from '../constants/colors';
-import { RANKS } from '../constants/game';
-import { SPACING } from '../constants/spacing';
-import { useTranslation } from '../context/LanguageContext';
-import { useSound } from '../context/SoundContext';
-import GoldCoinIcon from './icons/GoldCoinIcon';
-import PotionIcon from './icons/PotionIcon';
-import RankBadge from './RankBadge';
+import { COLORS } from '../../constants/colors';
+import { RANKS } from '../../constants/game';
+import { SPACING } from '../../constants/spacing';
+import { useTranslation } from '../../context/LanguageContext';
+import { useSound } from '../../context/SoundContext';
+import GoldCoinIcon from '../icons/GoldCoinIcon';
+import PotionIcon from '../icons/PotionIcon';
+import RankBadge from '../ui/RankBadge';
 
 export default function GameHeader({
   user,

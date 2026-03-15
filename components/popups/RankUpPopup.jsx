@@ -11,11 +11,11 @@ import {
 } from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 
-import { COLORS } from '../constants/colors';
-import { RANKS } from '../constants/game';
-import { useTranslation } from '../context/LanguageContext';
-import { useSound } from '../context/SoundContext';
-import RankBadge from './RankBadge';
+import { COLORS } from '../../constants/colors';
+import { RANKS } from '../../constants/game';
+import { useTranslation } from '../../context/LanguageContext';
+import { useSound } from '../../context/SoundContext';
+import RankBadge from '../ui/RankBadge';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 

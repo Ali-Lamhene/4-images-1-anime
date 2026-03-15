@@ -2,10 +2,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useEffect, useRef } from 'react';
 import { Animated, Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
-import { COLORS } from '../constants/colors';
-import { useTranslation } from '../context/LanguageContext';
-import { useSound } from '../context/SoundContext';
-import BadgeIcon from './BadgeIcon';
+import { COLORS } from '../../constants/colors';
+import { useTranslation } from '../../context/LanguageContext';
+import { useSound } from '../../context/SoundContext';
+import BadgeIcon from '../ui/BadgeIcon';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 

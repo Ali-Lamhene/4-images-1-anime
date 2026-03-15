@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, Modal, StyleSheet, View } from 'react-native';
 import Svg, { Defs, Mask, Rect } from 'react-native-svg';
-import { TutorialTooltip } from './TutorialTooltip';
+import { COLORS } from '../../constants/colors';
+import TutorialTooltip from './TutorialTooltip';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 

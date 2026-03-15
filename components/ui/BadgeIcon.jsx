@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { View } from 'react-native';
 import Svg, { Circle, Defs, G, LinearGradient, Path, Polygon, RadialGradient, Rect, Stop, Text } from 'react-native-svg';
-import { COLORS } from '../constants/colors';
+import { COLORS } from '../../constants/colors';
 
 const BadgeIcon = ({ id, size = 100, locked = false }) => {
     const idPrefix = useMemo(() => Math.random().toString(36).substr(2, 9), [id]);

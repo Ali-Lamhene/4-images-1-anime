@@ -6,7 +6,7 @@ import Svg, {
     Path,
     Stop
 } from 'react-native-svg';
-import { COLORS } from '../constants/colors';
+import { COLORS } from '../../constants/colors';
 import AnimeLegendsLogo from './AnimeLegendsLogo';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');

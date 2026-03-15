@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { useSound } from '../context/SoundContext';
+import { useSound } from '../../context/SoundContext';
 
 export default function BackButton() {
   const router = useRouter();

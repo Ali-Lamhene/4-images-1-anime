@@ -1,12 +1,12 @@
 import { usePathname, useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { COLORS } from '../constants/colors';
-import { useTranslation } from '../context/LanguageContext';
-import { useSound } from '../context/SoundContext';
-import HomeIcon from './icons/HomeIcon';
-import ProfileIcon from './icons/ProfileIcon';
-import SettingsIcon from './icons/SettingsIcon';
+import { COLORS } from '../../constants/colors';
+import { useTranslation } from '../../context/LanguageContext';
+import { useSound } from '../../context/SoundContext';
+import HomeIcon from '../icons/HomeIcon';
+import ProfileIcon from '../icons/ProfileIcon';
+import SettingsIcon from '../icons/SettingsIcon';
 
 export default function BottomNavBar() {
     const router = useRouter();

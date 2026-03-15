@@ -8,7 +8,7 @@ import Svg, {
     Stop,
     Text as SvgText
 } from 'react-native-svg';
-import { COLORS } from '../constants/colors';
+import { COLORS } from '../../constants/colors';
 
 const AnimeLegendsLogo = ({ size = 280, showStar = true }) => {
     const uniqueId = useMemo(() => Math.random().toString(36).substring(2, 9), []);

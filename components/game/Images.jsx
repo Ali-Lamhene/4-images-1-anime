@@ -1,9 +1,9 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { forwardRef, useMemo } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { COLORS } from '../constants/colors';
-import { SPACING } from '../constants/spacing';
-import { useGame } from '../context/GameContext';
+import { COLORS } from '../../constants/colors';
+import { SPACING } from '../../constants/spacing';
+import { useGame } from '../../context/GameContext';
 
 const Images = forwardRef((props, ref) => {
   const { gameState, revealedImages, handleRevealImage } = useGame();
