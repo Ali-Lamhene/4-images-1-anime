@@ -4,8 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import BackgroundTexture from '../components/BackgroundTexture';
-import CustomSplashScreen from '../components/CustomSplashScreen';
+import BackgroundTexture from '../components/ui/BackgroundTexture';
+import CustomSplashScreen from '../components/branding/CustomSplashScreen';
 import { LanguageProvider } from '../context/LanguageContext';
 import { SoundProvider } from '../context/SoundContext';
 

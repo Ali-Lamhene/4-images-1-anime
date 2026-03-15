@@ -2,8 +2,8 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import BackgroundTexture from '../components/BackgroundTexture';
-import BadgeIcon from '../components/BadgeIcon';
+import BackgroundTexture from '../components/ui/BackgroundTexture';
+import BadgeIcon from '../components/ui/BadgeIcon';
 import { BADGES } from '../constants/badges';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
@@ -50,7 +50,7 @@ export default function BadgesScreen() {
                     <Text style={styles.title}>{t('achievements') || 'SUCCÈS'}</Text>
                     <View style={{ width: 40 }} />
                 </View>
-                
+
                 <ScrollView contentContainerStyle={styles.scrollContent}>
                     <View style={styles.badgesGrid}>
                         {BADGES.map(badge => {

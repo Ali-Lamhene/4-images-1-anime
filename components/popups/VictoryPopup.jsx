@@ -15,7 +15,7 @@ import { SPACING } from '../../constants/spacing';
 import { useTranslation } from '../../context/LanguageContext';
 import { useSound } from '../../context/SoundContext';
 import GoldCoinIcon from '../icons/GoldCoinIcon';
-import PotionIcon from './icons/PotionIcon';
+import PotionIcon from '../icons/PotionIcon';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 

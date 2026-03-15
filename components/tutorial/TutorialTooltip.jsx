@@ -7,7 +7,7 @@ import {
     View,
 } from 'react-native';
 import { COLORS } from '../../constants/colors';
-import { useTranslation } from '../context/LanguageContext';
+import { useTranslation } from '../../context/LanguageContext';
 
 export const TutorialTooltip = ({
     isFirstStep,
@@ -140,3 +140,5 @@ const styles = StyleSheet.create({
         letterSpacing: 1.5,
     }
 });
+
+export default TutorialTooltip;
