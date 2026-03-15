@@ -7,19 +7,25 @@ import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
 import { useSound } from '../context/SoundContext';
 import GoldCoinIcon from './icons/GoldCoinIcon';
+import { useGame } from '../context/GameContext';
 
 const LetterGame = React.forwardRef(({
-  animeName,
-  selectedLetters,
-  availableLetters,
-  userCoins,
-  isError,
-  onLetterSelect,
-  onLetterRemove,
-  onHintRequest,
   hintRef,
   keyboardRef,
 }, ref) => {
+  const {
+      gameState,
+      user,
+      isError,
+      handleLetterSelect,
+      handleLetterRemove,
+      handleHintRequest
+  } = useGame();
+  
+  const selectedLetters = gameState?.selectedLetters || [];
+  const availableLetters = gameState?.availableLetters || [];
+  const animeName = gameState?.preferredName || '';
+  const userCoins = user?.coins || 0;
   const { t } = useTranslation();
   const { playSound } = useSound();
   const shakeAnim = useRef(new Animated.Value(0)).current;
@@ -43,7 +49,7 @@ const LetterGame = React.forwardRef(({
       Alert.alert('INFO', t('hint_need_credits', { cost: HINT_COST }));
       return;
     }
-    onHintRequest();
+    handleHintRequest();
   };
 
   return (
@@ -89,7 +95,7 @@ const LetterGame = React.forwardRef(({
                       onPress={() => {
                         if (letter) {
                           playSound('click');
-                          onLetterRemove(idx);
+                          handleLetterRemove(idx);
                         }
                       }}
                       activeOpacity={0.8}
@@ -124,7 +130,7 @@ const LetterGame = React.forwardRef(({
               onPress={() => {
                 if (!item.used) {
                   playSound('click');
-                  onLetterSelect(item.char, index);
+                  handleLetterSelect(item.char, index);
                 }
               }}
               disabled={item.used}

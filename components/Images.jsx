@@ -3,8 +3,13 @@ import { forwardRef, useMemo } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
+import { useGame } from '../context/GameContext';
 
-const Images = forwardRef(({ images, revealedImages = [], onReveal }, ref) => {
+const Images = forwardRef((props, ref) => {
+  const { gameState, revealedImages, handleRevealImage } = useGame();
+  
+  const images = gameState?.currentAnime?.images || [];
+
   // Pseudo-random generator to ensure consistent transforms for everyone
   const pseudoRandom = (seed) => {
     const x = Math.sin(seed) * 10000;
@@ -14,31 +19,14 @@ const Images = forwardRef(({ images, revealedImages = [], onReveal }, ref) => {
   // Generate stable random drastic transforms for each image
   const imageTransforms = useMemo(() => {
     return images.map((_, index) => {
-      // Create a unique seed for this image position (using index + string length as simplistic seed)
-      // Ideally, use anime ID if available, but consistent index is enough for stability across reloads
       const seed = (index + 1) * 123.45;
-
-      // 1. MICROSCOPIC ZOOM: Scale between 5.0 and 9.5
-      // This is practically pixel-peeping. Recognizability drops to near zero.
-      const baseScale = 5.0 + pseudoRandom(seed) * 4.5; // Range: [5.0, 9.5]
-
-      // 2. Heavy Distortion:
-      // Aspect ratio can change by factor of 2 (0.5 to 1.5)
-      // This turns circles into flat ovals.
+      const baseScale = 5.0 + pseudoRandom(seed) * 4.5; 
       const stretchFactor = 0.5 + pseudoRandom(seed + 1) * 1.0;
       const scaleX = baseScale * stretchFactor;
       const scaleY = baseScale;
-
-      // 3. Vertigo Rotation: +/- 60 degrees
-      // Up becomes sideways/diagonal.
       const rotate = `${(pseudoRandom(seed + 2) * 120 - 60).toFixed(0)}deg`;
-
-      // 4. Aggressive Panning:
-      // With high scale, we can push the "center" (where the face usually is) completely off the view
       const minEffectiveScale = Math.min(scaleX, scaleY);
-      // We can shift up to 98% of the available overflow
-      const maxTranslate = ((minEffectiveScale - 1) / 2) * 98; // Use 98% of available overflow
-
+      const maxTranslate = ((minEffectiveScale - 1) / 2) * 98; 
       const translateX = (pseudoRandom(seed + 3) * 2 - 1) * maxTranslate;
       const translateY = (pseudoRandom(seed + 4) * 2 - 1) * maxTranslate;
 
@@ -65,7 +53,7 @@ const Images = forwardRef(({ images, revealedImages = [], onReveal }, ref) => {
             <TouchableOpacity
               key={index}
               style={styles.imageCard}
-              onPress={() => !isRevealed && onReveal(index)}
+              onPress={() => !isRevealed && handleRevealImage(index)}
               activeOpacity={0.8}
               disabled={isRevealed}
             >
@@ -74,7 +62,7 @@ const Images = forwardRef(({ images, revealedImages = [], onReveal }, ref) => {
                 style={[
                   styles.image,
                   !isRevealed && styles.blurredImage,
-                  isRevealed && transformStyle // Apply extreme transform only when revealed
+                  isRevealed && transformStyle
                 ]}
                 resizeMode="cover"
               />
