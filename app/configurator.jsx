@@ -7,7 +7,7 @@ import { COLORS } from '../constants/colors';
 import { SPACING } from '../constants/spacing';
 import { useTranslation } from '../context/LanguageContext';
 import { useSound } from '../context/SoundContext';
-import { INITIAL_USER, saveConfigCompleted, saveSettings, saveUserData } from '../utils/storage';
+import { getSettings, INITIAL_USER, saveConfigCompleted, saveSettings, saveUserData } from '../utils/storage';
 
 const { width } = Dimensions.get('window');
 
@@ -168,10 +168,14 @@ export default function ConfiguratorScreen() {
                                             trackColor={{ false: COLORS.secondary, true: COLORS.accent }}
                                             thumbColor={sounds ? COLORS.white : COLORS.textSecondary}
                                             ios_backgroundColor={COLORS.secondary}
-                                            onValueChange={(val) => {
-                                                playSound('switch');
-                                                setSounds(val);
-                                            }}
+                                        onValueChange={async (val) => {
+                                            setSounds(val);
+                                            const currentSettings = await getSettings();
+                                            const newSettings = { ...currentSettings, sounds: val };
+                                            await saveSettings(newSettings);
+                                            await refreshSettings();
+                                            if (val) playSound('switch');
+                                        }}
                                             value={sounds}
                                         />
                                     </View>
@@ -185,10 +189,13 @@ export default function ConfiguratorScreen() {
                                             trackColor={{ false: COLORS.secondary, true: COLORS.accent }}
                                             thumbColor={notifications ? COLORS.white : COLORS.textSecondary}
                                             ios_backgroundColor={COLORS.secondary}
-                                            onValueChange={(val) => {
-                                                playSound('switch');
-                                                setNotifications(val);
-                                            }}
+                                        onValueChange={async (val) => {
+                                            playSound('switch');
+                                            setNotifications(val);
+                                            const currentSettings = await getSettings();
+                                            const newSettings = { ...currentSettings, notifications: val };
+                                            await saveSettings(newSettings);
+                                        }}
                                             value={notifications}
                                         />
                                     </View>

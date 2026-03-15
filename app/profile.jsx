@@ -567,7 +567,6 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         gap: 10,
         justifyContent: 'space-between',
-        paddingBottom: 10,
     },
     badgeCard: {
         backgroundColor: 'rgba(26, 26, 34, 0.6)',
