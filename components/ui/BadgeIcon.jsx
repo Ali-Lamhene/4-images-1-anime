@@ -22,21 +22,33 @@ const BadgeIcon = ({ id, size = 100, locked = false }) => {
                     accent: '#FFFFFF',
                     stops: ['#FDE047', '#EAB308', '#854D0E']
                 };
-            case 'streak_master':
+            case 'eagle_eye':
+                return {
+                    primary: '#A855F7',
+                    secondary: '#7C3AED',
+                    accent: '#FFFFFF',
+                    stops: ['#F3E8FF', '#A855F7', '#6B21A8']
+                };
+            case 'silent_sage':
+                return {
+                    primary: '#10B981',
+                    secondary: '#059669',
+                    accent: '#FFFFFF',
+                    stops: ['#D1FAE5', '#10B981', '#064E3B']
+                };
+            case 'master_weeb':
+                return {
+                    primary: '#F43F5E',
+                    secondary: '#E11D48',
+                    accent: '#FFFFFF',
+                    stops: ['#FFE4E6', '#F43F5E', '#9F1239']
+                };
             case 'sharp_eye':
                 return {
                     primary: COLORS.accent,
                     secondary: '#9179ff',
                     accent: '#FFFFFF',
                     stops: ['#DDD6FE', COLORS.accent, '#5B21B6']
-                };
-            case 'wealthy_traveler':
-            case 'coin_collector':
-                return {
-                    primary: '#FDE047',
-                    secondary: '#CA8A04',
-                    accent: '#FFFFFF',
-                    stops: ['#FFF9C4', '#FBC02D', '#F9A825']
                 };
             case 'anime_scholar':
                 return {
@@ -89,25 +101,28 @@ const BadgeIcon = ({ id, size = 100, locked = false }) => {
                         <Path d="M50 20 V75" stroke={palette.primary} strokeWidth="2" opacity="0.3" />
                     </G>
                 );
-            case 'coin_collector':
+            case 'eagle_eye':
+                return (
+                    <G transform="translate(25, 25) scale(0.5)">
+                        <Path d="M10 50 Q50 0 90 50 Q50 100 10 50" stroke={`url(#${iconGradId})`} strokeWidth="8" fill="none" />
+                        <Circle cx="50" cy="50" r="18" fill={`url(#${iconGradId})`} />
+                        <Path d="M50 35 V25 M50 65 V75 M65 50 H75 M35 50 H25" stroke="white" strokeWidth="4" strokeLinecap="round" />
+                    </G>
+                );
+            case 'silent_sage':
                 return (
                     <G transform="translate(30, 30) scale(0.4)">
-                        <Circle cx="50" cy="50" r="40" fill={`url(#${iconGradId})`} stroke={palette.primary} strokeWidth="4" />
-                        <Text x="50" y="65" textAnchor="middle" fontSize="40" fontWeight="900" fill={palette.secondary}>C</Text>
+                        <Path d="M50 20 C65 20 75 35 75 50 C75 75 50 85 50 85 C50 85 25 75 25 50 C25 35 35 20 50 20" fill={`url(#${iconGradId})`} />
+                        <Rect x="45" y="55" width="10" height="2" fill="white" opacity="0.8" />
+                        <Circle cx="50" cy="40" r="5" fill="white" opacity="0.5" />
                     </G>
                 );
-            case 'wealthy_traveler':
+            case 'master_weeb':
                 return (
-                    <G transform="translate(28, 28) scale(0.45)">
-                        <Path d="M20 30 V70 Q50 90 80 70 V30 Q50 10 20 30" fill={`url(#${iconGradId})`} stroke={palette.primary} strokeWidth="4" />
-                        <Path d="M35 45 H65 M35 55 H65" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.6" />
-                    </G>
-                );
-            case 'streak_master':
-                return (
-                    <G transform="translate(30, 25) scale(0.4)">
-                        <Path d="M40 90 L70 40 L45 40 L60 10" stroke={`url(#${iconGradId})`} strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                        <Path d="M40 90 L70 40 L45 40 L60 10" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.5" />
+                    <G transform="translate(25, 25) scale(0.5)">
+                        <Path d="M20 80 L30 30 L50 10 L70 30 L80 80 Z" fill={`url(#${iconGradId})`} stroke={palette.primary} strokeWidth="2" />
+                        <Circle cx="50" cy="50" r="12" fill="white" opacity="0.3" />
+                        <Text x="50" y="55" textAnchor="middle" fontSize="18" fontWeight="900" fill="white">50</Text>
                     </G>
                 );
             case 'no_help_needed':
