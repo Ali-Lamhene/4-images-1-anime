@@ -20,7 +20,7 @@ const Images = forwardRef((props, ref) => {
   const imageTransforms = useMemo(() => {
     return images.map((_, index) => {
       const seed = (index + 1) * 123.45;
-      const baseScale = 5.0 + pseudoRandom(seed) * 4.5; 
+      const baseScale = 2.5 + pseudoRandom(seed) * 4.5; 
       const stretchFactor = 0.5 + pseudoRandom(seed + 1) * 1.0;
       const scaleX = baseScale * stretchFactor;
       const scaleY = baseScale;

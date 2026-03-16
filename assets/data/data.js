@@ -32,12 +32,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://placeholder.com/img1.jpg",
-            "https://placeholder.com/img1.jpg",
-            "https://placeholder.com/img1.jpg",
-            "https://placeholder.com/img1.jpg"
+            "https://m.media-amazon.com/images/M/MV5BZTIyNzgwZmUtNzgyOS00ZWFjLWJkNTItYjY3ODIxZGQyMDAzXkEyXkFqcGc@._V1_FMjpg_UX1920_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BZTExMGZjZGQtYTcwYy00YzU0LThhYjUtZmVmZTdlZTM5NGVlXkEyXkFqcGc@._V1_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BOWFjNzE5NjMtZGUyZi00ZDYzLWE5MmUtZWEwNTZmMzhmZTNmXkEyXkFqcGc@._V1_FMjpg_UX1024_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BMDAyYzkxNDAtNjA1Zi00M2M4LWFiMTYtZjg0NmM5MTI2MmI1XkEyXkFqcGc@._V1_FMjpg_UX1920_.jpg"
         ],
-        "vignette": "https://placeholder.com/v1.jpg"
+        "vignette": "https://m.media-amazon.com/images/M/MV5BMTNjNGU4NTUtYmVjMy00YjRiLTkxMWUtNzZkMDNiYjZhNmViXkEyXkFqcGc@._V1_FMjpg_UX1024_.jpg"
     },
     {
         "id": "2",
@@ -55,12 +55,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://placeholder.com/img2.jpg",
-            "https://placeholder.com/img2.jpg",
-            "https://placeholder.com/img2.jpg",
-            "https://placeholder.com/img2.jpg"
+            "https://m.media-amazon.com/images/M/MV5BMTUyZmYwZTEtZTc3YS00NmUxLTk5NTUtMmVlM2Q3Mjk5MGJmXkEyXkFqcGc@._V1_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BMmRlODFhZGMtYzI5OC00NWRhLTg0NTctZjMyZDcyNzlmYjNiXkEyXkFqcGc@._V1_FMjpg_UX500_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BOWU2N2I3YjktOWQ2Ny00MzI0LTkyNmMtMjk4NzZiMzIzY2UxXkEyXkFqcGc@._V1_FMjpg_UX500_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BMWRlYWJkMWMtZmJiMi00NzQ2LThjYmUtZTRlMmJkYWZkOWI3XkEyXkFqcGc@._V1_FMjpg_UX500_.jpg"
         ],
-        "vignette": "https://placeholder.com/v2.jpg"
+        "vignette": "https://m.media-amazon.com/images/M/MV5BZTNjOWI0ZTAtOGY1OS00ZGU0LWEyOWYtMjhkYjdlYmVjMDk2XkEyXkFqcGc@._V1_QL75_UY562_CR1,0,380,562_.jpg"
     },
     {
         "id": "3",
@@ -78,12 +78,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://placeholder.com/img3.jpg",
-            "https://placeholder.com/img3.jpg",
-            "https://placeholder.com/img3.jpg",
-            "https://placeholder.com/img3.jpg"
+            "https://m.media-amazon.com/images/M/MV5BZmRkMDYxOGYtY2U3MC00NzhiLWIyZDMtMTg3M2FmMjQxMzc3XkEyXkFqcGc@._V1_FMjpg_UX1024_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BZTExOTExOTktNDFlZS00Zjk4LWFlNzItYWY0NzMwNDUyMGUzXkEyXkFqcGc@._V1_FMjpg_UX1024_.jpg", 
+            "https://m.media-amazon.com/images/M/MV5BMmYyNWRmZjgtY2JiNS00M2FlLWEzYjQtNzY1MjFlZmQyOWYwXkEyXkFqcGc@._V1_FMjpg_UX500_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BMjY0YThlODktYmQwMS00NGViLWFjNDgtNjZiN2ZmNDZlYjBmXkEyXkFqcGc@._V1_FMjpg_UX1024_.jpg" 
         ],
-        "vignette": "https://placeholder.com/v3.jpg"
+        "vignette": "https://m.media-amazon.com/images/M/MV5BZjliODY5MzQtMmViZC00MTZmLWFhMWMtMjMwM2I3OGY1MTRiXkEyXkFqcGc@._V1_QL75_UY562_CR9,0,380,562_.jpg"
     },
     {
         "id": "4",
@@ -101,12 +101,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://placeholder.com/img4.jpg",
-            "https://placeholder.com/img4.jpg",
-            "https://placeholder.com/img4.jpg",
-            "https://placeholder.com/img4.jpg"
+            "https://m.media-amazon.com/images/M/MV5BZDlhNzk2MDMtYTFkNS00NmVkLThhMzgtYmVlZmYxNDVlNjVmXkEyXkFqcGc@._V1_FMjpg_UX500_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BYjU1YzM1NjktODFhOC00YTkxLWI1MzQtYTJiNTE4MmQxMjkzXkEyXkFqcGc@._V1_FMjpg_UX500_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BYjkwNTY1YjgtNjA1NS00ZjBiLTk2NGItM2ViY2MxYTc1ZDU1XkEyXkFqcGc@._V1_FMjpg_UX500_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BYjc4ZjA3MWItODMzOC00NzRhLWE1ZmEtMWNjNTUzNTQ2NTZkXkEyXkFqcGc@._V1_FMjpg_UX500_.jpg" 
         ],
-        "vignette": "https://placeholder.com/v4.jpg"
+        "vignette": "https://m.media-amazon.com/images/M/MV5BMzNiODA5NjYtYWExZS00OTc4LTg3N2ItYWYwYTUyYmM5MWViXkEyXkFqcGc@._V1_QL75_UY562_CR11,0,380,562_.jpg"
     },
     {
         "id": "5",
@@ -124,12 +124,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://placeholder.com/img5.jpg",
-            "https://placeholder.com/img5.jpg",
-            "https://placeholder.com/img5.jpg",
-            "https://placeholder.com/img5.jpg"
+            "https://m.media-amazon.com/images/M/MV5BZWVjNjczZjctZmM1OC00NTk4LWFjZmEtODVjNzUyNjIyNjY2XkEyXkFqcGc@._V1_FMjpg_UX708_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BZGE1ZjM4ZWUtZWM1ZC00NTU5LThhYTEtZWJkNDc2ZjFlMTQ2XkEyXkFqcGc@._V1_FMjpg_UX1202_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BZTVkYTIxMzYtODVkNy00M2FkLTg2MWEtMGFmZWI2YWE0NTk3XkEyXkFqcGc@._V1_FMjpg_UX977_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BNjhiN2RmZjAtMjkwYi00MjcwLTk0MWYtYzhiZTA3NTU5YjUwXkEyXkFqcGc@._V1_FMjpg_UX1024_.jpg"
         ],
-        "vignette": "https://placeholder.com/v5.jpg"
+        "vignette": "https://m.media-amazon.com/images/M/MV5BOWI0NzkxYTUtNGU5MS00MTUwLTk3NDItMTFlZDJiM2NlZDAxXkEyXkFqcGc@._V1_QL75_UY562_CR184,0,380,562_.jpg"
     },
     {
         "id": "6",
@@ -147,12 +147,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://placeholder.com/img6.jpg",
-            "https://placeholder.com/img6.jpg",
-            "https://placeholder.com/img6.jpg",
-            "https://placeholder.com/img6.jpg"
+            "https://m.media-amazon.com/images/M/MV5BMDQ2YTkwYmUtZWZiYS00NWQyLWE2NzUtYmQ1NDFlYzY2ZDg4XkEyXkFqcGc@._V1_FMjpg_UX500_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BZDMxMzE3NTYtY2M0Zi00YTUxLWEyY2MtZTE5YjdjNWI5MGYwXkEyXkFqcGc@._V1_FMjpg_UX500_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BNDYyOGNlZTUtMTNmMS00MGU3LTllMWEtMjliNDVkMTYzZjM0XkEyXkFqcGc@._V1_FMjpg_UX500_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BODRhOWE3YzYtZjJmYi00ZjZmLTk0OTEtMzlhMzBhYmE4OTk5XkEyXkFqcGc@._V1_FMjpg_UX500_.jpg"
         ],
-        "vignette": "https://placeholder.com/v6.jpg"
+        "vignette": "https://m.media-amazon.com/images/M/MV5BYTgyZDhmMTEtZDFhNi00MTc4LTg3NjUtYWJlNGE5Mzk2NzMxXkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg"
     },
     {
         "id": "7",
@@ -170,12 +170,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://placeholder.com/img7.jpg",
-            "https://placeholder.com/img7.jpg",
-            "https://placeholder.com/img7.jpg",
-            "https://placeholder.com/img7.jpg"
+            "https://m.media-amazon.com/images/M/MV5BNDJjMWI2OTYtMWI2Ny00Yzc2LWExZWItNWJlMmMwOTRiYmY3XkEyXkFqcGc@._V1_FMjpg_UX1600_.jpghttps://placeholder.com/img7.jpg",
+            "https://m.media-amazon.com/images/M/MV5BYWJkYTViZjktYzQyYi00MGRmLWFjNzAtNDNkYjlmMDU0NjEyXkEyXkFqcGc@._V1_.jpghttps://placeholder.com/img7.jpg",
+            "https://m.media-amazon.com/images/M/MV5BZGUzYTkyODYtODQ0Mi00OWE2LWJlODAtNDhhYjI2ODAyZjdmXkEyXkFqcGc@._V1_FMjpg_UX1920_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BOGIwNTY2MGUtYTQ4Yi00OTVhLThkM2MtMzIyODI2MDg5ZjZjXkEyXkFqcGc@._V1_.jpg"
         ],
-        "vignette": "https://placeholder.com/v7.jpg"
+        "vignette": "https://m.media-amazon.com/images/M/MV5BMWU1OGEwNmQtNGM3MS00YTYyLThmYmMtN2FjYzQzNzNmNTE0XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg"
     },
     {
         "id": "8",
@@ -193,12 +193,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://placeholder.com/img8.jpg",
-            "https://placeholder.com/img8.jpg",
-            "https://placeholder.com/img8.jpg",
-            "https://placeholder.com/img8.jpg"
+            "https://m.media-amazon.com/images/M/MV5BYzhmMWI2NjYtZjE5Yi00MDhjLWFhNjEtZThhOGYzNDllNTg5XkEyXkFqcGc@._V1_FMjpg_UX500_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BMjE2OTM2OTcwOV5BMl5BanBnXkFtZTgwMzQ2MjMyOTE@._V1_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BODFiNDgyZDQtMzVkMS00YmIzLWIxNjktOTc0ZDVkMWVmOTI3XkEyXkFqcGc@._V1_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BYmQ1NmMxMGQtZDg2NS00OWE4LWIyMWItOTdjYjgwZWE5YjZkXkEyXkFqcGc@._V1_FMjpg_UX1920_.jpg"
         ],
-        "vignette": "https://placeholder.com/v8.jpg"
+        "vignette": "https://m.media-amazon.com/images/M/MV5BY2QzODA5OTQtYWJlNi00ZjIzLThhNTItMDMwODhlYzYzMjA2XkEyXkFqcGc@._V1_QL75_UX190_CR0,2,190,281_.jpg"
     },
     {
         "id": "9",
@@ -216,12 +216,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://placeholder.com/img9.jpg",
-            "https://placeholder.com/img9.jpg",
-            "https://placeholder.com/img9.jpg",
-            "https://placeholder.com/img9.jpg"
+            "https://m.media-amazon.com/images/M/MV5BNTA5ODJlNGQtOWQxMC00MzQzLWI1MzAtMmRlMzJhNzNiZGIxXkEyXkFqcGc@._V1_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BNDNkYjVmN2ItYjQwYi00ZTRkLTkzZTUtYjBiMDc2MzQ1YjFmXkEyXkFqcGc@._V1_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BOTFlMWE3MWEtNGJhYy00YTIxLTk4OGEtNjU3M2MyZmU2MmYyXkEyXkFqcGc@._V1_FMjpg_UX720_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BMTQ3ZDZlODItYzM5Yi00YTkzLTgwMjUtYzNlNmEwNjIxMTMzXkEyXkFqcGc@._V1_.jpg"
         ],
-        "vignette": "https://placeholder.com/v9.jpg"
+        "vignette": "https://m.media-amazon.com/images/M/MV5BYzYxOTlkYzctNGY2MC00MjNjLWIxOWMtY2QwYjcxZWIwMmEwXkEyXkFqcGc@._V1_QL75_UY281_CR4,0,190,281_.jpg"
     },
     {
         "id": "10",
@@ -239,12 +239,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://placeholder.com/img10.jpg",
-            "https://placeholder.com/img10.jpg",
-            "https://placeholder.com/img10.jpg",
-            "https://placeholder.com/img10.jpg"
+            "https://m.media-amazon.com/images/M/MV5BNDhkNTVlYjYtMzY4My00N2FkLWE4ZmUtMmU4NjZlNGVjMDE5XkEyXkFqcGc@._V1_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BY2VlNWVhMTktMGYzYS00MDU4LWFhMzItZDA5ZjdmMjdjMjg0XkEyXkFqcGc@._V1_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BODUxMTJhODUtNWYwMy00MjllLWE0NjItZjNhZDdlODRhYzAwXkEyXkFqcGc@._V1_.jpg",
+            "https://m.media-amazon.com/images/M/MV5BZjE3MmM0MjAtNzhmMS00NDQ4LTkxMjEtMzkzNzhmNGJlNjVhXkEyXkFqcGc@._V1_.jpg"
         ],
-        "vignette": "https://placeholder.com/v10.jpg"
+        "vignette": "https://m.media-amazon.com/images/M/MV5BMjBlNTExMDAtMWZjZi00MDc5LWFkMjgtZDU0ZWQ5ODk3YWY5XkEyXkFqcGc@._V1_QL75_UX190_CR0,2,190,281_.jpg"
     },
     {
         "id": "11",
