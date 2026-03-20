@@ -20,8 +20,10 @@ export default function GameHeader({
   const { playSound } = useSound();
   const currentRank = RANKS.find(r => r.level === user.level) || RANKS[0];
   const nextRank = RANKS.find(r => r.level === user.level + 1);
+  
+  // Progression interne au rang actuel (0-100%)
   const xpProgress = nextRank
-    ? ((user.xp - currentRank.minXP) / (nextRank.minXP - currentRank.minXP)) * 100
+    ? Math.min(100, Math.max(0, ((user.xp - currentRank.minXP) / (nextRank.minXP - currentRank.minXP)) * 100))
     : 100;
 
   const isOverlay = variant === 'overlay';
@@ -151,11 +153,13 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   progressBar: {
-    width: 80,
-    height: 6,
-    backgroundColor: COLORS.secondary,
-    borderRadius: 3,
+    width: 100, // Slightly wider for better visibility
+    height: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: 4,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.05)',
   },
   progressFill: {
     height: '100%',

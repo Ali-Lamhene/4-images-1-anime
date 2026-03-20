@@ -78,8 +78,9 @@ export default function ProfileScreen() {
 
     const currentRank = RANKS.find(r => r.level === user.level) || RANKS[0];
     const nextRank = RANKS.find(r => r.level === user.level + 1);
+    // Calcul de la progression dans le niveau actuel (entre 0 et 100)
     const xpProgress = nextRank
-        ? ((user.xp - currentRank.minXP) / (nextRank.minXP - currentRank.minXP)) * 100
+        ? Math.min(100, Math.max(0, ((user.xp - currentRank.minXP) / (nextRank.minXP - currentRank.minXP)) * 100))
         : 100;
 
     const unlockedAnimes = ANIME_DATA.slice(0, currentIndex);
@@ -413,13 +414,18 @@ const styles = StyleSheet.create({
         color: COLORS.accent,
     },
     progressBar: {
-        height: 2,
-        backgroundColor: COLORS.primary,
+        height: 6,
+        backgroundColor: 'rgba(255, 255, 255, 0.05)',
         width: '100%',
+        borderRadius: 3,
+        overflow: 'hidden',
+        borderWidth: 1,
+        borderColor: 'rgba(255, 255, 255, 0.05)',
     },
     progressFill: {
         height: '100%',
         backgroundColor: COLORS.accent,
+        borderRadius: 3,
     },
     statsGrid: {
         flexDirection: 'row',
