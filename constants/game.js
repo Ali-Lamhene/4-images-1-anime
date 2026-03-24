@@ -16,3 +16,5 @@ export const DEFAULT_REWARDS = {
   coins: 100,
   xp: 50,
 };
+
+export const DAILY_REWARD_COINS = 60;

@@ -7,6 +7,8 @@ const STORAGE_KEYS = {
     TUTORIAL_SEEN: 'tutorial_seen',
     REVEALED_IMAGES: 'revealed_images',
     HAS_COMPLETED_CONFIG: 'has_completed_config',
+    LAST_DAILY_REWARD: 'last_daily_reward',
+    HAS_SCHEDULED_NOTIF: 'has_scheduled_notif',
 };
 
 export const INITIAL_SETTINGS = {
@@ -169,5 +171,31 @@ export const getConfigCompleted = async () => {
     } catch (error) {
         console.error('Error getting config status:', error);
         return false;
+    }
+};
+
+export const saveLastDailyRewardDate = async (date) => {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEYS.LAST_DAILY_REWARD, date);
+    } catch (error) {
+        console.error('Error saving last daily reward date:', error);
+    }
+};
+
+export const getLastDailyRewardDate = async () => {
+    try {
+        const date = await AsyncStorage.getItem(STORAGE_KEYS.LAST_DAILY_REWARD);
+        return date;
+    } catch (error) {
+        console.error('Error getting last daily reward date:', error);
+        return null;
+    }
+};
+
+export const clearLastDailyRewardDate = async () => {
+    try {
+        await AsyncStorage.removeItem(STORAGE_KEYS.LAST_DAILY_REWARD);
+    } catch (error) {
+        console.error('Error clearing last daily reward date:', error);
     }
 };
