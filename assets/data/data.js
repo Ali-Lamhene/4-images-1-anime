@@ -1228,12 +1228,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://image.tmdb.org/t/p/w500/oEQ7HvcTRBwne9aTBvBZz3Swokw.jpg",
-            "https://image.tmdb.org/t/p/w500/yBwAk5B5ldwvAt80kzUt7UL9Gzf.jpg",
-            "https://image.tmdb.org/t/p/w500/idbRkHYTOgEPaxSSO9e5QGQGpIN.jpg",
-            "https://image.tmdb.org/t/p/w500/eihSpdcgQhj83CtNnfTaQhwlwQx.jpg"
+            "https://image.tmdb.org/t/p/w500/aD2vYL5f8ykbSVfLKgVvmAzE1RH.jpg",
+            "https://image.tmdb.org/t/p/w500/xDOSdE5NbXR0m82zfSVD8K3fRhg.jpg",
+            "https://image.tmdb.org/t/p/w500/dD4Iow8l2LjMquet1iDlznzD7dz.jpg",
+            "https://image.tmdb.org/t/p/w500/jr3q0LvvE229Suu4DG977aJyioZ.jpg"
         ],
-        "vignette": "https://image.tmdb.org/t/p/w500/uqXTeRohyYzB7WMTZ6iSiN4rDuG.jpg"
+        "vignette": "https://image.tmdb.org/t/p/w500/5w55iXc8acFQb9E2goqT85sYjr3.jpg"
     },
     {
         "id": "55",
@@ -1251,11 +1251,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://image.tmdb.org/t/p/w500/pk6KucyhLpvGnyd3Lkp7tNx9Y2b.jpg",
-            "https://image.tmdb.org/t/p/w500/8Lv6YKpP12AUalXkBzJb7Mg2sRd.jpg",
-            "https://image.tmdb.org/t/p/w500/p51Q7WWJ8r8Cg90aStDL9u3T9Mp.jpg"
+            "https://image.tmdb.org/t/p/w500/9VdIABPH266DSurwrYHOvbZ9dtk.jpg",
+            "https://image.tmdb.org/t/p/w500/3Sf1uLM9bw2oUC0lvzsbV14CP7h.jpg",
+            "https://image.tmdb.org/t/p/w500/ucUgzXKJBJy6errtqqLAISBPsSL.jpg",
+            "https://image.tmdb.org/t/p/w500/t9jrF4UEegMXhs01SM3wBkwd5DZ.jpg"
         ],
-        "vignette": "https://image.tmdb.org/t/p/w500/p51Q7WWJ8r8Cg90aStDL9u3T9Mp.jpg"
+        "vignette": "https://image.tmdb.org/t/p/w500/8Lv6YKpP12AUalXkBzJb7Mg2sRd.jpg"
     },
     {
         "id": "56",
@@ -1513,25 +1514,25 @@ export const ANIME_DATA = [
     {
         "id": "67",
         "names": {
-            "original": "Drifters",
-            "en": "Drifters",
-            "fr": "Drifters"
+            "original": "Solo Leveling",
+            "en": "Solo Leveling",
+            "fr": "Solo Leveling"
         },
         "info": {
-            "year": "2016",
+            "year": "2024",
             "episodes": "12",
             "synopsis": {
-                "en": "Historical warriors are transported to a fantasy world.",
-                "fr": "Des guerriers historiques sont transport\u00e9s dans un monde fantastique."
+                "en": "In a world where hunters must battle deadly monsters to protect mankind, a weak hunter becomes unexpectedly powerful.",
+                "fr": "Dans un monde où des chasseurs doivent combattre des monstres pour protéger l'humanité, un chasseur faible devient incroyablement puissant."
             }
         },
         "images": [
-            "https://image.tmdb.org/t/p/w500/oBAPeNMnJ5MXwGkqbHY7fnN3arR.jpg",
-            "https://image.tmdb.org/t/p/w500/xCR4gIXcvFZCGdYJ4BJ9sWXdj3V.jpg",
-            "https://image.tmdb.org/t/p/w500/niWrad5GEiReGUq6qrBZCTr5OTQ.jpg",
-            "https://image.tmdb.org/t/p/w500/9M7npjL11GABW2HecZxSoBOWhpT.jpg"
+            "https://image.tmdb.org/t/p/w500/fxxr3oGCbc0cTsnpxRDnIdKJB4q.jpg",
+            "https://image.tmdb.org/t/p/w500/ginSmPeETTTUws1T5pIgEeKFhzM.jpg",
+            "https://image.tmdb.org/t/p/w500/67crSuo3t6Tz7elcdG1LX2Qi5eI.jpg",
+            "https://image.tmdb.org/t/p/w500/oEL4Qyu10omQ0CIhrWQ5TqdKsfc.jpg"
         ],
-        "vignette": "https://image.tmdb.org/t/p/w500/niWrad5GEiReGUq6qrBZCTr5OTQ.jpg"
+        "vignette": "https://image.tmdb.org/t/p/w500/75cENUBSmnON8IBDc2F979CMusN.jpg"
     },
     {
         "id": "68",
@@ -1559,25 +1560,25 @@ export const ANIME_DATA = [
     {
         "id": "69",
         "names": {
-            "original": "Dororo",
-            "en": "Dororo",
-            "fr": "Dororo"
+            "original": "Kimi no Na wa.",
+            "en": "Your Name.",
+            "fr": "Your Name."
         },
         "info": {
-            "year": "2019",
-            "episodes": "24",
+            "year": "2016",
+            "episodes": "1",
             "synopsis": {
-                "en": "A young man hunts demons to reclaim his body parts.",
-                "fr": "Un jeune homme chasse des d\u00e9mons pour r\u00e9cup\u00e9rer les parties de son corps."
+                "en": "Two teenagers share a profound, magical connection upon discovering they are swapping bodies.",
+                "fr": "Deux adolescents partagent un lien magique et profond en découvrant qu'ils échangent leurs corps."
             }
         },
         "images": [
-            "https://placeholder.com/img69.jpg",
-            "https://placeholder.com/img69.jpg",
-            "https://placeholder.com/img69.jpg",
-            "https://placeholder.com/img69.jpg"
+            "https://image.tmdb.org/t/p/w500/t8MEqePIZWWdYOOlxCc9LnAywnj.jpg",
+            "https://image.tmdb.org/t/p/w500/gy8uvRIM77ndUFsMu7NjRSlFiuz.jpg",
+            "https://image.tmdb.org/t/p/w500/jQFZEF9nxFbio9sPL7SYFG7eJCS.jpg",
+            "https://image.tmdb.org/t/p/w500/qVG2Yd54zv8XCK87vPqTfPLNMuj.jpg"
         ],
-        "vignette": "https://placeholder.com/v69.jpg"
+        "vignette": "https://image.tmdb.org/t/p/w500/9sVWHhVcL2dN84R39bxsMAeoUbY.jpg"
     },
     {
         "id": "70",
@@ -1595,12 +1596,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://image.tmdb.org/t/p/w500/42OvgvP795xTfVINk48PAYWEFt7.jpg",
-            "https://image.tmdb.org/t/p/w500/faCKIohiLWpyAVFsyeCj3za915b.jpg",
-            "https://image.tmdb.org/t/p/w500/wqdLNNT2FRne9bYEn1oMQciSTTy.jpg",
-            "https://image.tmdb.org/t/p/w500/AvBWXP31DQIdhpMGJtaVKedMQXS.jpg"
+            "https://image.tmdb.org/t/p/w500/ks4JoQPgYwm9BZ02uMHdTea2o8.jpg",
+            "https://image.tmdb.org/t/p/w500/vAYFT4H7TVajrHnXC6j64ZQRXfV.jpg",
+            "https://image.tmdb.org/t/p/w500/eg1eUT0xj2jGU8GzfJHIzTRBT9V.jpg",
+            "https://image.tmdb.org/t/p/w500/hdq5pFhA4NJBHfQDRKChmwdVMbZ.jpg"
         ],
-        "vignette": "https://image.tmdb.org/t/p/w500/ks4JoQPgYwm9BZ02uMHdTea2o8.jpg"
+        "vignette": "https://image.tmdb.org/t/p/w500/faCKIohiLWpyAVFsyeCj3za915b.jpg"
     },
     {
         "id": "71",
@@ -1720,25 +1721,25 @@ export const ANIME_DATA = [
     {
         "id": "76",
         "names": {
-            "original": "Fate/stay night",
-            "en": "Fate/stay night",
-            "fr": "Fate/stay night"
+            "original": "Pluto",
+            "en": "Pluto",
+            "fr": "Pluto"
         },
         "info": {
-            "year": "2014",
-            "episodes": "26",
+            "year": "2023",
+            "episodes": "8",
             "synopsis": {
-                "en": "Students participate in the Holy Grail War.",
-                "fr": "Des \u00e9tudiants participent \u00e0 la guerre du Saint Graal."
+                "en": "A detective investigates a series of robot and human murders.",
+                "fr": "Un détective enquête sur une série de meurtres de robots et d'humains."
             }
         },
         "images": [
-            "https://image.tmdb.org/t/p/w500/1ML8CbFRWI16hZUCliMBYj97TxL.jpg",
-            "https://image.tmdb.org/t/p/w500/n3ORxz5NzO0DOl2N0xeeQbkDlyz.jpg",
-            "https://image.tmdb.org/t/p/w500/eIkgmQyii8n2OeXcVYlWYLY7mm9.jpg",
-            "https://image.tmdb.org/t/p/w500/kXYRTLaLJO7iChQuc7qHEw2D55G.jpg"
+            "https://image.tmdb.org/t/p/w500/lgkccKijn9KxHcuMiIpVfPNOKkD.jpg",
+            "https://image.tmdb.org/t/p/w500/ouJjlvvbjich7p0itezW5DCPXX6.jpg",
+            "https://image.tmdb.org/t/p/w500/ty7nYVrubfiug66Tga2OTq5XSta.jpg",
+            "https://image.tmdb.org/t/p/w500/fPiRaV3mzZ9VaRHZBrlNeIu3MBB.jpg"
         ],
-        "vignette": "https://image.tmdb.org/t/p/w500/avUieklqhyIuNAmGkNiawDaVmpV.jpg"
+        "vignette": "https://image.tmdb.org/t/p/w500/ibGJwjU1i1pBXVO5KttK4WeVE3s.jpg"
     },
     {
         "id": "77",
@@ -1802,9 +1803,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://image.tmdb.org/t/p/w500/vPgnYVnLR5SCpwfxi884MkrjE9C.jpg"
+            "https://image.tmdb.org/t/p/w500/3gBOvgQNYjRNJEZ9Jzj6dTWdHx2.jpg",
+            "https://image.tmdb.org/t/p/w500/6qwbib8digp121qA9xj3STeq2KC.jpg",
+            "https://image.tmdb.org/t/p/w500/6Apj6kCoQPMpfk09ig3OjOXOdfT.jpg",
+            "https://image.tmdb.org/t/p/w500/x49DdtEJOluXWV5hF0aGMrFZeOR.jpg"
         ],
-        "vignette": "https://image.tmdb.org/t/p/w500/vPgnYVnLR5SCpwfxi884MkrjE9C.jpg"
+        "vignette": "https://image.tmdb.org/t/p/w500/3gBOvgQNYjRNJEZ9Jzj6dTWdHx2.jpg"
     },
     {
         "id": "80",
@@ -2029,12 +2033,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://image.tmdb.org/t/p/w500/yZpde0ZwKUae2so36GgyVQBls3o.jpg",
-            "https://image.tmdb.org/t/p/w500/uv45oHyjuNKssX7xFceuRrq7bAM.jpg",
-            "https://image.tmdb.org/t/p/w500/fygQqb7GYlaMNtrRwiDqR0cX5LR.jpg",
-            "https://image.tmdb.org/t/p/w500/lVZpDevYCHg9jvMZyqa14nO71bK.jpg"
+            "https://image.tmdb.org/t/p/w500/uXRIFgDzA9iYPp3qCKbTZbbK5bX.jpg",
+            "https://image.tmdb.org/t/p/w500/ttoa5FhoyByvDBgNk4DtIMcxFin.jpg",
+            "https://image.tmdb.org/t/p/w500/rzfbuGpcpg8jArmO2lPbO1KwT9O.jpg",
+            "https://image.tmdb.org/t/p/w500/gzILSA68CddzQ2uMybfRznFKRNr.jpg"
         ],
-        "vignette": "https://image.tmdb.org/t/p/w500/1bD2JScwOLf7P7jpDRCtnacEwTf.jpg"
+        "vignette": "https://image.tmdb.org/t/p/w500/3tjBUcHEDJc1IfwLTMqKCw3Y5ay.jpg"
     },
     {
         "id": "90",
@@ -2098,12 +2102,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://image.tmdb.org/t/p/w500/zmjlYqjulc8d04gQbqTbUQBqPWE.jpg",
-            "https://image.tmdb.org/t/p/w500/8Rr9cf9cbm1dnsXtzIRoXbtRMS3.jpg",
-            "https://image.tmdb.org/t/p/w500/fPSKWD6HDwqNe0C9ALNqKaWy9og.jpg",
-            "https://image.tmdb.org/t/p/w500/lhgGAkrpOjiK8neIdixaruC486I.jpg"
+            "https://image.tmdb.org/t/p/w500/4kZjCMhVjmuz015dW1AFKM3vsIL.jpg",
+            "https://image.tmdb.org/t/p/w500/9oqoaWbwRJ9Q8RYmSTz7jjZpOgI.jpg",
+            "https://image.tmdb.org/t/p/w500/sJFSmqTVBt6BxPaDTEzX9RUZvFE.jpg",
+            "https://image.tmdb.org/t/p/w500/tUMFarDtvjz7MqbehrEHPFUUxFw.jpg"
         ],
-        "vignette": "https://image.tmdb.org/t/p/w500/AnMyIsr727OY5fnzvtiVWmRzZ13.jpg"
+        "vignette": "https://image.tmdb.org/t/p/w500/aaacJPqQRrWBqzvP9Nxr5TD8QAb.jpg"
     },
     {
         "id": "93",
@@ -2190,11 +2194,12 @@ export const ANIME_DATA = [
             }
         },
         "images": [
-            "https://image.tmdb.org/t/p/w500/bUPUyWVRiynbtMcHbWSlTquvmbA.jpg",
-            "https://image.tmdb.org/t/p/w500/k9YtXrhyT0cr8W5kA1oxga1fiRb.jpg",
-            "https://image.tmdb.org/t/p/w500/jsrX650umhno3p2j9nvUlAP4F0Z.jpg"
+            "https://image.tmdb.org/t/p/w500/k76NuWGNLInN9WjhH7zhAcXBxvX.jpg",
+            "https://image.tmdb.org/t/p/w500/dnYwmfXFlWdyFqQbeq9pOwfjvXt.jpg",
+            "https://image.tmdb.org/t/p/w500/oit9ex6LIq4qpYSiYqAeue9VV3X.jpg",
+            "https://image.tmdb.org/t/p/w500/7gbmM2NWcqZONbp65HUWDf4wr0Q.jpg"
         ],
-        "vignette": "https://image.tmdb.org/t/p/w500/bUPUyWVRiynbtMcHbWSlTquvmbA.jpg"
+        "vignette": "https://image.tmdb.org/t/p/w500/k76NuWGNLInN9WjhH7zhAcXBxvX.jpg"
     },
     {
         "id": "97",

@@ -1,3 +1,4 @@
+import os
 import time
 from handlers.tmdb_handler import TMDBHandler
 from handlers.image_optimizer import ImageOptimizer
@@ -21,6 +22,15 @@ class BotOrchestrator:
             print("\n[!] Attention : Vous devez configurer votre TMDB_API_KEY dans config.py")
             return
 
+        # Initialize log file (append mode)
+        log_path = os.path.join(os.path.dirname(self.persistence.data_path), "..", "..", "imdb_bot", "requirements_log.txt")
+        file_exists = os.path.exists(log_path)
+        with open(log_path, "a", encoding="utf-8") as f:
+            if not file_exists:
+                f.write(f"--- Bot Run Log: {time.strftime('%Y-%m-%d %H:%M:%S')} ---\n")
+            else:
+                f.write(f"\n--- Bot Run Session: {time.strftime('%Y-%m-%d %H:%M:%S')} ---\n")
+
         print(f"Starting {mode} mode for {len(animes)} animes...")
         success_count = 0
         
@@ -28,7 +38,7 @@ class BotOrchestrator:
             if mode == "batch":
                 print(f"[{i+1}/{len(animes)}] Processing: {name}")
             
-            if self._process_single(name, indices, update_vignette):
+            if self._process_single(name, indices, update_vignette, log_path):
                 success_count += 1
                 
             if mode == "batch" and i < len(animes) - 1:
@@ -36,7 +46,7 @@ class BotOrchestrator:
                 
         print(f"\nDone! Processed {success_count}/{len(animes)} successfully.")
 
-    def _process_single(self, name, indices=None, update_vignette=True):
+    def _process_single(self, name, indices=None, update_vignette=True, log_path=None):
         """Internal logic for a single anime update using TMDB."""
         # 1. Resolve ID and current state
         anime_id = self.persistence.find_id_by_name(name)
@@ -50,11 +60,17 @@ class BotOrchestrator:
         tmdb_info = self.tmdb.search_id(name)
         if not tmdb_info:
             print(f"  [!] No TMDB result for '{name}'")
+            if log_path:
+                with open(log_path, "a", encoding="utf-8") as f:
+                    f.write(f"{name}: No TMDB result found.\n")
             return False
             
         raw_paths = self.tmdb.fetch_raw_images(tmdb_info["id"], tmdb_info["type"])
         if not raw_paths:
             print(f"  [!] Gallery empty for {tmdb_info['title']}")
+            if log_path:
+                with open(log_path, "a", encoding="utf-8") as f:
+                    f.write(f"{name}: Gallery is empty on TMDB.\n")
             return False
 
         # 3. Optimize and Select
@@ -76,6 +92,14 @@ class BotOrchestrator:
 
         if update_vignette:
             new_vignette = self.optimizer.select_vignette(optimized_urls)
+
+        # Log missing requirements
+        if log_path:
+            with open(log_path, "a", encoding="utf-8") as f:
+                if len(new_images) < 4:
+                    f.write(f"{name}: Only {len(new_images)} images found (Required: 4).\n")
+                if not new_vignette:
+                    f.write(f"{name}: Missing vignette.\n")
 
         # 4. Save
         if self.persistence.save_data(anime_id, new_images, new_vignette):
