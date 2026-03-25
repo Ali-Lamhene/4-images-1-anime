@@ -74,6 +74,8 @@ export const TRANSLATIONS = {
         about_section: "ABOUT",
         version: "Version",
         contact: "Contact",
+        beta_test_title: "BETA TEST",
+        beta_test_message: "This version is currently in beta. We are count on your feedback! Please send us your comments by email or leave a review.",
 
         // Ranks
         rank_débutant: "BEGINNER",
@@ -211,6 +213,8 @@ export const TRANSLATIONS = {
         about_section: "À PROPOS",
         version: "Version",
         contact: "Contact",
+        beta_test_title: "BETA TEST",
+        beta_test_message: "Cette version est actuellement en bêta test. Nous comptons sur vos retours ! N'hésitez pas à nous envoyer vos commentaires par mail ou en commentaire.",
 
         // Ranks
         rank_débutant: "DÉBUTANT",

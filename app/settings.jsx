@@ -162,6 +162,15 @@ export default function SettingsScreen() {
                     </View>
 
                     <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>{t('beta_test_title')}</Text>
+                        <View style={styles.betaCard}>
+                            <Text style={styles.betaText}>
+                                {t('beta_test_message')}
+                            </Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.section}>
                         <Text style={styles.sectionTitle}>{t('about_section')}</Text>
                         <View style={styles.infoRow}>
                             <Text style={styles.infoLabel}>{t('version')}</Text>
@@ -277,5 +286,18 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: COLORS.textPrimary,
         fontWeight: '500',
+    },
+    betaCard: {
+        backgroundColor: COLORS.secondaryOp || 'rgba(26, 26, 34, 0.95)',
+        padding: 15,
+        borderRadius: 2,
+        borderLeftWidth: 2,
+        borderLeftColor: COLORS.accent,
+    },
+    betaText: {
+        fontSize: 13,
+        color: COLORS.textPrimary,
+        lineHeight: 20,
+        fontWeight: '300',
     }
 });
